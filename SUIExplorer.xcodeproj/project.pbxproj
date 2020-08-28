@@ -15,6 +15,7 @@
 		B95A434F24F99E8A00E611AB /* SUIExplorer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B95A434D24F99E8A00E611AB /* SUIExplorer.xcdatamodeld */; };
 		B95A435A24F99E8A00E611AB /* SUIExplorerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95A435924F99E8A00E611AB /* SUIExplorerTests.swift */; };
 		B95A436524F99E8A00E611AB /* SUIExplorerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95A436424F99E8A00E611AB /* SUIExplorerUITests.swift */; };
+		B99F2DD724F9A38800181123 /* RegionMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99F2DD624F9A38800181123 /* RegionMarker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		B95A436024F99E8A00E611AB /* SUIExplorerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SUIExplorerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B95A436424F99E8A00E611AB /* SUIExplorerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SUIExplorerUITests.swift; sourceTree = "<group>"; };
 		B95A436624F99E8A00E611AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B99F2DD624F9A38800181123 /* RegionMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionMarker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 			children = (
 				B95A434224F99E8A00E611AB /* SUIExplorerApp.swift */,
 				B95A434424F99E8A00E611AB /* ContentView.swift */,
+				B99F2DD624F9A38800181123 /* RegionMarker.swift */,
 				B95A434624F99E8A00E611AB /* Assets.xcassets */,
 				B95A434B24F99E8A00E611AB /* Persistence.swift */,
 				B95A435024F99E8A00E611AB /* Info.plist */,
@@ -265,6 +268,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B99F2DD724F9A38800181123 /* RegionMarker.swift in Sources */,
 				B95A434C24F99E8A00E611AB /* Persistence.swift in Sources */,
 				B95A434524F99E8A00E611AB /* ContentView.swift in Sources */,
 				B95A434F24F99E8A00E611AB /* SUIExplorer.xcdatamodeld in Sources */,

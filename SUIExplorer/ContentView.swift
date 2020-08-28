@@ -15,25 +15,30 @@ struct ContentView: View {
         sortDescriptors: [NSSortDescriptor(keyPath: \Item.timestamp, ascending: true)],
         animation: .default)
     private var items: FetchedResults<Item>
-
+    
     var body: some View {
-        List {
-            ForEach(items) { item in
-                Text("Item at \(item.timestamp!, formatter: itemFormatter)")
+        NavigationView {
+            RegionMarker()
+                .background(Color.blue)
+            
+            List {
+                ForEach(items) { item in
+                    Text("Item at \(item.timestamp!, formatter: itemFormatter)")
+                }
+                .onDelete(perform: deleteItems)
             }
-            .onDelete(perform: deleteItems)
-        }
-        .toolbar {
-            #if os(iOS)
-            EditButton()
-            #endif
-
-            Button(action: addItem) {
-                Label("Add Item", systemImage: "plus")
+            .toolbar {
+                #if os(iOS)
+                EditButton()
+                #endif
+                
+                Button(action: addItem) {
+                    Label("Add Item", systemImage: "plus")
+                }
             }
         }
     }
-
+    
     private func addItem() {
         withAnimation {
             let newItem = Item(context: viewContext)
