@@ -10,7 +10,12 @@ import SwiftUI
 
 struct RegionMarker : View {
         
-    @State var region = CGRect(x: 100, y: 100, width: 100, height: 100)
+    @State var topLeft = CGPoint(x: 100, y: 100)
+    @State var bottomRight = CGPoint(x: 200, y: 200)
+    
+    var region:CGRect {
+        return CGRect(x: topLeft.x, y: topLeft.y, width: bottomRight.x - topLeft.x, height: bottomRight.y - topLeft.y)
+    }
     
     var body: some View {
         ZStack {
@@ -22,30 +27,22 @@ struct RegionMarker : View {
             Circle()
                 .fill(Color.red)
                 .frame(width: 15, height: 15, alignment: .center)
-                .position(x: self.region.minX, y: self.region.minY)
+                .position(x: self.topLeft.x, y: self.topLeft.y)
                 .gesture(
                     DragGesture()
                         .onChanged { gesture in
-                            var region = CGRect()
-                            region.origin.x = gesture.location.x
-                            region.origin.y = gesture.location.y
-                            region.size.width = self.region.maxX - region.origin.x
-                            region.size.height = self.region.maxY - region.origin.y
-                            self.region = region.integral
+                            self.topLeft = gesture.location
                         }
                 )
             
             Circle()
                 .fill(Color.green)
                 .frame(width: 15, height: 15, alignment: .center)
-                .position(x: self.region.maxX, y: self.region.maxY)
+                .position(x: self.bottomRight.x, y: self.bottomRight.y)
                 .gesture(
                     DragGesture()
                         .onChanged { gesture in
-                            var region = self.region
-                            region.size.width = gesture.location.x - region.minX
-                            region.size.height = gesture.location.y - region.minY
-                            self.region = region.integral
+                            self.bottomRight = gesture.location
                         }
                 )
         } // Zstack
