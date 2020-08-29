@@ -35,6 +35,32 @@ struct RegionMarker : View {
                         }
                 )
             
+            // Move handle
+            Circle()
+                .fill(Color.blue)
+                .frame(width: 15, height: 15, alignment: .center)
+                .position(x: self.region.midX, y: self.region.midY)
+                .gesture(
+                    DragGesture()
+                        .onChanged { gesture in
+                            var halfW = self.region.width/2
+                            var halfH = self.region.height/2
+                            
+                            // If topLeft is ever not top or not left of bottomRight
+                            if self.topLeft.x > self.bottomRight.x {
+                                halfW *= -1
+                            }
+                            if self.topLeft.y > self.bottomRight.y {
+                                halfH *= -1
+                            }
+                            
+                            self.topLeft.x = gesture.location.x - halfW
+                            self.topLeft.y = gesture.location.y - halfH
+                            self.bottomRight.x = gesture.location.x + halfW
+                            self.bottomRight.y = gesture.location.y + halfH
+                    }
+            )
+            
             Circle()
                 .fill(Color.green)
                 .frame(width: 15, height: 15, alignment: .center)
