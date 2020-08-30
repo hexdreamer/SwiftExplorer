@@ -1,14 +1,12 @@
+// RegionMarkerCorners.swift
 //
-//  RegionMarker.swift
-//  SUIExplorer
-//
-//  Created by Kenny Leung on 8/28/20.
-//
+// This is an improved version which uses the top left aand bottom right corners as the state.
+// There is a lot less math to do. "Choose the correct data structure, and that is the solution to your problem."
 
 import Foundation
 import SwiftUI
 
-struct RegionMarker : View {
+struct RegionMarkerCorners : View {
         
     @State var topLeft = CGPoint(x: 100, y: 100)
     @State var bottomRight = CGPoint(x: 200, y: 200)
@@ -77,8 +75,8 @@ struct RegionMarker : View {
     
 }
 
-struct RegionMarker_Previews: PreviewProvider {
+struct RegionMarkerCorners_Previews: PreviewProvider {
     static var previews: some View {
-        RegionMarker()
+        RegionMarkerCorners()
     }
 }

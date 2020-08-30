@@ -10,7 +10,25 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        RegionMarker()
+        NavigationView {
+            List {
+                NavigationLink(
+                    destination:RegionMarkerRectangle()
+                        .navigationBarTitle("Rectangle Based")
+                ){
+                    Text("Region Marker (Rectangle Based)")
+                }
+                
+                NavigationLink(
+                    destination:RegionMarkerCorners()
+                        .navigationBarTitle("Corner Based")
+                ) {
+                    Text("Region Marker (Corner Based)")
+                }
+                
+            }
+            .navigationBarTitle("Explorations")
+        }
     }
 }
 

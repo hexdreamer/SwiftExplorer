@@ -16,7 +16,8 @@
 		B900441224FC0BDC00B54893 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B900441024FC0BDC00B54893 /* LaunchScreen.storyboard */; };
 		B900441D24FC0BDC00B54893 /* SwiftUIExplorerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B900441C24FC0BDC00B54893 /* SwiftUIExplorerTests.swift */; };
 		B900442824FC0BDC00B54893 /* SwiftUIExplorerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B900442724FC0BDC00B54893 /* SwiftUIExplorerUITests.swift */; };
-		B99644C224FC0CE2003AEBC2 /* RegionMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99644C124FC0CE2003AEBC2 /* RegionMarker.swift */; };
+		B99644C624FC1015003AEBC2 /* RegionMarkerCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99644C424FC1015003AEBC2 /* RegionMarkerCorners.swift */; };
+		B99644C724FC1015003AEBC2 /* RegionMarkerRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99644C524FC1015003AEBC2 /* RegionMarkerRectangle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,7 +53,8 @@
 		B900442324FC0BDC00B54893 /* SwiftUIExplorerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftUIExplorerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B900442724FC0BDC00B54893 /* SwiftUIExplorerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIExplorerUITests.swift; sourceTree = "<group>"; };
 		B900442924FC0BDC00B54893 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B99644C124FC0CE2003AEBC2 /* RegionMarker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegionMarker.swift; sourceTree = "<group>"; };
+		B99644C424FC1015003AEBC2 /* RegionMarkerCorners.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegionMarkerCorners.swift; sourceTree = "<group>"; };
+		B99644C524FC1015003AEBC2 /* RegionMarkerRectangle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegionMarkerRectangle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,7 +105,7 @@
 		B900440124FC0BDA00B54893 /* SwiftUIExplorer */ = {
 			isa = PBXGroup;
 			children = (
-				B99644C124FC0CE2003AEBC2 /* RegionMarker.swift */,
+				B99644C324FC1015003AEBC2 /* Explorations */,
 				B900440224FC0BDA00B54893 /* AppDelegate.swift */,
 				B900440424FC0BDA00B54893 /* SceneDelegate.swift */,
 				B900440924FC0BDA00B54893 /* ContentView.swift */,
@@ -140,6 +142,15 @@
 				B900442924FC0BDC00B54893 /* Info.plist */,
 			);
 			path = SwiftUIExplorerUITests;
+			sourceTree = "<group>";
+		};
+		B99644C324FC1015003AEBC2 /* Explorations */ = {
+			isa = PBXGroup;
+			children = (
+				B99644C524FC1015003AEBC2 /* RegionMarkerRectangle.swift */,
+				B99644C424FC1015003AEBC2 /* RegionMarkerCorners.swift */,
+			);
+			path = Explorations;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -273,11 +284,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B99644C224FC0CE2003AEBC2 /* RegionMarker.swift in Sources */,
 				B900440324FC0BDA00B54893 /* AppDelegate.swift in Sources */,
 				B900440824FC0BDA00B54893 /* SwiftUIExplorer.xcdatamodeld in Sources */,
 				B900440A24FC0BDA00B54893 /* ContentView.swift in Sources */,
+				B99644C624FC1015003AEBC2 /* RegionMarkerCorners.swift in Sources */,
 				B900440524FC0BDA00B54893 /* SceneDelegate.swift in Sources */,
+				B99644C724FC1015003AEBC2 /* RegionMarkerRectangle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
