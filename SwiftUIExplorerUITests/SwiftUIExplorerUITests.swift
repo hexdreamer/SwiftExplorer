@@ -1,13 +1,14 @@
 //
-//  SUIExplorerUITests.swift
-//  SUIExplorerUITests
+//  SwiftUIExplorerUITests.swift
+//  SwiftUIExplorerUITests
 //
-//  Created by Kenny Leung on 8/28/20.
+//  Created by Kenny Leung on 8/30/20.
+//  Copyright © 2020 Kenny Leung. All rights reserved.
 //
 
 import XCTest
 
-class SUIExplorerUITests: XCTestCase {
+class SwiftUIExplorerUITests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -34,7 +35,7 @@ class SUIExplorerUITests: XCTestCase {
     func testLaunchPerformance() throws {
         if #available(macOS 10.15, iOS 13.0, tvOS 13.0, *) {
             // This measures how long it takes to launch your application.
-            measure(metrics: [XCTApplicationLaunchMetric()]) {
+            measure(metrics: [XCTOSSignpostMetric.applicationLaunch]) {
                 XCUIApplication().launch()
             }
         }

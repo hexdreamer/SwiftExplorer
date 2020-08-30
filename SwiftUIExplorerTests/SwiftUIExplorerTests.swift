@@ -1,14 +1,15 @@
 //
-//  SUIExplorerTests.swift
-//  SUIExplorerTests
+//  SwiftUIExplorerTests.swift
+//  SwiftUIExplorerTests
 //
-//  Created by Kenny Leung on 8/28/20.
+//  Created by Kenny Leung on 8/30/20.
+//  Copyright © 2020 Kenny Leung. All rights reserved.
 //
 
 import XCTest
-@testable import SUIExplorer
+@testable import SwiftUIExplorer
 
-class SUIExplorerTests: XCTestCase {
+class SwiftUIExplorerTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
