@@ -12,7 +12,7 @@ struct RegionMarkerCorners : View {
     @State var bottomRight = CGPoint(x: 200, y: 200)
     
     var region:CGRect {
-        return CGRect(x: topLeft.x, y: topLeft.y, width: bottomRight.x - topLeft.x, height: bottomRight.y - topLeft.y)
+        return CGRect(x: topLeft.x, y: topLeft.y, width: bottomRight.x - topLeft.x, height: bottomRight.y - topLeft.y).standardized
     }
     
     var body: some View {
@@ -41,17 +41,8 @@ struct RegionMarkerCorners : View {
                 .gesture(
                     DragGesture()
                         .onChanged { gesture in
-                            var halfW = self.region.width/2
-                            var halfH = self.region.height/2
-                            
-                            // If topLeft is ever not top or not left of bottomRight
-                            if self.topLeft.x > self.bottomRight.x {
-                                halfW *= -1
-                            }
-                            if self.topLeft.y > self.bottomRight.y {
-                                halfH *= -1
-                            }
-                            
+                            let halfW = abs(self.region.width/2)
+                            let halfH = abs(self.region.height/2)
                             self.topLeft.x = gesture.location.x - halfW
                             self.topLeft.y = gesture.location.y - halfH
                             self.bottomRight.x = gesture.location.x + halfW
