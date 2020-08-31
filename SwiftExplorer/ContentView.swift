@@ -26,6 +26,12 @@ struct ContentView: View {
                     Text("Region Marker (Corner Based)")
                 }
                 
+                NavigationLink(
+                    destination:RegionMarkerOffset()
+                        .navigationBarTitle("By Offset")
+                ) {
+                    Text("Region Marker (By Offset)")
+                }
             }
             .navigationBarTitle("Explorations")
         }

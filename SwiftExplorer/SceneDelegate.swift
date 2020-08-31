@@ -1,8 +1,8 @@
 //
 //  SceneDelegate.swift
-//  SwiftUIExplorer
+//  SwiftExplorer
 //
-//  Created by Kenny Leung on 8/30/20.
+//  Created by Kenny Leung on 8/31/20.
 //  Copyright © 2020 Kenny Leung. All rights reserved.
 //
 
