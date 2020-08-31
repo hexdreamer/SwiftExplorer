@@ -32,6 +32,13 @@ struct ContentView: View {
                 ) {
                     Text("Region Marker (By Offset)")
                 }
+                
+                NavigationLink(
+                    destination:DecodeXML()
+                        .navigationBarTitle("Decode XML")
+                ) {
+                    Text("Decode XML")
+                }
             }
             .navigationBarTitle("Explorations")
         }

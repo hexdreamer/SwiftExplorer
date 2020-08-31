@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B93A3BE024FD1F840038BFDB /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93A3BDA24FD1F840038BFDB /* Item.swift */; };
+		B93A3BE124FD1F840038BFDB /* DecodeXML.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93A3BDB24FD1F840038BFDB /* DecodeXML.swift */; };
+		B93A3BE224FD1F840038BFDB /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93A3BDC24FD1F840038BFDB /* Channel.swift */; };
+		B93A3BE324FD1F840038BFDB /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93A3BDD24FD1F840038BFDB /* Image.swift */; };
+		B93A3BE424FD1F840038BFDB /* XMLDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93A3BDE24FD1F840038BFDB /* XMLDecoder.swift */; };
+		B93A3BE524FD1F840038BFDB /* Owner.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93A3BDF24FD1F840038BFDB /* Owner.swift */; };
 		B956582E24FD16890001DEE0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956582D24FD16890001DEE0 /* AppDelegate.swift */; };
 		B956583024FD16890001DEE0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956582F24FD16890001DEE0 /* SceneDelegate.swift */; };
 		B956583324FD16890001DEE0 /* SwiftExplorer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B956583124FD16890001DEE0 /* SwiftExplorer.xcdatamodeld */; };
@@ -39,6 +45,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B93A3BDA24FD1F840038BFDB /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		B93A3BDB24FD1F840038BFDB /* DecodeXML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecodeXML.swift; sourceTree = "<group>"; };
+		B93A3BDC24FD1F840038BFDB /* Channel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
+		B93A3BDD24FD1F840038BFDB /* Image.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
+		B93A3BDE24FD1F840038BFDB /* XMLDecoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLDecoder.swift; sourceTree = "<group>"; };
+		B93A3BDF24FD1F840038BFDB /* Owner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Owner.swift; sourceTree = "<group>"; };
 		B956582A24FD16890001DEE0 /* SwiftExplorer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftExplorer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B956582D24FD16890001DEE0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B956582F24FD16890001DEE0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -84,6 +96,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B93A3BD924FD1F840038BFDB /* DecodeXML */ = {
+			isa = PBXGroup;
+			children = (
+				B93A3BDB24FD1F840038BFDB /* DecodeXML.swift */,
+				B93A3BDE24FD1F840038BFDB /* XMLDecoder.swift */,
+				B93A3BDC24FD1F840038BFDB /* Channel.swift */,
+				B93A3BDF24FD1F840038BFDB /* Owner.swift */,
+				B93A3BDD24FD1F840038BFDB /* Image.swift */,
+				B93A3BDA24FD1F840038BFDB /* Item.swift */,
+			);
+			path = DecodeXML;
+			sourceTree = "<group>";
+		};
 		B956582124FD16890001DEE0 = {
 			isa = PBXGroup;
 			children = (
@@ -152,6 +177,7 @@
 				B956586124FD16F30001DEE0 /* RegionMarkerOffset.swift */,
 				B956586224FD16F30001DEE0 /* RegionMarkerCorners.swift */,
 				B956586324FD16F30001DEE0 /* RegionMarkerRectangle.swift */,
+				B93A3BD924FD1F840038BFDB /* DecodeXML */,
 			);
 			path = Explorations;
 			sourceTree = "<group>";
@@ -287,12 +313,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B93A3BE524FD1F840038BFDB /* Owner.swift in Sources */,
+				B93A3BE124FD1F840038BFDB /* DecodeXML.swift in Sources */,
+				B93A3BE224FD1F840038BFDB /* Channel.swift in Sources */,
 				B956586624FD16F30001DEE0 /* RegionMarkerRectangle.swift in Sources */,
 				B956586524FD16F30001DEE0 /* RegionMarkerCorners.swift in Sources */,
 				B956583324FD16890001DEE0 /* SwiftExplorer.xcdatamodeld in Sources */,
 				B956586424FD16F30001DEE0 /* RegionMarkerOffset.swift in Sources */,
+				B93A3BE024FD1F840038BFDB /* Item.swift in Sources */,
 				B956582E24FD16890001DEE0 /* AppDelegate.swift in Sources */,
 				B956583524FD16890001DEE0 /* ContentView.swift in Sources */,
+				B93A3BE324FD1F840038BFDB /* Image.swift in Sources */,
+				B93A3BE424FD1F840038BFDB /* XMLDecoder.swift in Sources */,
 				B956583024FD16890001DEE0 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
