@@ -34,7 +34,7 @@ struct ContentView: View {
                 }
                 
                 NavigationLink(
-                    destination:DecodeXML()
+                    destination:SEDecodeXML()
                         .navigationBarTitle("Decode XML")
                 ) {
                     Text("Decode XML")

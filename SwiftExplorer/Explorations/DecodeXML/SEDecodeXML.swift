@@ -18,16 +18,12 @@ struct SEDecodeXML : View {
                 )
                 return decoder.parse(data) as? SEDecodableChannel
             }
-        } catch {
-            print("error")
+        } catch (let error) {
+            print("Error: \(error)")
         }
         return nil
     }
-    
-    init() {
-        print("Channel: \(String(describing: self.channel))")
-    }
-    
+        
     var body: some View {
         List(self.channel?.items ?? [], id:\SEDecodableItem.guid) { item in
             Text(item.title)
