@@ -15,16 +15,17 @@ public struct SEDecodableChannel : Decodable {
     let pubDate:Date?
     let title:String
     let itunesAuthor:String
-    let itunesCategory:String
+    let itunesCategory:SEDecodableCategory
     let itunesExplicit:Bool
     let itunesImage:URL
     let itunesNewFeedURL:URL?
-    let itunesSubtitle:String
+    let itunesOwner:SEDecodableOwner
+    let itunesSubtitle:String?
     let itunesSummary:String?
     let itunesType:String?
     let items:[SEDecodableItem]
     
-    enum CodingKeys: String, CodingKey, SEXMLCodingKey {
+    enum CodingKeys: String, CodingKey {
         case atomLink         = "atom:link"
         case copyright
         case description
@@ -39,21 +40,13 @@ public struct SEDecodableChannel : Decodable {
         case itunesAuthor     = "itunes:author"
         case itunesCategory   = "itunes:category"
         case itunesExplicit   = "itunes:explicit"
-        case itunesImage      = "itunes:image"
+        case itunesImage      = "itunes:image@href"
         case itunesNewFeedURL = "itunes:new-feed-url"
+        case itunesOwner      = "itunes:owner"
         case itunesSubtitle   = "itunes:subtitle"
         case itunesSummary    = "itunes:summary"
         case itunesType       = "itunes:type"
         case items            = "item"
-        
-        var attribute:String? {
-            switch self {
-                case .itunesImage:
-                    return "href"
-                default:
-                    return nil
-            }
-        }
     }
 
 }

@@ -5,14 +5,14 @@ struct SEDecodableItem : Decodable {
     
     let contentEncoded:String?
     let description:String
-    let enclosure:String?
+    let enclosure:SEDecodableEnclosure?
     let guid:String
     let itunesDuration:String
     let itunesEpisodeType:String?
     let itunesExplicit:Bool?
     let itunesImage:URL?
     let itunesKeywords:String?
-    let itunesSubtitle:String
+    let itunesSubtitle:String?
     let link:URL
     let pubDate:Date
     let title:String
@@ -25,7 +25,7 @@ struct SEDecodableItem : Decodable {
         case itunesDuration    = "itunes:duration"
         case itunesEpisodeType = "itunes:episodetype"
         case itunesExplicit    = "itunes:explicit"
-        case itunesImage       = "itunes:image"
+        case itunesImage       = "itunes:image@href"
         case itunesKeywords    = "itunes:keywords"
         case itunesSubtitle    = "itunes:subtitle"
         case link

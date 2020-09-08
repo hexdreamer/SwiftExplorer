@@ -6,17 +6,42 @@
 //  Copyright © 2020 Kenny Leung. All rights reserved.
 //
 
+// Key - "tag"            - text contents of child element
+//     - "tag@attribute"  - attribute of child element
+//     - "@attribute"     - my own attribute
+
 import Foundation
 
-public protocol SEXMLCodingKey {
-    var attribute:String? {get}
-}
-
 public class SEXMLDecoder : Decoder {
-    let element:XMLElement
     
-    init(element:XMLElement) {
-        self.element = element
+    public struct DecodingError : Error {
+        let message:String
+    }
+    
+    let elements:[SEXMLParser.Element]
+        
+    init(elements:[SEXMLParser.Element]) throws {
+        if elements.count == 0 {
+            throw DecodingError(message:"Decoder initialized with no XML elements ")
+        }
+        self.elements = elements
+    }
+
+    init(url:URL) {
+        let parser = SEXMLParser()
+        parser.parse(url)
+        self.elements = [parser.element]
+    }
+        
+    func element() throws -> SEXMLParser.Element {
+        switch self.elements.count {
+            case 0:
+                throw DecodingError(message:"Decoder does not have any elements")
+            case 1:
+                return self.elements[0]
+            default:
+                throw DecodingError(message:"Assumed singular child when there are multiples")
+        }
     }
     
     // MARK: Decoder
@@ -24,14 +49,11 @@ public class SEXMLDecoder : Decoder {
     public var userInfo = [CodingUserInfoKey:Any]()
     
     public func container<K>(keyedBy type:K.Type) throws -> KeyedDecodingContainer<K> where K : CodingKey {
-        return KeyedDecodingContainer(XMLKeyedDecodingContainer<K>(decoder:self))
+        return KeyedDecodingContainer(try XMLKeyedDecodingContainer<K>(decoder:self))
     }
     
     public func unkeyedContainer() throws -> UnkeyedDecodingContainer {
-        guard let key = self.codingPath.last else {
-            fatalError("No current key")
-        }
-        return XMLUnkeyedContainer(codingPath:self.codingPath, values:self.element.childModelsForKey(key))
+        return XMLUnkeyedContainer(decoder:self)
     }
     
     public func singleValueContainer() throws -> SingleValueDecodingContainer {
@@ -47,39 +69,73 @@ public class SEXMLDecoder : Decoder {
         return self.codingPath.popLast()
     }
     
-    func decode<T>(_ key:CodingKey,
-                   _ create: (String) throws -> T?
-    ) rethrows -> T
-    {
-        guard let child = self.element.childForKey(key) else {
-            fatalError("Does not contain child \(key)")
-        }
-        
-        var stringValue:String? = nil
-        
-        if let xmlkey:SEXMLCodingKey = key as? SEXMLCodingKey,
-            let attribute:String = xmlkey.attribute,
-            let value:String = child.attributes[attribute]
-        {
-            stringValue = value
-        }
-        
-        if ( stringValue == nil ) {
-            stringValue = child.text
-        }
-        
-        if let value = stringValue {
-            let trimmed = value.trimmingCharacters(in:.whitespacesAndNewlines)
-            if ( !trimmed.isEmpty ) {
-                if let decoded = try create(trimmed) {
-                    return decoded
+    func getValueIfPresent(_ key:CodingKey) throws -> String? {
+        let keyString = key.stringValue
+                
+        if let index = keyString.firstIndex(of:"@") {
+            if index == keyString.startIndex {
+                // "@attribute" - using the attribute from the top element
+                let substart = keyString.index(after:index)
+                let attributeName = String(keyString[substart...])
+                return try self.element().attributes?[attributeName]
+            } else {
+                // "tag@attribute" - using the attribute from named child
+                let tag = keyString[..<index]
+                let substart = keyString.index(after:index)
+                let attributeName = String(keyString[substart...])
+                if let elements = try self.element().children?.filter({$0.name == tag}) {
+                    switch elements.count {
+                        case 0:
+                            return nil
+                        case 1:
+                            return elements[0].attributes?[attributeName]
+                        default:
+                            throw DecodingError(message:"More than one child for tag \(tag)")
+                    }
+                }
+            }
+        } else {
+            // "tag"
+            if let elements = try self.element().children?.filter({$0.name == keyString}) {
+                switch elements.count {
+                    case 0:
+                        return nil
+                    case 1:
+                        return elements[0].text
+                    default:
+                        throw DecodingError(message:"More than one child for tag \(keyString)")
                 }
             }
         }
         
-        fatalError("Could not decode \(key)")
+        return nil
+    }
+    
+    func decodeIfPresent <T> (
+        _ key:CodingKey,
+        _ create: (String) throws -> T?
+    ) throws -> T?
+    {
+        if let value = try self.getValueIfPresent(key) {
+            return try create(value)
+        }
+        return nil
+    }
+    
+    func decode <T> (
+        _ key:CodingKey,
+        _ create: (String) throws -> T?
+    ) throws -> T
+    {
+        if let value = try self.decodeIfPresent(key, create) {
+            return value
+        } else {
+            throw DecodingError(message:"no value decoded for \(key)")
+        }
     }
 }
+
+
 
 public struct XMLKeyedDecodingContainer<K:CodingKey> : KeyedDecodingContainerProtocol {
     static var DATE_FORMATTER:DateFormatter {
@@ -88,28 +144,31 @@ public struct XMLKeyedDecodingContainer<K:CodingKey> : KeyedDecodingContainerPro
         return formatter;
     }
     
-    var decoder:SEXMLDecoder
-    var element:XMLElement {decoder.element}
+    let decoder:SEXMLDecoder
 
-    // MARK: KeyedDecodingContainerProtocol
-    
-    public typealias Key = K
-
-    public var codingPath = [CodingKey]()
-    public var allKeys = [K]()
-    
-    init(decoder:Decoder) {
+    init(decoder:Decoder) throws {
         guard let decoder = decoder as? SEXMLDecoder else {
             fatalError("Can only be used with an XMLDecoder")
         }
         self.decoder = decoder
-        self.allKeys = self.element.children.compactMap { Key(stringValue:$0.name) }
+        self.allKeys = try self.decoder.element().children?.compactMap { Key(stringValue:$0.name) } ?? []
     }
 
-    public func contains(_ key: Self.Key) -> Bool                                               {return self.allKeys.contains {$0.stringValue == key.stringValue}}
-    public func decodeNil(forKey key: Self.Key) throws -> Bool                                  {return true}
-    public func decode(_ type: Bool.Type, forKey key: Self.Key) throws -> Bool                  {return self.decoder.decode(key) {self.parseBool($0)}}
-    public func decode(_ type: String.Type, forKey key: Self.Key) throws -> String              {return self.decoder.decode(key) {$0}}
+    // MARK: KeyedDecodingContainerProtocol
+    public typealias Key = K
+    
+    public var codingPath:[CodingKey] {self.decoder.codingPath}
+    public var allKeys = [K]()
+    
+    public func contains(_ key: Self.Key) -> Bool {return self.allKeys.contains {$0.stringValue == key.stringValue}}
+    public func decodeNil(forKey key: Self.Key) throws -> Bool {
+        if !self.contains(key) {
+            return true
+        }
+        return try self.decoder.decodeIfPresent(key, {$0}) != nil
+    }
+    public func decode(_ type: Bool.Type, forKey key: Self.Key) throws -> Bool                  {return try self.decoder.decode(key, {self.parseBool($0)})}
+    public func decode(_ type: String.Type, forKey key: Self.Key) throws -> String              {return try self.decoder.decode(key, {$0})}
     public func decode(_ type: Double.Type, forKey key: Self.Key) throws -> Double              {fatalError()}
     public func decode(_ type: Float.Type, forKey key: Self.Key) throws -> Float                {fatalError()}
     public func decode(_ type: Int.Type, forKey key: Self.Key) throws -> Int                    {fatalError()}
@@ -120,22 +179,22 @@ public struct XMLKeyedDecodingContainer<K:CodingKey> : KeyedDecodingContainerPro
     public func decode(_ type: UInt.Type, forKey key: Self.Key) throws -> UInt                  {fatalError()}
     public func decode(_ type: UInt8.Type, forKey key: Self.Key) throws -> UInt8                {fatalError()}
     public func decode(_ type: UInt16.Type, forKey key: Self.Key) throws -> UInt16              {fatalError()}
-    public func decode(_ type: UInt32.Type, forKey key: Self.Key) throws -> UInt32              {fatalError()}
+    public func decode(_ type: UInt32.Type, forKey key: Self.Key) throws -> UInt32              {return try self.decoder.decode(key, {UInt32($0)})}
     public func decode(_ type: UInt64.Type, forKey key: Self.Key) throws -> UInt64              {fatalError()}
     public func decode<T:Decodable>(_ type: T.Type, forKey key: Self.Key) throws -> T {
+        self.decoder.pushKey(key); defer {let _ = self.decoder.popKey()}
         if type == URL.self {
-            return self.decoder.decode(key) {URL(string:$0) as? T}
+            return try self.decoder.decode(key) {URL(string:$0) as? T}
         } else if type == Date.self {
-            return self.decoder.decode(key) {Self.DATE_FORMATTER.date(from:$0) as? T}
+            return try self.decoder.decode(key) {Self.DATE_FORMATTER.date(from:$0) as? T}
         } else {
-            // If type is an array, it will ask the decoder for an unkeyedContainer. We need to set up the state for the decoder so it knows what to give as the unkeyedContainer.
-            self.decoder.pushKey(key); defer {let _ = self.decoder.popKey()}
-            return try type.init(from:self.decoder);
+            let elements = try self.decoder.element().children?.filter({$0.name == key.stringValue})
+            return try type.init(from:SEXMLDecoder(elements:elements ?? []));
         }
     }
-    /*
-    public func decodeIfPresent(_ type: Bool.Type, forKey key: Self.Key) throws -> Bool?        {fatalError()}
-    public func decodeIfPresent(_ type: String.Type, forKey key: Self.Key) throws -> String?    {fatalError()}
+    
+    public func decodeIfPresent(_ type: Bool.Type, forKey key: Self.Key) throws -> Bool?        {return try self.decoder.decodeIfPresent(key, {self.parseBool($0)})}
+    public func decodeIfPresent(_ type: String.Type, forKey key: Self.Key) throws -> String?    {return try self.decoder.getValueIfPresent(key)}
     public func decodeIfPresent(_ type: Double.Type, forKey key: Self.Key) throws -> Double?    {fatalError()}
     public func decodeIfPresent(_ type: Float.Type, forKey key: Self.Key) throws -> Float?      {fatalError()}
     public func decodeIfPresent(_ type: Int.Type, forKey key: Self.Key) throws -> Int?          {fatalError()}
@@ -148,20 +207,31 @@ public struct XMLKeyedDecodingContainer<K:CodingKey> : KeyedDecodingContainerPro
     public func decodeIfPresent(_ type: UInt16.Type, forKey key: Self.Key) throws -> UInt16?    {fatalError()}
     public func decodeIfPresent(_ type: UInt32.Type, forKey key: Self.Key) throws -> UInt32?    {fatalError()}
     public func decodeIfPresent(_ type: UInt64.Type, forKey key: Self.Key) throws -> UInt64?    {fatalError()}
-    public func decodeIfPresent<T>(_ type: T.Type, forKey key: Self.Key) throws
-        -> T? where T : Decodable                                                               {fatalError()}
-     */
+    public func decodeIfPresent<T:Decodable>(_ type: T.Type, forKey key: Self.Key) throws -> T? {
+        self.decoder.pushKey(key); defer {let _ = self.decoder.popKey()}
+        if type == URL.self {
+            return try self.decoder.decodeIfPresent(key) {URL(string:$0) as? T}
+        } else if type == Date.self {
+            return try self.decoder.decodeIfPresent(key) {Self.DATE_FORMATTER.date(from:$0) as? T}
+        } else if let elements = try self.decoder.element().children?.filter({$0.name == key.stringValue}) {
+            return try type.init(from:SEXMLDecoder(elements:elements));
+        }
+        return nil
+    }
+    
     public func nestedContainer<NestedKey>(keyedBy type: NestedKey.Type, forKey key: Self.Key) throws
         -> KeyedDecodingContainer<NestedKey> where NestedKey : CodingKey                        {fatalError()}
     public func nestedUnkeyedContainer(forKey key: Self.Key) throws -> UnkeyedDecodingContainer {fatalError()}
     public func superDecoder() throws -> Decoder                                                {fatalError()}
     public func superDecoder(forKey key: Self.Key) throws -> Decoder                            {fatalError()}
     
-    private func parseBool(_ val:String) -> Bool? {
-        if  val.hasPrefix("T") || val.hasPrefix("t") ||
-            val.hasPrefix("Y") || val.hasPrefix("y")
-        {
-            return true
+    private func parseBool(_ value:String?) -> Bool? {
+        if let val = value {
+            if  val.hasPrefix("T") || val.hasPrefix("t") ||
+                val.hasPrefix("Y") || val.hasPrefix("y")
+            {
+                return true
+            }
         }
         return false
     }
@@ -170,19 +240,18 @@ public struct XMLKeyedDecodingContainer<K:CodingKey> : KeyedDecodingContainerPro
 
 public struct XMLUnkeyedContainer : UnkeyedDecodingContainer {
     
-    private let values: [Decodable]?
+    private let decoder:SEXMLDecoder
     
-    init(codingPath:[CodingKey], values:[Decodable]?) {
-        self.codingPath = codingPath;
-        self.values = values
-        if values == nil {
+    init(decoder:SEXMLDecoder) {
+        self.decoder = decoder
+        if decoder.elements.count == 0 {
             self.isAtEnd = true
         }
     }
     
     // MARK: UnkeyedDecodingContainer Protocol
-    public var codingPath: [CodingKey]
-    public var count:Int? {values?.count}
+    public var codingPath:[CodingKey] {self.decoder.codingPath}
+    public var count:Int? {self.decoder.elements.count}
     public var isAtEnd: Bool = false
     public var currentIndex: Int = 0
         
@@ -202,17 +271,12 @@ public struct XMLUnkeyedContainer : UnkeyedDecodingContainer {
     public mutating func decode(_ type: UInt32.Type) throws -> UInt32    {fatalError()}
     public mutating func decode(_ type: UInt64.Type) throws -> UInt64    {fatalError()}
     public mutating func decode<T>(_ type: T.Type) throws -> T where T : Decodable {
-        if  let values = self.values,
-            let value = values[self.currentIndex] as? T
-        {
-            self.currentIndex += 1
-            if self.currentIndex >= values.count {
-                self.isAtEnd = true
-            }
-            return value
-        } else {
-            fatalError("Could not decode:\(type) at:\(self.currentIndex)");
+        let value:T = try type.init(from:SEXMLDecoder(elements:[self.decoder.elements[self.currentIndex]]))
+        self.currentIndex += 1
+        if self.currentIndex >= self.decoder.elements.count {
+            self.isAtEnd = true
         }
+        return value
     }
     public mutating func nestedContainer<NestedKey>(keyedBy type: NestedKey.Type) throws
         -> KeyedDecodingContainer<NestedKey> where NestedKey : CodingKey {fatalError()}
