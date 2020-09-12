@@ -17,6 +17,8 @@ struct SEPodcastEpisodes: View {
 
     let channel:SEDecodableChannel
     
+    // Can make custom navigation title views in iOS 14
+    // https://sarunw.com/posts/custom-navigation-bar-title-view-in-swiftui/
     var body: some View {
         List(self.channel.items, id:\SEDecodableItem.guid) { item in
             VStack(alignment:.leading, spacing:3.0) {

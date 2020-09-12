@@ -10,9 +10,9 @@ struct SEDecodeXML : View {
     }
     
     static private let feeds :[(String,String)] = [
-        ("AccidentalTechPodcast"             , "https://atp.fm/rss"),
-        ("Marketplace"                       , "https://marketplace.org/feed/podcast/marketplace"),
-        ("Make Me Smart sith Kain and Molly" , "https://marketplace.org/feed/podcast/make-me-smart-with-kai-and-molly")
+        ("AccidentalTechPodcast"      , "https://atp.fm/rss"),
+        ("Marketplace"                , "https://marketplace.org/feed/podcast/marketplace"),
+        ("MakeMeSmartWithKaiAndMolly" , "https://marketplace.org/feed/podcast/make-me-smart-with-kai-and-molly")
         //("BlackOnTheAir"          , "https://www.theringer.com/rss/larry-wilmore-black-on-air/index.xml") - not RSS format
         //("RealTimeWithBillMaher" , "http://billmaher.hbo.libsynpro.com/rss") - not https - won't load
     ]
