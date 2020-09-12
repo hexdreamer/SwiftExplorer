@@ -5,15 +5,7 @@ import Combine
 struct SEAsyncImage<Content:View>: View {
     @ObservedObject private var loader: ImageLoader
     private let placeholder:()->Content
-    
-    private var image:UIImage {
-        if let image = loader.image {
-            return image;
-        } else {
-            fatalError("image not available")
-        }
-    }
-    
+        
     init(url: URL, placeholder:@escaping ()->Content) {
         self.loader = ImageLoader(url: url)
         self.placeholder = placeholder
@@ -22,7 +14,7 @@ struct SEAsyncImage<Content:View>: View {
     var body: some View {
         Group {
             if self.loader.image != nil {
-                Image(uiImage:self.image)
+                Image(uiImage:self.loader.image!)
                     .resizable()
             } else {
                 self.placeholder()
@@ -32,7 +24,6 @@ struct SEAsyncImage<Content:View>: View {
         }
     }
 }
-
 
 class ImageLoader: ObservableObject {
     @Published var image:UIImage?

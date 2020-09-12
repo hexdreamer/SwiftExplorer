@@ -30,9 +30,3 @@ struct SEPodcastEpisodes: View {
         }
     }
 }
-
-//struct SEPodcastEpisodes_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SEPodcastEpisodes()
-//    }
-//}
