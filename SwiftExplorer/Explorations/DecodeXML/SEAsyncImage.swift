@@ -2,28 +2,30 @@ import SwiftUI
 import Combine
 
 // https://www.vadimbulavin.com/asynchronous-swiftui-image-loading-from-url-with-combine-and-swift/
-struct SEAsyncImage: View {
+struct SEAsyncImage<Content:View>: View {
     @ObservedObject private var loader: ImageLoader
-    private let placeholder:Image
+    private let placeholder:()->Content
     
-    private var image:Image {
-        if let image = self.loader.image {
-            return Image(uiImage:image)
-        } else {
-            return placeholder
+    private var image: some View {
+        Group {
+            if loader.image != nil {
+                Image(uiImage:loader.image!)
+                    .resizable()
+            } else {
+                placeholder()
+            }
         }
     }
     
-    init(url: URL, placeholder:Image) {
+    init(url: URL, placeholder:@escaping ()->Content) {
         self.loader = ImageLoader(url: url)
         self.placeholder = placeholder
     }
     
     var body: some View {
-        self.image
-            .resizable()
-            .onAppear(perform:self.loader.load)
-            .onDisappear(perform:self.loader.cancel)
+        image
+            .onAppear(perform: loader.load)
+            .onDisappear(perform: loader.cancel)
     }
 }
 

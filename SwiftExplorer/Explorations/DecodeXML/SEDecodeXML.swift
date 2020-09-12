@@ -31,8 +31,11 @@ struct SEDecodeXML : View {
                     .navigationBarTitle(channel.title)
             ){
                 HStack {
-                    SEAsyncImage(url:channel.itunesImage, placeholder:Image("ChannelImageDefault"))
-                        .frame(width:50, height:50, alignment:.center)
+                    SEAsyncImage(url:channel.itunesImage) {
+                        Image("ChannelImageDefault")
+                            .resizable()
+                    }.frame(width:50, height:50, alignment:.center)
+                    
                     VStack(alignment:.leading, spacing:3.0) {
                         Text(channel.title)
                         Text(self.dateToString(channel.latestItem?.pubDate) ?? "No items")
@@ -40,8 +43,8 @@ struct SEDecodeXML : View {
                             .foregroundColor(.gray)
                     }
                 }
+            }
         }
-    }
     }
     
     static private func fetchFeeds() {
