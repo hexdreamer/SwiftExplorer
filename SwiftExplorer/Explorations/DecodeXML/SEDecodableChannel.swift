@@ -2,7 +2,7 @@
 import Foundation
 import UIKit
 
-public class SEDecodableChannel : Decodable {
+public struct SEDecodableChannel : Decodable {
 
     let atomLink:URL?
     let copyright:String
@@ -25,17 +25,7 @@ public class SEDecodableChannel : Decodable {
     let itunesSummary:String?
     let itunesType:String?
     let items:[SEDecodableItem]
-    
-    lazy var image:UIImage = {
-        var image:UIImage? = nil
-        do {
-            image = UIImage(data:try Data(contentsOf:self.itunesImage))
-        } catch ( let e ) {
-            print("Error initializing image from url: \(self.itunesImage)")
-        }
-        return image ?? UIImage(imageLiteralResourceName:"ChannelImageDefault")
-    }()
-    
+        
     var latestItem:SEDecodableItem? {
         if self.items.count == 0 {
             return nil

@@ -31,9 +31,7 @@ struct SEDecodeXML : View {
                     .navigationBarTitle(channel.title)
             ){
                 HStack {
-                    Image(uiImage:channel.image)
-                        .resizable()
-                        .scaledToFill()
+                    SEAsyncImage(url:channel.itunesImage, placeholder:Image("ChannelImageDefault"))
                         .frame(width:50, height:50, alignment:.center)
                     VStack(alignment:.leading, spacing:3.0) {
                         Text(channel.title)
@@ -42,8 +40,8 @@ struct SEDecodeXML : View {
                             .foregroundColor(.gray)
                     }
                 }
-            }
         }
+    }
     }
     
     static private func fetchFeeds() {
