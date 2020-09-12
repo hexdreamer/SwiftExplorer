@@ -58,6 +58,9 @@ public class SEXMLParser : NSObject,XMLParserDelegate {
     
     @objc
     public func parser(_ parser: XMLParser, foundCharacters string: String) {
+        if self.isWhiteSpace(string) {
+            return
+        }
         if let text = self.stack.last?.text {
             self.stack.last?.text = text + string
         } else {
@@ -65,11 +68,15 @@ public class SEXMLParser : NSObject,XMLParserDelegate {
         }
     }
     
-    @objc
-    public func parser(_ parser: XMLParser, foundIgnorableWhitespace whitespaceString: String) {
-        // do nothing
+    private func isWhiteSpace(_ string:String) -> Bool {
+        for scalar in string.unicodeScalars {
+            if !CharacterSet.whitespacesAndNewlines.contains(scalar) {
+                return false
+            }
+        }
+        return true
     }
-
+    
     @objc
     public func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
         if self.stack.count > 1 {

@@ -17,6 +17,7 @@
 		B93A3BE324FD1F840038BFDB /* SEDecodableImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93A3BDD24FD1F840038BFDB /* SEDecodableImage.swift */; };
 		B93A3BE424FD1F840038BFDB /* SEXMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93A3BDE24FD1F840038BFDB /* SEXMLParser.swift */; };
 		B93A3BE524FD1F840038BFDB /* SEDecodableOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93A3BDF24FD1F840038BFDB /* SEDecodableOwner.swift */; };
+		B93A4EB8250D3B0700EE2B35 /* SEPodcastEpisodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93A4EB7250D3B0700EE2B35 /* SEPodcastEpisodes.swift */; };
 		B956582E24FD16890001DEE0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956582D24FD16890001DEE0 /* AppDelegate.swift */; };
 		B956583024FD16890001DEE0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956582F24FD16890001DEE0 /* SceneDelegate.swift */; };
 		B956583324FD16890001DEE0 /* SwiftExplorer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B956583124FD16890001DEE0 /* SwiftExplorer.xcdatamodeld */; };
@@ -59,6 +60,7 @@
 		B93A3BDD24FD1F840038BFDB /* SEDecodableImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SEDecodableImage.swift; sourceTree = "<group>"; };
 		B93A3BDE24FD1F840038BFDB /* SEXMLParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SEXMLParser.swift; sourceTree = "<group>"; };
 		B93A3BDF24FD1F840038BFDB /* SEDecodableOwner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SEDecodableOwner.swift; sourceTree = "<group>"; };
+		B93A4EB7250D3B0700EE2B35 /* SEPodcastEpisodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEPodcastEpisodes.swift; sourceTree = "<group>"; };
 		B956582A24FD16890001DEE0 /* SwiftExplorer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftExplorer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B956582D24FD16890001DEE0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B956582F24FD16890001DEE0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 			isa = PBXGroup;
 			children = (
 				B93A3BDB24FD1F840038BFDB /* SEDecodeXML.swift */,
+				B93A4EB7250D3B0700EE2B35 /* SEPodcastEpisodes.swift */,
 				B93A3BDE24FD1F840038BFDB /* SEXMLParser.swift */,
 				B9021C522506B6C900F66844 /* SEXMLDecoder.swift */,
 				B900CA122507138C0023C86B /* SEDecodableRSS.swift */,
@@ -325,6 +328,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B93A4EB8250D3B0700EE2B35 /* SEPodcastEpisodes.swift in Sources */,
 				B93A3BE524FD1F840038BFDB /* SEDecodableOwner.swift in Sources */,
 				B93A3BE124FD1F840038BFDB /* SEDecodeXML.swift in Sources */,
 				B900CA1525073C460023C86B /* SEDecodableEnclosure.swift in Sources */,

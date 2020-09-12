@@ -3,6 +3,11 @@ import Foundation
 import SwiftUI
 
 struct SEDecodeXML : View {
+    static var DATE_FORMATTER:DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "E, dd MMM yyy HH:mm:ss Z"
+        return formatter;
+    }
     
     static private let feeds :[(String,String)] = [
         ("AccidentalTechPodcast"             , "https://atp.fm/rss"),
@@ -20,8 +25,24 @@ struct SEDecodeXML : View {
     }
             
     var body: some View {
-        List(self.channels, id:\SEDecodableChannel.link) { item in
-            Text(item.title)
+        List(self.channels, id:\SEDecodableChannel.link) { channel in
+            NavigationLink(
+                destination:SEPodcastEpisodes(channel:channel)
+                    .navigationBarTitle(channel.title)
+            ){
+                HStack {
+                    Image(uiImage:channel.image)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width:50, height:50, alignment:.center)
+                    VStack(alignment:.leading, spacing:3.0) {
+                        Text(channel.title)
+                        Text(self.dateToString(channel.latestItem?.pubDate) ?? "No items")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                    }
+                }
+            }
         }
     }
     
@@ -68,6 +89,14 @@ struct SEDecodeXML : View {
             fatalError("Could not load podcast feeds: \(e)")
         }
         return results
+    }
+    
+    // MARK: Utility Methods
+    private func dateToString(_ date:Date?) -> String? {
+        guard let date = date else {
+            return nil
+        }
+        return Self.DATE_FORMATTER.string(from:date)
     }
     
 }

@@ -1,7 +1,8 @@
 
 import Foundation
+import UIKit
 
-public struct SEDecodableChannel : Decodable {
+public class SEDecodableChannel : Decodable {
 
     let atomLink:URL?
     let copyright:String
@@ -24,6 +25,29 @@ public struct SEDecodableChannel : Decodable {
     let itunesSummary:String?
     let itunesType:String?
     let items:[SEDecodableItem]
+    
+    lazy var image:UIImage = {
+        var image:UIImage? = nil
+        do {
+            image = UIImage(data:try Data(contentsOf:self.itunesImage))
+        } catch ( let e ) {
+            print("Error initializing image from url: \(self.itunesImage)")
+        }
+        return image ?? UIImage(imageLiteralResourceName:"ChannelImageDefault")
+    }()
+    
+    var latestItem:SEDecodableItem? {
+        if self.items.count == 0 {
+            return nil
+        }
+        var latest = self.items[0]
+        for item in self.items {
+            if item.pubDate > latest.pubDate {
+                latest = item
+            }
+        }
+        return latest
+    }
     
     enum CodingKeys: String, CodingKey {
         case atomLink         = "atom:link"
@@ -48,5 +72,5 @@ public struct SEDecodableChannel : Decodable {
         case itunesType       = "itunes:type"
         case items            = "item"
     }
-
+    
 }
