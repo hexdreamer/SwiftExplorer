@@ -6,14 +6,11 @@ struct SEAsyncImage<Content:View>: View {
     @ObservedObject private var loader: ImageLoader
     private let placeholder:()->Content
     
-    private var image: some View {
-        Group {
-            if loader.image != nil {
-                Image(uiImage:loader.image!)
-                    .resizable()
-            } else {
-                placeholder()
-            }
+    private var image:UIImage {
+        if let image = loader.image {
+            return image;
+        } else {
+            fatalError("image not available")
         }
     }
     
@@ -23,9 +20,16 @@ struct SEAsyncImage<Content:View>: View {
     }
     
     var body: some View {
-        image
-            .onAppear(perform: loader.load)
-            .onDisappear(perform: loader.cancel)
+        Group {
+            if self.loader.image != nil {
+                Image(uiImage:self.image)
+                    .resizable()
+            } else {
+                self.placeholder()
+                    .onAppear(perform: loader.load)
+                    .onDisappear(perform: loader.cancel)
+            }
+        }
     }
 }
 
