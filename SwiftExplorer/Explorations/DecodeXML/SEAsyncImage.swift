@@ -11,6 +11,9 @@ struct SEAsyncImage<Content:View>: View {
         self.placeholder = placeholder
     }
     
+    // Two things I don't like about this:
+    // 1) The Group
+    // 2) self.loader.image!
     var body: some View {
         Group {
             if self.loader.image != nil {
