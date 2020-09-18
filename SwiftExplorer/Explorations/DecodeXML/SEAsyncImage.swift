@@ -16,13 +16,13 @@ struct SEAsyncImage<Content:View>: View {
     // 2) self.loader.image!
     var body: some View {
         Group {
-            if self.loader.image != nil {
-                Image(uiImage:self.loader.image!)
-                    .resizable()
-            } else {
+            if self.loader.image == nil {
                 self.placeholder()
                     .onAppear(perform: loader.load)
                     .onDisappear(perform: loader.cancel)
+            } else {
+                Image(uiImage:self.loader.image!)
+                    .resizable()
             }
         }
     }
