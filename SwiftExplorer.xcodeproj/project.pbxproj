@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -31,6 +31,7 @@
 		B956586424FD16F30001DEE0 /* RegionMarkerOffset.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956586124FD16F30001DEE0 /* RegionMarkerOffset.swift */; };
 		B956586524FD16F30001DEE0 /* RegionMarkerCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956586224FD16F30001DEE0 /* RegionMarkerCorners.swift */; };
 		B956586624FD16F30001DEE0 /* RegionMarkerRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956586324FD16F30001DEE0 /* RegionMarkerRectangle.swift */; };
+		B9C4A28F2516F1F30035860A /* hexdreamsCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = B9C4A28E2516F1F30035860A /* hexdreamsCocoa */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B9C4A28F2516F1F30035860A /* hexdreamsCocoa in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -216,6 +218,9 @@
 			dependencies = (
 			);
 			name = SwiftExplorer;
+			packageProductDependencies = (
+				B9C4A28E2516F1F30035860A /* hexdreamsCocoa */,
+			);
 			productName = SwiftExplorer;
 			productReference = B956582A24FD16890001DEE0 /* SwiftExplorer.app */;
 			productType = "com.apple.product-type.application";
@@ -288,6 +293,9 @@
 				Base,
 			);
 			mainGroup = B956582124FD16890001DEE0;
+			packageReferences = (
+				B9C4A28D2516F1F30035860A /* XCRemoteSwiftPackageReference "hexdreamsCocoa" */,
+			);
 			productRefGroup = B956582B24FD16890001DEE0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -676,6 +684,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B9C4A28D2516F1F30035860A /* XCRemoteSwiftPackageReference "hexdreamsCocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hexdreamer/hexdreamsCocoa.git";
+			requirement = {
+				branch = trunk;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B9C4A28E2516F1F30035860A /* hexdreamsCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B9C4A28D2516F1F30035860A /* XCRemoteSwiftPackageReference "hexdreamsCocoa" */;
+			productName = hexdreamsCocoa;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		B956583124FD16890001DEE0 /* SwiftExplorer.xcdatamodeld */ = {
