@@ -31,7 +31,6 @@
 		B956586424FD16F30001DEE0 /* RegionMarkerOffset.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956586124FD16F30001DEE0 /* RegionMarkerOffset.swift */; };
 		B956586524FD16F30001DEE0 /* RegionMarkerCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956586224FD16F30001DEE0 /* RegionMarkerCorners.swift */; };
 		B956586624FD16F30001DEE0 /* RegionMarkerRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956586324FD16F30001DEE0 /* RegionMarkerRectangle.swift */; };
-		B9F1F1B325150C3900F7A6AB /* KeyPathTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9F1F1B225150C3900F7A6AB /* KeyPathTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,7 +81,6 @@
 		B956586124FD16F30001DEE0 /* RegionMarkerOffset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegionMarkerOffset.swift; sourceTree = "<group>"; };
 		B956586224FD16F30001DEE0 /* RegionMarkerCorners.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegionMarkerCorners.swift; sourceTree = "<group>"; };
 		B956586324FD16F30001DEE0 /* RegionMarkerRectangle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegionMarkerRectangle.swift; sourceTree = "<group>"; };
-		B9F1F1B225150C3900F7A6AB /* KeyPathTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyPathTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,7 +196,6 @@
 				B956586224FD16F30001DEE0 /* RegionMarkerCorners.swift */,
 				B956586124FD16F30001DEE0 /* RegionMarkerOffset.swift */,
 				B93A3BD924FD1F840038BFDB /* DecodeXML */,
-				B9F1F1B225150C3900F7A6AB /* KeyPathTest.swift */,
 			);
 			path = Explorations;
 			sourceTree = "<group>";
@@ -336,7 +333,6 @@
 			files = (
 				B93A4EB8250D3B0700EE2B35 /* SEPodcastEpisodes.swift in Sources */,
 				B93A3BE524FD1F840038BFDB /* SEDecodableOwner.swift in Sources */,
-				B9F1F1B325150C3900F7A6AB /* KeyPathTest.swift in Sources */,
 				B93A3BE124FD1F840038BFDB /* SEDecodeXML.swift in Sources */,
 				B900CA1525073C460023C86B /* SEDecodableEnclosure.swift in Sources */,
 				B900CA132507138C0023C86B /* SEDecodableRSS.swift in Sources */,
