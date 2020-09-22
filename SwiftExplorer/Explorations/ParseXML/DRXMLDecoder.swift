@@ -96,20 +96,17 @@ public class DRXMLDecoder : NSObject,XMLParserDelegate {
 
         if self.stack.count == 0 && elementName == root.tag {
             self.stack.append(self.root)
-        } else if let currentEntity = self.stack.last {
+        } else if var currentEntity = self.stack.last {
             if var child = currentEntity.makeChildEntity(forTag:elementName) {
                 for (key,value) in attributeDict {
                     child.setValue(value, forTag:nil, attribute:key)
                 }
                 self.stack.append(child);
             } else {
-                if let _ = self.stack.last {
-                    for (key,value) in attributeDict {
-                        var index = self.stack.endIndex;
-                        index = self.stack.index(before:index)
-                        self.stack[index].setValue(value, forTag:elementName, attribute:key)
-                    }
+                for (key,value) in attributeDict {
+                    currentEntity.setValue(value, forTag:elementName, attribute:key)
                 }
+                self.stack.hxSetLast(currentEntity)
             }
         }
     }
@@ -123,29 +120,17 @@ public class DRXMLDecoder : NSObject,XMLParserDelegate {
            currentEntity.tag == elementName
         {
             let closedEntity = self.stack.removeLast()
-            if let _ = self.stack.last {
-                var index = self.stack.endIndex;
-                index = self.stack.index(before:index)
-                self.stack[index].setChildEntity(closedEntity, forTag:elementName)
-            }
+            self.stack.hxWithLast{$0.setChildEntity(closedEntity, forTag:elementName)}
             return
         }
 
         if let text = self.text {
-            if let _ = self.stack.last {
-                var index = self.stack.endIndex;
-                index = self.stack.index(before:index)
-                self.stack[index].setValue(text, forTag:elementName)
-            }
+            self.stack.hxWithLast{$0.setValue(text, forTag:elementName)}
             self.text = nil
         }
         
         if let data = self.cdata {
-            if let _ = self.stack.last {
-                var index = self.stack.endIndex;
-                index = self.stack.index(before:index)
-                self.stack[index].setData(data, forTag:elementName)
-            }
+            self.stack.hxWithLast{$0.setData(data, forTag:elementName)}
             self.cdata = nil
         }
     }
