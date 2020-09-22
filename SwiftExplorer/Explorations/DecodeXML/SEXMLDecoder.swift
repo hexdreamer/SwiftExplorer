@@ -275,6 +275,7 @@ public struct XMLUnkeyedContainer : UnkeyedDecodingContainer {
     public mutating func superDecoder() throws -> Decoder                    {fatalError()}
 }
 
+// MARK: SingleValueDecodingContainer Protocol
 // Not used. When is this actually used?
 public struct XMLSingleValueContainer : SingleValueDecodingContainer {
     public var codingPath: [CodingKey]

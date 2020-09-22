@@ -31,6 +31,18 @@
 		B956586424FD16F30001DEE0 /* RegionMarkerOffset.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956586124FD16F30001DEE0 /* RegionMarkerOffset.swift */; };
 		B956586524FD16F30001DEE0 /* RegionMarkerCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956586224FD16F30001DEE0 /* RegionMarkerCorners.swift */; };
 		B956586624FD16F30001DEE0 /* RegionMarkerRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956586324FD16F30001DEE0 /* RegionMarkerRectangle.swift */; };
+		B95F0A0525199050004B609B /* DRiTunesOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95F09FA25199050004B609B /* DRiTunesOwner.swift */; };
+		B95F0A0625199050004B609B /* DRXMLDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95F09FB25199050004B609B /* DRXMLDecoder.swift */; };
+		B95F0A0725199050004B609B /* DRHTMLToUnicode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95F09FC25199050004B609B /* DRHTMLToUnicode.swift */; };
+		B95F0A0825199050004B609B /* NSManagedObjectExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95F09FD25199050004B609B /* NSManagedObjectExtensions.swift */; };
+		B95F0A0925199050004B609B /* DREnclosure.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95F09FE25199050004B609B /* DREnclosure.swift */; };
+		B95F0A0A25199050004B609B /* DRChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95F09FF25199050004B609B /* DRChannel.swift */; };
+		B95F0A0B25199050004B609B /* DRImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95F0A0025199050004B609B /* DRImage.swift */; };
+		B95F0A0C25199050004B609B /* Feeds.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95F0A0125199050004B609B /* Feeds.swift */; };
+		B95F0A0D25199050004B609B /* DRitem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95F0A0225199050004B609B /* DRitem.swift */; };
+		B95F0A0E25199050004B609B /* DRiTunesCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95F0A0325199050004B609B /* DRiTunesCategory.swift */; };
+		B95F0A0F25199050004B609B /* Episodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95F0A0425199050004B609B /* Episodes.swift */; };
+		B95F0A1125199E7E004B609B /* DRAsycImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95F0A1025199E7E004B609B /* DRAsycImage.swift */; };
 		B9C4A28F2516F1F30035860A /* hexdreamsCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = B9C4A28E2516F1F30035860A /* hexdreamsCocoa */; };
 /* End PBXBuildFile section */
 
@@ -82,6 +94,19 @@
 		B956586124FD16F30001DEE0 /* RegionMarkerOffset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegionMarkerOffset.swift; sourceTree = "<group>"; };
 		B956586224FD16F30001DEE0 /* RegionMarkerCorners.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegionMarkerCorners.swift; sourceTree = "<group>"; };
 		B956586324FD16F30001DEE0 /* RegionMarkerRectangle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegionMarkerRectangle.swift; sourceTree = "<group>"; };
+		B95F09FA25199050004B609B /* DRiTunesOwner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DRiTunesOwner.swift; sourceTree = "<group>"; };
+		B95F09FB25199050004B609B /* DRXMLDecoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DRXMLDecoder.swift; sourceTree = "<group>"; };
+		B95F09FC25199050004B609B /* DRHTMLToUnicode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DRHTMLToUnicode.swift; sourceTree = "<group>"; };
+		B95F09FD25199050004B609B /* NSManagedObjectExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSManagedObjectExtensions.swift; sourceTree = "<group>"; };
+		B95F09FE25199050004B609B /* DREnclosure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DREnclosure.swift; sourceTree = "<group>"; };
+		B95F09FF25199050004B609B /* DRChannel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DRChannel.swift; sourceTree = "<group>"; };
+		B95F0A0025199050004B609B /* DRImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DRImage.swift; sourceTree = "<group>"; };
+		B95F0A0125199050004B609B /* Feeds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Feeds.swift; sourceTree = "<group>"; };
+		B95F0A0225199050004B609B /* DRitem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DRitem.swift; sourceTree = "<group>"; };
+		B95F0A0325199050004B609B /* DRiTunesCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DRiTunesCategory.swift; sourceTree = "<group>"; };
+		B95F0A0425199050004B609B /* Episodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Episodes.swift; sourceTree = "<group>"; };
+		B95F0A1025199E7E004B609B /* DRAsycImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DRAsycImage.swift; sourceTree = "<group>"; };
+		B95F0A1225199EFD004B609B /* SwiftExplorer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftExplorer-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +177,7 @@
 		B956582C24FD16890001DEE0 /* SwiftExplorer */ = {
 			isa = PBXGroup;
 			children = (
+				B95F0A1225199EFD004B609B /* SwiftExplorer-Bridging-Header.h */,
 				B956586024FD16F30001DEE0 /* Explorations */,
 				B956582D24FD16890001DEE0 /* AppDelegate.swift */,
 				B956582F24FD16890001DEE0 /* SceneDelegate.swift */,
@@ -197,9 +223,29 @@
 				B956586324FD16F30001DEE0 /* RegionMarkerRectangle.swift */,
 				B956586224FD16F30001DEE0 /* RegionMarkerCorners.swift */,
 				B956586124FD16F30001DEE0 /* RegionMarkerOffset.swift */,
+				B95F09F925199050004B609B /* ParseXML */,
 				B93A3BD924FD1F840038BFDB /* DecodeXML */,
 			);
 			path = Explorations;
+			sourceTree = "<group>";
+		};
+		B95F09F925199050004B609B /* ParseXML */ = {
+			isa = PBXGroup;
+			children = (
+				B95F0A0125199050004B609B /* Feeds.swift */,
+				B95F0A0425199050004B609B /* Episodes.swift */,
+				B95F0A1025199E7E004B609B /* DRAsycImage.swift */,
+				B95F09FB25199050004B609B /* DRXMLDecoder.swift */,
+				B95F09FC25199050004B609B /* DRHTMLToUnicode.swift */,
+				B95F09FD25199050004B609B /* NSManagedObjectExtensions.swift */,
+				B95F09FF25199050004B609B /* DRChannel.swift */,
+				B95F0A0225199050004B609B /* DRitem.swift */,
+				B95F0A0025199050004B609B /* DRImage.swift */,
+				B95F09FE25199050004B609B /* DREnclosure.swift */,
+				B95F09FA25199050004B609B /* DRiTunesOwner.swift */,
+				B95F0A0325199050004B609B /* DRiTunesCategory.swift */,
+			);
+			path = ParseXML;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -273,6 +319,7 @@
 				TargetAttributes = {
 					B956582924FD16890001DEE0 = {
 						CreatedOnToolsVersion = 11.6;
+						LastSwiftMigration = 1200;
 					};
 					B956584224FD168A0001DEE0 = {
 						CreatedOnToolsVersion = 11.6;
@@ -339,25 +386,37 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B95F0A1125199E7E004B609B /* DRAsycImage.swift in Sources */,
+				B95F0A0625199050004B609B /* DRXMLDecoder.swift in Sources */,
 				B93A4EB8250D3B0700EE2B35 /* SEPodcastEpisodes.swift in Sources */,
+				B95F0A0925199050004B609B /* DREnclosure.swift in Sources */,
+				B95F0A0E25199050004B609B /* DRiTunesCategory.swift in Sources */,
 				B93A3BE524FD1F840038BFDB /* SEDecodableOwner.swift in Sources */,
 				B93A3BE124FD1F840038BFDB /* SEDecodeXML.swift in Sources */,
+				B95F0A0B25199050004B609B /* DRImage.swift in Sources */,
 				B900CA1525073C460023C86B /* SEDecodableEnclosure.swift in Sources */,
 				B900CA132507138C0023C86B /* SEDecodableRSS.swift in Sources */,
 				B93A3BE224FD1F840038BFDB /* SEDecodableChannel.swift in Sources */,
 				B900CA0F2506D95B0023C86B /* SEDecodableCategory.swift in Sources */,
+				B95F0A0825199050004B609B /* NSManagedObjectExtensions.swift in Sources */,
 				B956586624FD16F30001DEE0 /* RegionMarkerRectangle.swift in Sources */,
+				B95F0A0725199050004B609B /* DRHTMLToUnicode.swift in Sources */,
 				B9021C532506B6C900F66844 /* SEXMLDecoder.swift in Sources */,
 				B956586524FD16F30001DEE0 /* RegionMarkerCorners.swift in Sources */,
 				B956583324FD16890001DEE0 /* SwiftExplorer.xcdatamodeld in Sources */,
+				B95F0A0D25199050004B609B /* DRitem.swift in Sources */,
 				B956586424FD16F30001DEE0 /* RegionMarkerOffset.swift in Sources */,
 				B93A3BE024FD1F840038BFDB /* SEDecodableItem.swift in Sources */,
+				B95F0A0A25199050004B609B /* DRChannel.swift in Sources */,
+				B95F0A0F25199050004B609B /* Episodes.swift in Sources */,
 				B956582E24FD16890001DEE0 /* AppDelegate.swift in Sources */,
 				B956583524FD16890001DEE0 /* ContentView.swift in Sources */,
 				B93A4EBF250D79CC00EE2B35 /* SEAsyncImage.swift in Sources */,
 				B93A3BE324FD1F840038BFDB /* SEDecodableImage.swift in Sources */,
 				B93A3BE424FD1F840038BFDB /* SEXMLParser.swift in Sources */,
 				B956583024FD16890001DEE0 /* SceneDelegate.swift in Sources */,
+				B95F0A0525199050004B609B /* DRiTunesOwner.swift in Sources */,
+				B95F0A0C25199050004B609B /* Feeds.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -524,6 +583,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"SwiftExplorer/Preview Content\"";
 				DEVELOPMENT_TEAM = S4K89S6LAE;
@@ -535,6 +595,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.hexdreams.SwiftExplorer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SwiftExplorer/SwiftExplorer-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -544,6 +606,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"SwiftExplorer/Preview Content\"";
 				DEVELOPMENT_TEAM = S4K89S6LAE;
@@ -555,6 +618,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.hexdreams.SwiftExplorer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SwiftExplorer/SwiftExplorer-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
