@@ -14,12 +14,12 @@ struct SEEpisodes: View {
         return formatter;
     }
 
-    let channel:DRChannel
+    let channel:SECustomXMLChannel
 
     // Can make custom navigation title views in iOS 14
     // https://sarunw.com/posts/custom-navigation-bar-title-view-in-swiftui/
     var body: some View {
-        List(self.channel.orderedItems, id:\DRItem.guid) { item in
+        List(self.channel.orderedItems, id:\SECustomXMLItem.guid) { item in
             HStack(alignment:.top) {
                 VStack(alignment:.leading, spacing:3.0) {
                     Text(verbatim:item.title ?? "NO TITLE")

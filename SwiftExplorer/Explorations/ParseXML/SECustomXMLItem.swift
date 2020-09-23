@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct DRItem : DRXMLDecoderModel {
+struct SECustomXMLItem : SECustomXMLDecoderModel {
     
     var contentEncoded:String?
     var description:String?
     var descriptionData:Data?
-    var enclosure:DREnclosure?
+    var enclosure:SECustomXMLEnclosure?
     var guid:String?
     var guidIsPermalink:Bool?
     var link:URL?
@@ -32,7 +32,7 @@ struct DRItem : DRXMLDecoderModel {
 
     public var itemDescription:String {
         if let data = self.descriptionData {
-            let htmlConverter = DRHTMLToUnicode()
+            let htmlConverter = SEHTMLToUnicode()
             return htmlConverter.parse(data)
         }
         return "NO DESCRIPTION"
@@ -40,7 +40,7 @@ struct DRItem : DRXMLDecoderModel {
     
     public var itunesSummary:String {
         if let data = self.itunesSummaryData {
-            let htmlConverter = DRHTMLToUnicode()
+            let htmlConverter = SEHTMLToUnicode()
             return htmlConverter.parse(data)
         }
         return "NO SUMMARY"
@@ -110,19 +110,19 @@ struct DRItem : DRXMLDecoderModel {
         }
     }
     
-    public func makeChildEntity(forTag tag:String) -> DRXMLDecoderModel? {
+    public func makeChildEntity(forTag tag:String) -> SECustomXMLDecoderModel? {
         switch tag {
             case "enclosure":
-                return DREnclosure()
+                return SECustomXMLEnclosure()
             default:
                 return nil
         }
     }
         
-    mutating func setChildEntity(_ value:DRXMLDecoderModel, forTag tag:String) {
+    mutating func setChildEntity(_ value:SECustomXMLDecoderModel, forTag tag:String) {
         switch tag {
             case "enclosure":
-                if let x = value as? DREnclosure {
+                if let x = value as? SECustomXMLEnclosure {
                     self.enclosure = x
                 }
             default:

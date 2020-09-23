@@ -15,7 +15,16 @@ private let dateFormatter:DateFormatter = {
     return f;
 }()
 
-public extension DRXMLDecoderModel {
+public protocol SECustomXMLDecoderModel {
+    var tag:String {get}
+    mutating func setValue(_ value:String, forTag tag:String)
+    mutating func setData(_ data:Data, forTag tag:String)
+    mutating func setValue(_ value:String, forTag tag:String?, attribute:String)
+    func makeChildEntity(forTag tag:String) -> SECustomXMLDecoderModel?
+    mutating func setChildEntity(_ value:SECustomXMLDecoderModel, forTag tag:String);
+}
+
+public extension SECustomXMLDecoderModel {
         
     func coerceDate(_ dateString:String?) -> Date? {
         if let dateString = dateString {

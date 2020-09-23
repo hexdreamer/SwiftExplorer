@@ -8,31 +8,21 @@
 import Foundation
 import CoreData
 
-public protocol DRXMLDecoderModel {
-    var tag:String {get}
-    mutating func setValue(_ value:String, forTag tag:String)
-    mutating func setData(_ data:Data, forTag tag:String)
-    mutating func setValue(_ value:String, forTag tag:String?, attribute:String)
-    func makeChildEntity(forTag tag:String) -> DRXMLDecoderModel?
-    mutating func setChildEntity(_ value:DRXMLDecoderModel, forTag tag:String);
-}
-
-
 @objc
-public class DRXMLDecoder : NSObject,XMLParserDelegate {
+public class SECustomXMLDecoder : NSObject,XMLParserDelegate {
         
     private var level:Int = 0
     private let parser:XMLParser
-    private var stack = [DRXMLDecoderModel]()
-    private let root:DRXMLDecoderModel
+    private var stack = [SECustomXMLDecoderModel]()
+    private let root:SECustomXMLDecoderModel
     private var text:String?
     private var cdata:Data?
     
-    var channel:DRChannel? {
-        return self.stack.first as? DRChannel
+    var channel:SECustomXMLChannel? {
+        return self.stack.first as? SECustomXMLChannel
     }
 
-    init(data:Data, root:DRXMLDecoderModel) {
+    init(data:Data, root:SECustomXMLDecoderModel) {
         self.parser = XMLParser(data:data)
         self.stack.append(root)
         self.root = root;

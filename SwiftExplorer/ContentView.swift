@@ -34,7 +34,7 @@ struct ContentView: View {
                 }
                 
                 NavigationLink(
-                    destination:Feeds()
+                    destination:SEFeeds()
                         .navigationBarTitle("Custom XML Parser")
                 ) {
                     Text("Custom XML Parser")

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DRiTunesOwner : DRXMLDecoderModel {
+struct SECustomXMLiTunesOwner : SECustomXMLDecoderModel {
     
     var itunesEmail:String?
     var itunesName:String?
@@ -41,11 +41,11 @@ struct DRiTunesOwner : DRXMLDecoderModel {
         }
     }
     
-    public func makeChildEntity(forTag tag:String) -> DRXMLDecoderModel? {
+    public func makeChildEntity(forTag tag:String) -> SECustomXMLDecoderModel? {
         return nil
     }
     
-    mutating func setChildEntity(_ value:DRXMLDecoderModel, forTag tag:String) {
+    mutating func setChildEntity(_ value:SECustomXMLDecoderModel, forTag tag:String) {
         print("Unsupported tag: \(tag)")
     }
 

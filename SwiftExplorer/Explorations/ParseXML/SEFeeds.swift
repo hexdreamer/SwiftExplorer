@@ -14,7 +14,7 @@ public struct SEFeeds: View {
         return formatter;
     }
     
-    let channels:[DRChannel]
+    let channels:[SECustomXMLChannel]
     
     init() {
         Self.fetchFeeds()
@@ -22,9 +22,9 @@ public struct SEFeeds: View {
     }
     
     public var body: some View {
-        List(self.channels, id:\DRChannel.link) { channel in
+        List(self.channels, id:\SECustomXMLChannel.link) { channel in
             NavigationLink(
-                destination:Episodes(channel:channel)
+                destination:SEEpisodes(channel:channel)
                     .navigationBarTitle(channel.title ?? "NO FEED NAME")
             ) {
                 HStack {
@@ -73,8 +73,8 @@ public struct SEFeeds: View {
         }
     }
     
-    static private func readChannels() -> [DRChannel] {
-        var results = [DRChannel]()
+    static private func readChannels() -> [SECustomXMLChannel] {
+        var results = [SECustomXMLChannel]()
         do {
             let cachedir = try FileManager.default.url(for:FileManager.SearchPathDirectory.cachesDirectory,
                                                        in:FileManager.SearchPathDomainMask.userDomainMask,
@@ -88,7 +88,7 @@ public struct SEFeeds: View {
                 }
                 print("Loading cached feed: \(cachedFeed)")
                 let data = try Data(contentsOf:cachedFeed)
-                let parser = DRXMLDecoder(data:data, root:DRChannel())
+                let parser = SECustomXMLDecoder(data:data, root:SECustomXMLChannel())
                 parser.run()
                 if let channel = parser.channel {
                     results.append(channel)
