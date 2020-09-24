@@ -21,11 +21,30 @@ struct SEPodcastEpisodes: View {
     // https://sarunw.com/posts/custom-navigation-bar-title-view-in-swiftui/
     var body: some View {
         List(self.channel.items, id:\SEDecodableItem.guid) { item in
-            VStack(alignment:.leading, spacing:3.0) {
-                Text(item.title)
-                Text(Self.DATE_FORMATTER.string(from:item.pubDate))
-                    .font(.caption)
-                    .foregroundColor(.gray)
+            HStack(alignment:.top) {
+                VStack(alignment:.leading, spacing:3.0) {
+                    Text(verbatim:item.title)
+                    Text(Self.DATE_FORMATTER.string(from:item.pubDate))
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                    Spacer().frame(maxHeight:2.0)
+                    if item.descriptionData != nil {
+                        Text(item.itemDescription)
+                            .font(.caption)
+                    } else if item.itunesSummaryData != nil {
+                        Text(item.itunesSummary)
+                            .font(.caption)
+                    }
+                }
+                if item.itunesImage != nil {
+                    Spacer()
+                    SEAsyncImage(url:item.itunesImage) {
+                        Image("ChannelImageDefault")
+                            .resizable()
+                    }.aspectRatio(contentMode: ContentMode.fill)
+                    .frame(width:80, height:80, alignment:.center)
+                    .clipped()
+                }
             }
         }
     }

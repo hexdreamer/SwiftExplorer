@@ -7,6 +7,7 @@
 //
 
 // Key - "tag"            - text contents of child element
+//     - "tag@"           - cdata contents of child element
 //     - "tag@attribute"  - attribute of child element
 //     - "@attribute"     - my own attribute
 
@@ -27,9 +28,9 @@ public class SEXMLDecoder : Decoder {
         self.elements = elements
     }
 
-    init(url:URL) {
+    init(url:URL) throws {
         let parser = SEXMLParser()
-        parser.parse(url)
+        try parser.parse(url)
         self.elements = [parser.element]
     }
         
@@ -125,6 +126,36 @@ public class SEXMLDecoder : Decoder {
             throw DecodingError(message:"no value decoded for \(key)")
         }
     }
+    
+    func decodeCDATAIfPresent(_ key:CodingKey) throws -> Data? {
+        var keyString = key.stringValue
+        if let index = keyString.firstIndex(of:"@"),
+           index == keyString.index(before:keyString.endIndex)
+        {
+            keyString = String(keyString[keyString.startIndex..<index])
+        } else {
+            fatalError("Should only call this with an @ suffix")
+        }
+        if let elements = try self.element().children?.filter({$0.name == keyString}) {
+            switch elements.count {
+                case 0:
+                    return nil
+                case 1:
+                    return elements[0].cdata
+                default:
+                    throw DecodingError(message:"More than one child for tag \(keyString)")
+            }
+        }
+        return nil
+    }
+    
+    func decodeCDATA(_ key:CodingKey) throws -> Data {
+        if let value = try self.decodeCDATAIfPresent(key) {
+            return value
+        } else {
+            throw DecodingError(message:"no value decoded for \(key)")
+        }
+    }
 }
 
 
@@ -174,7 +205,13 @@ public struct XMLKeyedDecodingContainer<K:CodingKey> : KeyedDecodingContainerPro
     public func decode(_ type: UInt32.Type,         forKey key: Self.Key)  throws -> UInt32     {return try self.decoder.decode(key, {UInt32($0)})}
     public func decode(_ type: UInt64.Type,         forKey key: Self.Key)  throws -> UInt64     {return try self.decoder.decode(key, {UInt64($0)})}
     public func decode<T:Decodable>(_ type: T.Type, forKey key: Self.Key)  throws -> T {
-        if type == URL.self {
+        if key.stringValue.hasSuffix("@") {
+            if let data = try self.decoder.decodeCDATA(key) as? T {
+                return data
+            } else {
+                throw SEXMLDecoder.DecodingError(message:"could not cast value for \(key) to Data.")
+            }
+        } else if type == URL.self {
             return try self.decoder.decode(key) {URL(string:$0) as? T}
         } else if type == Date.self {
             return try self.decoder.decode(key) {Self.DATE_FORMATTER.date(from:$0) as? T}
@@ -199,7 +236,9 @@ public struct XMLKeyedDecodingContainer<K:CodingKey> : KeyedDecodingContainerPro
     public func decodeIfPresent(_ type: UInt32.Type, forKey key: Self.Key) throws -> UInt32?    {return try self.decoder.decodeIfPresent(key, {UInt32($0)})}
     public func decodeIfPresent(_ type: UInt64.Type, forKey key: Self.Key) throws -> UInt64?    {return try self.decoder.decodeIfPresent(key, {UInt64($0)})}
     public func decodeIfPresent<T:Decodable>(_ type: T.Type, forKey key: Self.Key) throws -> T? {
-        if type == URL.self {
+        if key.stringValue.hasSuffix("@") {
+            return try self.decoder.decodeCDATAIfPresent(key) as? T
+        } else if type == URL.self {
             return try self.decoder.decodeIfPresent(key) {URL(string:$0) as? T}
         } else if type == Date.self {
             return try self.decoder.decodeIfPresent(key) {Self.DATE_FORMATTER.date(from:$0) as? T}

@@ -27,17 +27,19 @@ public struct SEFeeds: View {
                 destination:SEEpisodes(channel:channel)
                     .navigationBarTitle(channel.title ?? "NO FEED NAME")
             ) {
-                HStack {
+                HStack(alignment:.top) {
                     SEAsyncImage(url:channel.itunesImage) {
                         Image("ChannelImageDefault")
                             .resizable()
-                    }.frame(width:50, height:50, alignment:.leading)
+                    }.aspectRatio(contentMode: ContentMode.fill)
+                    .frame(width:50, height:50, alignment:.center)
+                    .clipped()
                     
                     VStack(alignment:.leading, spacing:3.0) {
                         Text(channel.title ?? "NO FEED NAME")
                         Text(channel.latestItem?.pubDate.map{Self.DATE_FORMATTER.string(from:$0)} ?? "No items")
                             .font(.caption)
-                            .foregroundColor(.gray)
+                            .foregroundColor(.gray)                        
                     }
                 }
             }
@@ -88,8 +90,8 @@ public struct SEFeeds: View {
                 }
                 print("Loading cached feed: \(cachedFeed)")
                 let data = try Data(contentsOf:cachedFeed)
-                let parser = SECustomXMLDecoder(data:data, root:SECustomXMLChannel())
-                parser.run()
+                let parser = SECustomXMLDecoder(root:SECustomXMLChannel())
+                parser.parse(data:data)
                 if let channel = parser.channel {
                     results.append(channel)
                 } else {

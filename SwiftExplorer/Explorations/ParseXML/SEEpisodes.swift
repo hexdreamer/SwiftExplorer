@@ -19,7 +19,7 @@ struct SEEpisodes: View {
     // Can make custom navigation title views in iOS 14
     // https://sarunw.com/posts/custom-navigation-bar-title-view-in-swiftui/
     var body: some View {
-        List(self.channel.orderedItems, id:\SECustomXMLItem.guid) { item in
+        List(self.channel.items, id:\SECustomXMLItem.guid) { item in
             HStack(alignment:.top) {
                 VStack(alignment:.leading, spacing:3.0) {
                     Text(verbatim:item.title ?? "NO TITLE")
@@ -40,8 +40,9 @@ struct SEEpisodes: View {
                     SEAsyncImage(url:item.itunesImage) {
                         Image("ChannelImageDefault")
                             .resizable()
-                    }.frame(width:80, height:80, alignment:.trailing)
-                    .background(Color.gray)
+                    }.aspectRatio(contentMode: ContentMode.fill)
+                    .frame(width:80, height:80, alignment:.center)
+                    .clipped()
                 }
             }
         }

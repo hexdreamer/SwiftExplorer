@@ -43,6 +43,7 @@
 		B95F0A0F25199050004B609B /* SEEpisodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95F0A0425199050004B609B /* SEEpisodes.swift */; };
 		B95F0A1125199E7E004B609B /* DRAsycImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95F0A1025199E7E004B609B /* DRAsycImage.swift */; };
 		B9C4A28F2516F1F30035860A /* hexdreamsCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = B9C4A28E2516F1F30035860A /* hexdreamsCocoa */; };
+		B9E33E66251AF82A00396F39 /* HXXMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E33E65251AF82A00396F39 /* HXXMLParser.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,6 +107,7 @@
 		B95F0A1025199E7E004B609B /* DRAsycImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DRAsycImage.swift; sourceTree = "<group>"; };
 		B95F0A1225199EFD004B609B /* SwiftExplorer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftExplorer-Bridging-Header.h"; sourceTree = "<group>"; };
 		B9BF2AD12519D27700799633 /* hexdreamsCocoa */ = {isa = PBXFileReference; lastKnownFileType = folder; name = hexdreamsCocoa; path = ../hexdreamsCocoa; sourceTree = "<group>"; };
+		B9E33E65251AF82A00396F39 /* HXXMLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HXXMLParser.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,11 +145,11 @@
 				B9021C522506B6C900F66844 /* SEXMLDecoder.swift */,
 				B900CA122507138C0023C86B /* SEDecodableRSS.swift */,
 				B93A3BDC24FD1F840038BFDB /* SEDecodableChannel.swift */,
-				B900CA0E2506D95B0023C86B /* SEDecodableCategory.swift */,
-				B93A3BDF24FD1F840038BFDB /* SEDecodableOwner.swift */,
-				B93A3BDD24FD1F840038BFDB /* SEDecodableImage.swift */,
 				B93A3BDA24FD1F840038BFDB /* SEDecodableItem.swift */,
+				B93A3BDD24FD1F840038BFDB /* SEDecodableImage.swift */,
 				B900CA1425073C460023C86B /* SEDecodableEnclosure.swift */,
+				B93A3BDF24FD1F840038BFDB /* SEDecodableOwner.swift */,
+				B900CA0E2506D95B0023C86B /* SEDecodableCategory.swift */,
 			);
 			path = DecodeXML;
 			sourceTree = "<group>";
@@ -234,8 +236,8 @@
 			children = (
 				B95F0A0125199050004B609B /* SEFeeds.swift */,
 				B95F0A0425199050004B609B /* SEEpisodes.swift */,
-				B95F09FB25199050004B609B /* SECustomXMLDecoder.swift */,
 				B95F09FC25199050004B609B /* SEHTMLToUnicode.swift */,
+				B95F09FB25199050004B609B /* SECustomXMLDecoder.swift */,
 				B95F09FD25199050004B609B /* SECustomXMLDecoderModel.swift */,
 				B95F09FF25199050004B609B /* SECustomXMLChannel.swift */,
 				B95F0A0225199050004B609B /* SECustomXMLItem.swift */,
@@ -243,6 +245,7 @@
 				B95F09FE25199050004B609B /* SECustomXMLEnclosure.swift */,
 				B95F09FA25199050004B609B /* SECustomXMLiTunesOwner.swift */,
 				B95F0A0325199050004B609B /* SECustomXMLiTunesCategory.swift */,
+				B9E33E65251AF82A00396F39 /* HXXMLParser.swift */,
 			);
 			path = ParseXML;
 			sourceTree = "<group>";
@@ -408,6 +411,7 @@
 				B93A3BE024FD1F840038BFDB /* SEDecodableItem.swift in Sources */,
 				B95F0A0A25199050004B609B /* SECustomXMLChannel.swift in Sources */,
 				B95F0A0F25199050004B609B /* SEEpisodes.swift in Sources */,
+				B9E33E66251AF82A00396F39 /* HXXMLParser.swift in Sources */,
 				B956582E24FD16890001DEE0 /* AppDelegate.swift in Sources */,
 				B956583524FD16890001DEE0 /* ContentView.swift in Sources */,
 				B93A3BE324FD1F840038BFDB /* SEDecodableImage.swift in Sources */,

@@ -4,52 +4,11 @@
 //
 //  Created by Kenny Leung on 9/16/20.
 //
-// https://blog.mro.name/2019/07/swift-libxml2-html/
-// https://www.rapidtables.com/code/text/unicode-characters.html
-// https://unicode-search.net/unicode-namesearch.pl?term=MATHEMATICAL - search by name
-// https://yaytext.com/underline/
-// https://unicodelookup.com
-// http://unicode.scarfboy.com - lookup by code
-// https://www.i18nqa.com/debug/utf8-debug.html - some good encoding debugging problems
 
 import Foundation
 
-//
-//  HtmlFormParser.swift
-//  http://mro.name/ShaarliOS
-//
-//  Created by Marcus Rohrmoser on 09.06.19.
-//  Copyright © 2019 Marcus Rohrmoser mobile Software. All rights reserved.
-//
-
-// turn a nil-terminated list of unwrapped name,value pairs into a dictionary.
-// expand abbreviated (html5) attribute values.
-internal func atts2dict(_ atts: (Int) -> String?) -> [String:String] {
-    var ret = [String:String]()
-    var idx = 0
-    while let name = atts(idx) {
-        ret[name] = atts(idx+1) ?? name
-        idx += 2
-    }
-    return ret
-}
-
-// https://github.com/apple/swift-corelibs-foundation/blob/master/Foundation/XMLParser.swift#L33
-private func decode(_ bytes:UnsafePointer<xmlChar>?) -> String? {
-    guard let bytes = bytes else { return nil }
-    guard let (str, _) = String.decodeCString(bytes, as:UTF8.self, repairingInvalidCodeUnits:false) else { return nil }
-    return str
-}
-
-private func me(_ ptr : UnsafeRawPointer?) -> SEHTMLToUnicode {
-    if let ptr = ptr {
-        return Unmanaged<SEHTMLToUnicode>.fromOpaque(ptr).takeUnretainedValue()
-    }
-    fatalError("pointer is nil")
-}
-
-public class SEHTMLToUnicode {
-    
+public class SEHTMLToUnicode : HXXMLParserDelegate {
+                
     private class Element {
         let name:String
         let attributes:[String:String]?
@@ -70,31 +29,14 @@ public class SEHTMLToUnicode {
     }
     
     private var stack = [Element(name:"ROOT", attributes:[:])]
-
-    func parse(_ data:Data?) -> String {
-        guard let data = data else { return "" }
-        var sax = htmlSAXHandler()
-        sax.initialized = XML_SAX2_MAGIC
-        sax.startElement = { me($0).startElement(name:$1, atts:$2) }
-        sax.endElement = { me($0).endElement(name:$1) }
-        sax.characters = { me($0).charactersFound(ch:$1, len:$2) }
-        // handler.error = errorEncounteredSAX
-
-        // https://curl.haxx.se/libcurl/c/htmltitle.html
-        // http://xmlsoft.org/html/libxml-HTMLparser.html#htmlParseChunk
-        // https://stackoverflow.com/questions/41140050/parsing-large-xml-from-server-while-downloading-with-libxml2-in-swift-3
-        // https://github.com/apple/swift-corelibs-foundation/blob/master/Foundation/XMLParser.swift#L524
-        // http://redqueencoder.com/wrapping-libxml2-for-swift/ bzw. https://github.com/SonoPlot/Swift-libxml
-        let ctxt = htmlCreatePushParserCtxt(&sax, Unmanaged.passUnretained(self).toOpaque(), "", 0, "", XML_CHAR_ENCODING_UTF8)
-        defer { htmlFreeParserCtxt(ctxt) }
-        //let _ = data.withUnsafeBytes { htmlParseChunk(ctxt, $0, Int32(data.count), 0) }
-        let _ = data.withUnsafeBytes { (ptr:UnsafeRawBufferPointer) in
-            let unsafeBufferPointer:UnsafeBufferPointer<Int8> = ptr.bindMemory(to:Int8.self)
-            let unsafePointer:UnsafePointer<Int8>? = unsafeBufferPointer.baseAddress
-            htmlParseChunk(ctxt, unsafePointer, Int32(data.count), 0)
-        }
-        htmlParseChunk(ctxt, "", 0, 1)
-
+    
+    init() {}
+    
+    func parse(_ data:Data) -> String {
+        let parser = HXXMLParser(mode:.HTML)
+        parser.delegate = self
+        parser.parse(data)
+        
         guard let root = self.stack.popLast() else {
             print("Error - root element popped off stack")
             return "ERROR PARSING HTML"
@@ -109,21 +51,12 @@ public class SEHTMLToUnicode {
             trimmed = " " + trimmed
         }
         
-        //print("\(trimmed)")
+//        print("\(trimmed)")
         
         return trimmed
     }
 
-    private func startElement(name: UnsafePointer<xmlChar>? , atts:UnsafePointer<UnsafePointer<xmlChar>?>?) {
-        // https://github.com/MaddTheSane/chmox/blob/3263ddf09276f6a47961cc4b87762f58b88772d0/CHMTableOfContents.swift#L75
-        guard let elementName = decode(name) else { return }
-        let attributeDict:[String:String]
-        if let atts = atts {
-            attributeDict = atts2dict({ decode(atts[$0]) })
-        } else {
-            attributeDict = [String:String]()
-        }
-
+    public func parser(_ parser: HXXMLParser, didStartElement elementName: String, attributes attributeDict: [String : String]) {
 //        for _ in 0..<self.stack.count {
 //            print("    ", terminator:"")
 //        }
@@ -131,17 +64,24 @@ public class SEHTMLToUnicode {
         let element = Element(name:elementName, attributes:attributeDict)
         self.stack.append(element)
     }
-
-    private func endElement(name:UnsafePointer<xmlChar>?) {
-        // https://github.com/MaddTheSane/chmox/blob/3263ddf09276f6a47961cc4b87762f58b88772d0/CHMTableOfContents.swift#L75
-        
+    
+    public func parser(_ parser: HXXMLParser, foundCharacters s: String) {
+        if ( self.isWhiteSpace(s) ) {
+            return
+        }
+        self.stack.last?.appendText(s)
+    }
+    
+    public func parser(_ parser: HXXMLParser, foundCDATA: Data) {
+    }
+    
+    public func parser(_ parser: HXXMLParser, didEndElement elementName: String) {
         guard let closedElement = self.stack.popLast() else {
-            print("Error - no element onstack")
+            print("Error - no element on stack")
             return
         }
         
         let parentElement = self.stack.last
-        let elementName = decode(name)
         if elementName != closedElement.name {
             print("Error! Closing the wrong element!")
         }
@@ -194,16 +134,6 @@ public class SEHTMLToUnicode {
                     print("Unsuported tag: \(closedElement.name)")
             }
         }
-    }
-    
-    private func charactersFound(ch: UnsafePointer<xmlChar>?, len: CInt) {
-        let d = Data(bytes: ch!, count:Int(len)) // clamp
-        let s = String(data: d, encoding: .utf8) ?? "<utf8 decoding issue>"
-        
-        if ( self.isWhiteSpace(s) ) {
-            return
-        }
-        self.stack.last?.appendText(s)
     }
     
     private func isWhiteSpace(_ string:String) -> Bool {

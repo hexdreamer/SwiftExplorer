@@ -8,15 +8,7 @@ struct SEDecodeXML : View {
         formatter.dateFormat = "E, dd MMM yyy HH:mm:ss Z"
         return formatter;
     }
-    
-    static private let feeds :[(String,String)] = [
-        ("AccidentalTechPodcast"      , "https://atp.fm/rss"),
-        ("Marketplace"                , "https://marketplace.org/feed/podcast/marketplace"),
-        ("MakeMeSmartWithKaiAndMolly" , "https://marketplace.org/feed/podcast/make-me-smart-with-kai-and-molly")
-        //("BlackOnTheAir"          , "https://www.theringer.com/rss/larry-wilmore-black-on-air/index.xml") - not RSS format
-        //("RealTimeWithBillMaher" , "http://billmaher.hbo.libsynpro.com/rss") - not https - won't load
-    ]
-        
+            
     private let channels:[SEDecodableChannel]
 
     init() {
@@ -47,6 +39,14 @@ struct SEDecodeXML : View {
         }
     }
     
+    static private let feeds :[(String,String)] = [
+        ("AccidentalTechPodcast"      , "https://atp.fm/rss"),
+        ("Marketplace"                , "https://marketplace.org/feed/podcast/marketplace"),
+        ("MakeMeSmartWithKaiAndMolly" , "https://marketplace.org/feed/podcast/make-me-smart-with-kai-and-molly")
+        //("BlackOnTheAir"          , "https://www.theringer.com/rss/larry-wilmore-black-on-air/index.xml") - not RSS format
+        //("RealTimeWithBillMaher" , "http://billmaher.hbo.libsynpro.com/rss") - not https - won't load
+    ]
+
     static private func fetchFeeds() {
         do {
             let cachedir = try FileManager.default.url(for:FileManager.SearchPathDirectory.cachesDirectory,
@@ -82,7 +82,7 @@ struct SEDecodeXML : View {
                     continue;
                 }
                 print("Loading cached feed: \(cachedFeed)")
-                let decoder = SEXMLDecoder(url:cachedFeed)
+                let decoder = try SEXMLDecoder(url:cachedFeed)
                 let rss = try SEDecodableRSS(from:decoder)
                 results.append(rss.channel)
             }

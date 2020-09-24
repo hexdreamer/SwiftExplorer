@@ -1,12 +1,13 @@
 
 import Foundation
 
-public class SEXMLParser : NSObject,XMLParserDelegate {
+public class SEXMLParser : HXXMLParserDelegate {
         
     public class Element {
         let name:String
         let attributes:[String:String]?
         var text:String?
+        var cdata:Data?
         var children:[Element]?
         
         init(name:String, attributes:[String:String]) {
@@ -33,22 +34,19 @@ public class SEXMLParser : NSObject,XMLParserDelegate {
         }
     }
             
-    public func parse(_ url:URL) {
-        if let parser = XMLParser(contentsOf:url) {
-            parser.delegate = self
-            parser.parse()
-        } else {
-            fatalError("Could not initialize parser with \(url)")
-        }
+    public func parse(_ url:URL) throws {
+        let data = try Data(contentsOf:url)
+        let parser = HXXMLParser(mode:.XML)
+        parser.delegate = self
+        parser.parse(data)
     }
     
-    // MARK: XMLParserDelegate
-    @objc
-    public func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
-//        for _ in 0..<self.stack.count {
-//            print("    ", terminator:"")
-//        }
-//        print(elementName)
+    // MARK: HXXMLParserDelegate
+    public func parser(_ parser: HXXMLParser, didStartElement elementName: String, attributes attributeDict: [String : String]) {
+        for _ in 0..<self.stack.count {
+            print("    ", terminator:"")
+        }
+        print(elementName)
         let element = Element(name:elementName, attributes:attributeDict)
         if let openElement = self.stack.last {
             openElement.append(element)
@@ -56,8 +54,7 @@ public class SEXMLParser : NSObject,XMLParserDelegate {
         self.stack.append(element)
     }
     
-    @objc
-    public func parser(_ parser: XMLParser, foundCharacters string: String) {
+    public func parser(_ parser: HXXMLParser, foundCharacters string: String) {
         if self.isWhiteSpace(string) {
             return
         }
@@ -68,6 +65,13 @@ public class SEXMLParser : NSObject,XMLParserDelegate {
         }
     }
     
+    public func parser(_ parser: HXXMLParser, foundCDATA: Data) {
+        if let element = self.stack.last,
+           element.name == "description" {
+            self.stack.last?.cdata = foundCDATA
+        }
+    }
+
     private func isWhiteSpace(_ string:String) -> Bool {
         for scalar in string.unicodeScalars {
             if !CharacterSet.whitespacesAndNewlines.contains(scalar) {
@@ -77,8 +81,7 @@ public class SEXMLParser : NSObject,XMLParserDelegate {
         return true
     }
     
-    @objc
-    public func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
+    public func parser(_ parser: HXXMLParser, didEndElement: String) {
         if self.stack.count > 1 {
             _ = self.stack.popLast()
         }
