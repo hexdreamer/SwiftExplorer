@@ -6,6 +6,8 @@
 //  Copyright © 2020 Kenny Leung. All rights reserved.
 //
 
+// TODO: Streaming data version from URL - use dispatchIO
+
 import Foundation
 
 public protocol HXXMLParserDelegate:class {
