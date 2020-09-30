@@ -40,12 +40,12 @@ struct ContentView: View {
                     Text("Custom XML Parser")
                 }
                 
-                NavigationLink(
-                    destination:SEDecodeXML()
-                        .navigationBarTitle("Decode XML")
-                ) {
-                    Text("Decode XML")
-                }
+//                NavigationLink(
+//                    destination:SEDecodeXML()
+//                        .navigationBarTitle("Decode XML")
+//                ) {
+//                    Text("Decode XML")
+//                }
             }
             .navigationBarTitle("Explorations")
         }

@@ -46,13 +46,6 @@ struct SEPodcastEpisodes: View {
                             .font(.caption)
                             .foregroundColor(.gray)
                         Spacer().frame(maxHeight:2.0)
-                        if item.descriptionData != nil {
-                            Text(item.itemDescription)
-                                .font(.caption)
-                        } else if item.itunesSummaryData != nil {
-                            Text(item.itunesSummary)
-                                .font(.caption)
-                        }
                     }
                     if item.itunesImage != nil {
                         Spacer()

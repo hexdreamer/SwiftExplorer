@@ -10,27 +10,43 @@ import Foundation
 public class SECustomXMLDecoder : HXXMLParserDelegate {
         
     private var level:Int = 0
-    private let parser:HXXMLParser
     private var stack = [SECustomXMLDecoderModel]()
     private let root:SECustomXMLDecoderModel
     private var text:String?
     private var cdata:Data?
+    
+    private var parser:HXXMLParser?
+    private var completionHandler:((SECustomXMLDecoder)->Void)?
     
     var channel:SECustomXMLChannel? {
         return self.stack.first as? SECustomXMLChannel
     }
 
     init(root:SECustomXMLDecoderModel) {
-        self.parser = HXXMLParser(mode:.XML)
         self.stack.append(root)
         self.root = root;
-        self.parser.delegate = self
     }
     
-    public func parse(data:Data) {
-        self.parser.parse(data)
+    deinit {
+        print("deinit SECustomXMLDecoder")
+    }
+    
+    public func parse(file:URL, completion:@escaping (SECustomXMLDecoder)->Void) throws {
+        let parser = try HXXMLParser(mode:.XML, file:file)
+        parser.delegate = self
+        self.parser = parser
+        self.completionHandler = completion;
+        parser.parse()
     }
         
+    public func parse(network:URL, completion:@escaping (SECustomXMLDecoder)->Void) throws {
+        let parser = try HXXMLParser(mode:.XML, network:network)
+        parser.delegate = self
+        self.parser = parser
+        self.completionHandler = completion;
+        parser.parse()
+    }
+
     // MARK:HXXMLParserDelegate
     public func parser(_ parser: HXXMLParser, didStartElement elementName: String, attributes attributeDict: [String : String]) {
 //        for _ in 0..<level {
@@ -58,7 +74,7 @@ public class SECustomXMLDecoder : HXXMLParserDelegate {
     }
 
     public func parser(_ parser: HXXMLParser, foundCharacters string: String) {
-        if ( isWhiteSpace(string) ) {
+        if ( self._isWhiteSpace(string) ) {
             return
         }
         if let text = self.text {
@@ -95,7 +111,16 @@ public class SECustomXMLDecoder : HXXMLParserDelegate {
         }
     }
     
-    private func isWhiteSpace(_ string:String) -> Bool {
+    public func parserDidEndDocument(_ parser:HXXMLParser) {
+        self.completionHandler?(self)
+    }
+    
+    public func parser(_ parser: HXXMLParser, error: Error) {
+
+    }
+
+    // MARK: Private Methods
+    private func _isWhiteSpace(_ string:String) -> Bool {
         for scalar in string.unicodeScalars {
             if !CharacterSet.whitespacesAndNewlines.contains(scalar) {
                 return false

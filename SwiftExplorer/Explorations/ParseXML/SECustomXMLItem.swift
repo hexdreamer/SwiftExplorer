@@ -10,8 +10,7 @@ import Foundation
 struct SECustomXMLItem : SECustomXMLDecoderModel {
     
     var contentEncoded:String?
-    var description:String?
-    var descriptionData:Data?
+    var description:Data?
     var enclosure:SECustomXMLEnclosure?
     var guid:String?
     var guidIsPermalink:Bool?
@@ -27,24 +26,8 @@ struct SECustomXMLItem : SECustomXMLDecoderModel {
     var itunesImage:URL?
     var itunesKeywords:String?
     var itunesSubtitle:String?
-    var itunesSummaryData:Data?
+    var itunesSummary:Data?
     var itunesTitle:String?
-
-    public var itemDescription:String {
-        if let data = self.descriptionData {
-            let htmlConverter = SEHTMLToUnicode()
-            return htmlConverter.parse(data)
-        }
-        return "NO DESCRIPTION"
-    }
-    
-    public var itunesSummary:String {
-        if let data = self.itunesSummaryData {
-            let htmlConverter = SEHTMLToUnicode()
-            return htmlConverter.parse(data)
-        }
-        return "NO SUMMARY"
-    }
         
     // MARK: DRXMLDecoderModel
     public let tag = "item"
@@ -89,9 +72,9 @@ struct SECustomXMLItem : SECustomXMLDecoderModel {
     public mutating func setData(_ data:Data, forTag tag:String) {
         switch tag {
             case "description":
-                self.descriptionData = data
+                self.description = data
             case "itunes:summary":
-                self.itunesSummaryData = data
+                self.itunesSummary = data
             default:
                 print("Unsupported tag: \(tag)")
         }

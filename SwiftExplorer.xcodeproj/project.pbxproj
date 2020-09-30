@@ -42,6 +42,9 @@
 		B95F0A0E25199050004B609B /* SECustomXMLiTunesCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95F0A0325199050004B609B /* SECustomXMLiTunesCategory.swift */; };
 		B95F0A0F25199050004B609B /* SEEpisodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95F0A0425199050004B609B /* SEEpisodes.swift */; };
 		B95F0A1125199E7E004B609B /* DRAsycImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95F0A1025199E7E004B609B /* DRAsycImage.swift */; };
+		B9A00B072522CB5800EF9E4D /* SEEpisodeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A00B062522CB5800EF9E4D /* SEEpisodeCell.swift */; };
+		B9A00B0F2522D02100EF9E4D /* SEFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A00B0E2522D02100EF9E4D /* SEFeedCell.swift */; };
+		B9A00B142522D38500EF9E4D /* SEFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A00B132522D38500EF9E4D /* SEFeed.swift */; };
 		B9C4A28F2516F1F30035860A /* hexdreamsCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = B9C4A28E2516F1F30035860A /* hexdreamsCocoa */; };
 		B9E33E66251AF82A00396F39 /* HXXMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E33E65251AF82A00396F39 /* HXXMLParser.swift */; };
 /* End PBXBuildFile section */
@@ -106,6 +109,9 @@
 		B95F0A0425199050004B609B /* SEEpisodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SEEpisodes.swift; sourceTree = "<group>"; };
 		B95F0A1025199E7E004B609B /* DRAsycImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DRAsycImage.swift; sourceTree = "<group>"; };
 		B95F0A1225199EFD004B609B /* SwiftExplorer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftExplorer-Bridging-Header.h"; sourceTree = "<group>"; };
+		B9A00B062522CB5800EF9E4D /* SEEpisodeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEEpisodeCell.swift; sourceTree = "<group>"; };
+		B9A00B0E2522D02100EF9E4D /* SEFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEFeedCell.swift; sourceTree = "<group>"; };
+		B9A00B132522D38500EF9E4D /* SEFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEFeed.swift; sourceTree = "<group>"; };
 		B9BF2AD12519D27700799633 /* hexdreamsCocoa */ = {isa = PBXFileReference; lastKnownFileType = folder; name = hexdreamsCocoa; path = ../hexdreamsCocoa; sourceTree = "<group>"; };
 		B9E33E65251AF82A00396F39 /* HXXMLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HXXMLParser.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -234,8 +240,11 @@
 		B95F09F925199050004B609B /* ParseXML */ = {
 			isa = PBXGroup;
 			children = (
+				B9A00B132522D38500EF9E4D /* SEFeed.swift */,
 				B95F0A0125199050004B609B /* SEFeeds.swift */,
+				B9A00B0E2522D02100EF9E4D /* SEFeedCell.swift */,
 				B95F0A0425199050004B609B /* SEEpisodes.swift */,
+				B9A00B062522CB5800EF9E4D /* SEEpisodeCell.swift */,
 				B95F09FC25199050004B609B /* SEHTMLToUnicode.swift */,
 				B95F09FB25199050004B609B /* SECustomXMLDecoder.swift */,
 				B95F09FD25199050004B609B /* SECustomXMLDecoderModel.swift */,
@@ -403,6 +412,7 @@
 				B95F0A0825199050004B609B /* SECustomXMLDecoderModel.swift in Sources */,
 				B956586624FD16F30001DEE0 /* RegionMarkerRectangle.swift in Sources */,
 				B95F0A0725199050004B609B /* SEHTMLToUnicode.swift in Sources */,
+				B9A00B072522CB5800EF9E4D /* SEEpisodeCell.swift in Sources */,
 				B9021C532506B6C900F66844 /* SEXMLDecoder.swift in Sources */,
 				B956586524FD16F30001DEE0 /* RegionMarkerCorners.swift in Sources */,
 				B956583324FD16890001DEE0 /* SwiftExplorer.xcdatamodeld in Sources */,
@@ -410,11 +420,13 @@
 				B956586424FD16F30001DEE0 /* RegionMarkerOffset.swift in Sources */,
 				B93A3BE024FD1F840038BFDB /* SEDecodableItem.swift in Sources */,
 				B95F0A0A25199050004B609B /* SECustomXMLChannel.swift in Sources */,
+				B9A00B142522D38500EF9E4D /* SEFeed.swift in Sources */,
 				B95F0A0F25199050004B609B /* SEEpisodes.swift in Sources */,
 				B9E33E66251AF82A00396F39 /* HXXMLParser.swift in Sources */,
 				B956582E24FD16890001DEE0 /* AppDelegate.swift in Sources */,
 				B956583524FD16890001DEE0 /* ContentView.swift in Sources */,
 				B93A3BE324FD1F840038BFDB /* SEDecodableImage.swift in Sources */,
+				B9A00B0F2522D02100EF9E4D /* SEFeedCell.swift in Sources */,
 				B93A3BE424FD1F840038BFDB /* SEXMLParser.swift in Sources */,
 				B956583024FD16890001DEE0 /* SceneDelegate.swift in Sources */,
 				B95F0A0525199050004B609B /* SECustomXMLiTunesOwner.swift in Sources */,

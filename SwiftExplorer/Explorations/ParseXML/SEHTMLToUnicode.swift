@@ -29,31 +29,14 @@ public class SEHTMLToUnicode : HXXMLParserDelegate {
     }
     
     private var stack = [Element(name:"ROOT", attributes:[:])]
+    private var completion:((String)->Void)?
     
     init() {}
     
-    func parse(_ data:Data) -> String {
-        let parser = HXXMLParser(mode:.HTML)
+    func parse(_ data:Data, completion:@escaping (String)->Void) throws {
+        let parser = try HXXMLParser(mode:.HTML, data: data)
         parser.delegate = self
-        parser.parse(data)
-        
-        guard let root = self.stack.popLast() else {
-            print("Error - root element popped off stack")
-            return "ERROR PARSING HTML"
-        }
-        guard let text = root.text else {
-            print("Error - no root text")
-            return "NO TEXT"
-        }
-        
-        var trimmed = text.trimmingCharacters(in:.whitespacesAndNewlines)
-        if trimmed.starts(with:"•") {
-            trimmed = " " + trimmed
-        }
-        
-//        print("\(trimmed)")
-        
-        return trimmed
+        parser.parse()
     }
 
     public func parser(_ parser: HXXMLParser, didStartElement elementName: String, attributes attributeDict: [String : String]) {
@@ -135,6 +118,36 @@ public class SEHTMLToUnicode : HXXMLParserDelegate {
             }
         }
     }
+    
+    public func parserDidEndDocument(_ parser:HXXMLParser) {
+        guard let root = self.stack.popLast() else {
+            print("Error - root element popped off stack")
+            self.completion?("ERROR PARSING HTML")
+            return
+            //return "ERROR PARSING HTML"
+        }
+        guard let text = root.text else {
+            print("Error - no root text")
+            self.completion?("NO TEXT")
+            return
+            //return "NO TEXT"
+        }
+        
+        var trimmed = text.trimmingCharacters(in:.whitespacesAndNewlines)
+        if trimmed.starts(with:"•") {
+            trimmed = " " + trimmed
+        }
+        
+//        print("\(trimmed)")
+        
+        self.completion?(trimmed)
+    }
+    
+    public func parser(_ parser:HXXMLParser, error:Error) {
+        
+    }
+    
+    // MARK: Private Methods
     
     private func isWhiteSpace(_ string:String) -> Bool {
         for scalar in string.unicodeScalars {

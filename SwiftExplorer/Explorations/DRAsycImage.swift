@@ -10,6 +10,7 @@ struct SEAsyncImage<Content:View>: View {
     init(url:URL?, placeholder:@escaping ()->Content) {
         self.loader = SEImageLoader(url:url)
         self.placeholder = placeholder
+        self.loader.load()
     }
         
     // Two things I don't like about this:
@@ -30,9 +31,13 @@ struct SEAsyncImage<Content:View>: View {
 }
 
 class SEImageLoader: ObservableObject {
-    @Published var image:UIImage?
-    
-    private let url:URL?
+    @Published var image:UIImage? {
+        didSet {
+            self.url = nil
+            self.dataTask = nil
+        }
+    }
+    private var url:URL?
     private var dataTask:AnyCancellable?
     
     init(url:URL?) {

@@ -35,10 +35,9 @@ public class SEXMLParser : HXXMLParserDelegate {
     }
             
     public func parse(_ url:URL) throws {
-        let data = try Data(contentsOf:url)
-        let parser = HXXMLParser(mode:.XML)
+        let parser = try HXXMLParser(mode:.XML, network:url)
         parser.delegate = self
-        parser.parse(data)
+        parser.parse()
     }
     
     // MARK: HXXMLParserDelegate
@@ -55,7 +54,7 @@ public class SEXMLParser : HXXMLParserDelegate {
     }
     
     public func parser(_ parser: HXXMLParser, foundCharacters string: String) {
-        if self.isWhiteSpace(string) {
+        if self._isWhiteSpace(string) {
             return
         }
         if let text = self.stack.last?.text {
@@ -71,20 +70,29 @@ public class SEXMLParser : HXXMLParserDelegate {
             self.stack.last?.cdata = foundCDATA
         }
     }
+    
+    public func parser(_ parser: HXXMLParser, didEndElement: String) {
+        if self.stack.count > 1 {
+            _ = self.stack.popLast()
+        }
+    }
+    
+    public func parserDidEndDocument(_ parser:HXXMLParser) {
+        
+    }
+    
+    public func parser(_ parser:HXXMLParser, error:Error) {
+        
+    }
 
-    private func isWhiteSpace(_ string:String) -> Bool {
+    // MARK: Private Methods
+    private func _isWhiteSpace(_ string:String) -> Bool {
         for scalar in string.unicodeScalars {
             if !CharacterSet.whitespacesAndNewlines.contains(scalar) {
                 return false
             }
         }
         return true
-    }
-    
-    public func parser(_ parser: HXXMLParser, didEndElement: String) {
-        if self.stack.count > 1 {
-            _ = self.stack.popLast()
-        }
     }
 
 }
