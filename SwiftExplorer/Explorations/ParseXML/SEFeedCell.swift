@@ -22,18 +22,20 @@ struct SEFeedCell: View {
     }
     
     var body: some View {
-        HStack(alignment:.top) {
-            SEAsyncImage(url:self.loader.channel?.itunesImage) {
-                Text("")
-            }.aspectRatio(contentMode: ContentMode.fill)
-            .frame(width:50, height:50, alignment:.center)
-            .clipped()
-            
-            VStack(alignment:.leading, spacing:3.0) {
-                Text(self.loader.channel?.title ?? self.loader.feed.title)
-                Text(self.loader.channel?.latestItem?.pubDate.map{Self.DATE_FORMATTER.string(from:$0)} ?? "")
-                    .font(.caption)
-                    .foregroundColor(.gray)
+        HXNavigationLink(destination:self.loader.channel.map{SEEpisodes(channel:$0)}) {
+            HStack(alignment:.top) {
+                SEAsyncImage(url:self.loader.channel?.itunesImage) {
+                    Text("")
+                }.aspectRatio(contentMode: ContentMode.fill)
+                .frame(width:50, height:50, alignment:.center)
+                .clipped()
+                
+                VStack(alignment:.leading, spacing:3.0) {
+                    Text(self.loader.channel?.title ?? self.loader.feed.title)
+                    Text(self.loader.channel?.latestItem?.pubDate.map{Self.DATE_FORMATTER.string(from:$0)} ?? "")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                }
             }
         }
     }

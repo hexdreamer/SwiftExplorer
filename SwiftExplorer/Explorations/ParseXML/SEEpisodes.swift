@@ -15,7 +15,7 @@ struct SEEpisodes: View {
     var body: some View {
         List {
             VStack {
-                SEAsyncImage(url:channel.itunesImage) {
+                SEAsyncImage(url:self.channel.itunesImage) {
                     Image("ChannelImageDefault")
                         .resizable()
                 }.aspectRatio(contentMode: ContentMode.fill)

@@ -47,6 +47,7 @@
 		B9A00B142522D38500EF9E4D /* SEFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A00B132522D38500EF9E4D /* SEFeed.swift */; };
 		B9C4A28F2516F1F30035860A /* hexdreamsCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = B9C4A28E2516F1F30035860A /* hexdreamsCocoa */; };
 		B9E33E66251AF82A00396F39 /* HXXMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E33E65251AF82A00396F39 /* HXXMLParser.swift */; };
+		B9ED86F72524455C00B69717 /* HXNavigationLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9ED86F62524455C00B69717 /* HXNavigationLink.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +115,7 @@
 		B9A00B132522D38500EF9E4D /* SEFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEFeed.swift; sourceTree = "<group>"; };
 		B9BF2AD12519D27700799633 /* hexdreamsCocoa */ = {isa = PBXFileReference; lastKnownFileType = folder; name = hexdreamsCocoa; path = ../hexdreamsCocoa; sourceTree = "<group>"; };
 		B9E33E65251AF82A00396F39 /* HXXMLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HXXMLParser.swift; sourceTree = "<group>"; };
+		B9ED86F62524455C00B69717 /* HXNavigationLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HXNavigationLink.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -242,6 +244,7 @@
 			children = (
 				B9A00B132522D38500EF9E4D /* SEFeed.swift */,
 				B95F0A0125199050004B609B /* SEFeeds.swift */,
+				B9ED86F62524455C00B69717 /* HXNavigationLink.swift */,
 				B9A00B0E2522D02100EF9E4D /* SEFeedCell.swift */,
 				B95F0A0425199050004B609B /* SEEpisodes.swift */,
 				B9A00B062522CB5800EF9E4D /* SEEpisodeCell.swift */,
@@ -423,6 +426,7 @@
 				B9A00B142522D38500EF9E4D /* SEFeed.swift in Sources */,
 				B95F0A0F25199050004B609B /* SEEpisodes.swift in Sources */,
 				B9E33E66251AF82A00396F39 /* HXXMLParser.swift in Sources */,
+				B9ED86F72524455C00B69717 /* HXNavigationLink.swift in Sources */,
 				B956582E24FD16890001DEE0 /* AppDelegate.swift in Sources */,
 				B956583524FD16890001DEE0 /* ContentView.swift in Sources */,
 				B93A3BE324FD1F840038BFDB /* SEDecodableImage.swift in Sources */,
