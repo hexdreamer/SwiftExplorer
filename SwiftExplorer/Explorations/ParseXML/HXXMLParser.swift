@@ -272,7 +272,6 @@ private class HXXMLParserURLSessionDelegate : NSObject, URLSessionTaskDelegate, 
     // URLSessionDataDelegate
     @objc
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
-        print("Received bytes: \(data.count)")
         data.withUnsafeBytes { (ptr:UnsafeRawBufferPointer) in
             let unsafeBufferPointer:UnsafeBufferPointer<Int8> = ptr.bindMemory(to:Int8.self)
             let unsafePointer:UnsafePointer<Int8>? = unsafeBufferPointer.baseAddress
