@@ -607,6 +607,7 @@
 				DEVELOPMENT_TEAM = S4K89S6LAE;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = SwiftExplorer/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -630,6 +631,7 @@
 				DEVELOPMENT_TEAM = S4K89S6LAE;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = SwiftExplorer/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

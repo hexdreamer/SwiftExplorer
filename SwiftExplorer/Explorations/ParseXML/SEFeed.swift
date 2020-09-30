@@ -11,7 +11,7 @@ import Combine
 
 struct SEFeed {
     static public let examples:[SEFeed] = [
-      //SEFeed(name:"ThisWeekInTech"             ,title:"This Week In Tech"                ,urlString:"https://feeds.twit.tv/twit.xml"),
+        SEFeed(name:"ThisWeekInTech"             ,title:"This Week In Tech"                ,urlString:"https://feeds.twit.tv/twit.xml"),
         SEFeed(name:"AccidentalTechPodcast"      ,title:"Accidental Tech Podcast"          ,urlString:"https://atp.fm/rss"),
         SEFeed(name:"Marketplace"                ,title:"Marketplace"                      ,urlString:"https://marketplace.org/feed/podcast/marketplace"),
         SEFeed(name:"MakeMeSmartWithKaiAndMolly" ,title:"Make Me Smart With Kai and Molly" ,urlString:"https://marketplace.org/feed/podcast/make-me-smart-with-kai-and-molly"),
@@ -49,13 +49,13 @@ class SEFeedLoader : ObservableObject {
                         let channel = $0.channel
                         DispatchQueue.main.async { [weak self] in
                             self?.channel = channel
-                            self?.loadFromNetwork()
                             self?.parser = nil
+                            self?.loadFromNetwork()
                         }
                     })
                     self.parser = parser
                 } else {
-                    //self.loadFromNetwork()
+                    self.loadFromNetwork()
                 }
             } catch ( let e ) {
                 print("Unexpected error loading from cache: \(e)")
@@ -73,8 +73,14 @@ class SEFeedLoader : ObservableObject {
                 }
                 let parser = SECustomXMLDecoder(root:SECustomXMLChannel())
                 try parser.parse(network:url, completion:{ [weak self] in
-                    self?.channel = $0.channel
-                    self?.parser = nil
+                    guard let _ = self else {
+                        return
+                    }
+                    let channel = $0.channel
+                    DispatchQueue.main.async { [weak self] in
+                        self?.channel = channel
+                        self?.parser = nil
+                    }
                 })
                 self.parser = parser
             } catch ( let e ) {

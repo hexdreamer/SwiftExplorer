@@ -39,6 +39,7 @@ open class HXXMLParser {
     private var netURL:URL?
     private var data:Data?
     private var urlSession:URLSession?
+    private var dataTask:URLSessionDataTask?
     public weak var delegate:HXXMLParserDelegate?
     private var fileIO:DispatchIO?
     private var xmlContext:xmlParserCtxtPtr?
@@ -132,12 +133,14 @@ open class HXXMLParser {
     private func _parseXMLFrom(network url:URL) throws {
         let xmlContext = try self._createXMLContext()
         let urlSessionDelegate = HXXMLParserURLSessionDelegate(xmlContext:xmlContext)
-
-        self.urlSession = URLSession.init(configuration:.default, delegate:urlSessionDelegate, delegateQueue:self.operationQueue)
-        let _ = URLSession.shared.dataTask(with:url)
-        
-        self.xmlContext = try self._createXMLContext()
+        self.xmlContext = xmlContext
         self.xmlURLSessionDelegate = urlSessionDelegate
+
+        let urlSession = URLSession.init(configuration:.default, delegate:urlSessionDelegate, delegateQueue:self.operationQueue)
+        let dataTask = urlSession.dataTask(with:url)
+        self.urlSession = urlSession
+        self.dataTask = dataTask
+        dataTask.resume()
     }
     
     private func _parseXMLFrom(data:Data) throws {
@@ -267,7 +270,9 @@ private class HXXMLParserURLSessionDelegate : NSObject, URLSessionTaskDelegate, 
     }
     
     // URLSessionDataDelegate
+    @objc
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
+        print("Received bytes: \(data.count)")
         data.withUnsafeBytes { (ptr:UnsafeRawBufferPointer) in
             let unsafeBufferPointer:UnsafeBufferPointer<Int8> = ptr.bindMemory(to:Int8.self)
             let unsafePointer:UnsafePointer<Int8>? = unsafeBufferPointer.baseAddress

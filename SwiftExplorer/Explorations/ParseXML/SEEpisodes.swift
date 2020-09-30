@@ -37,5 +37,6 @@ struct SEEpisodes: View {
                 SEEpisodeCell(item:item)
             }
         }
+        .navigationTitle(channel.title ?? "NO TITLE")
     }
 }
