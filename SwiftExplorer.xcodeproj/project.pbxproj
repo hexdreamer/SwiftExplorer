@@ -46,6 +46,7 @@
 		B9A00B0F2522D02100EF9E4D /* SEFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A00B0E2522D02100EF9E4D /* SEFeedCell.swift */; };
 		B9A00B142522D38500EF9E4D /* SEFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A00B132522D38500EF9E4D /* SEFeed.swift */; };
 		B9C4A28F2516F1F30035860A /* hexdreamsCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = B9C4A28E2516F1F30035860A /* hexdreamsCocoa */; };
+		B9E1EA5C25255DE6000067B8 /* HiraganaKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E1EA5B25255DE6000067B8 /* HiraganaKeyboard.swift */; };
 		B9E33E66251AF82A00396F39 /* HXXMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E33E65251AF82A00396F39 /* HXXMLParser.swift */; };
 		B9ED86F72524455C00B69717 /* HXNavigationLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9ED86F62524455C00B69717 /* HXNavigationLink.swift */; };
 /* End PBXBuildFile section */
@@ -114,6 +115,7 @@
 		B9A00B0E2522D02100EF9E4D /* SEFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEFeedCell.swift; sourceTree = "<group>"; };
 		B9A00B132522D38500EF9E4D /* SEFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEFeed.swift; sourceTree = "<group>"; };
 		B9BF2AD12519D27700799633 /* hexdreamsCocoa */ = {isa = PBXFileReference; lastKnownFileType = folder; name = hexdreamsCocoa; path = ../hexdreamsCocoa; sourceTree = "<group>"; };
+		B9E1EA5B25255DE6000067B8 /* HiraganaKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiraganaKeyboard.swift; sourceTree = "<group>"; };
 		B9E33E65251AF82A00396F39 /* HXXMLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HXXMLParser.swift; sourceTree = "<group>"; };
 		B9ED86F62524455C00B69717 /* HXNavigationLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HXNavigationLink.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -232,6 +234,7 @@
 				B956586324FD16F30001DEE0 /* RegionMarkerRectangle.swift */,
 				B956586224FD16F30001DEE0 /* RegionMarkerCorners.swift */,
 				B956586124FD16F30001DEE0 /* RegionMarkerOffset.swift */,
+				B9E1EA5B25255DE6000067B8 /* HiraganaKeyboard.swift */,
 				B95F09F925199050004B609B /* ParseXML */,
 				B93A3BD924FD1F840038BFDB /* DecodeXML */,
 				B95F0A1025199E7E004B609B /* DRAsycImage.swift */,
@@ -417,6 +420,7 @@
 				B95F0A0725199050004B609B /* SEHTMLToUnicode.swift in Sources */,
 				B9A00B072522CB5800EF9E4D /* SEEpisodeCell.swift in Sources */,
 				B9021C532506B6C900F66844 /* SEXMLDecoder.swift in Sources */,
+				B9E1EA5C25255DE6000067B8 /* HiraganaKeyboard.swift in Sources */,
 				B956586524FD16F30001DEE0 /* RegionMarkerCorners.swift in Sources */,
 				B956583324FD16890001DEE0 /* SwiftExplorer.xcdatamodeld in Sources */,
 				B95F0A0D25199050004B609B /* SECustomXMLItem.swift in Sources */,

@@ -34,6 +34,13 @@ struct ContentView: View {
                 }
                 
                 NavigationLink(
+                    destination:HiraganaKeyboard()
+                        .navigationBarTitle("Hiragana Keyboard")
+                ) {
+                    Text("Hiragana Keyboard")
+                }
+
+                NavigationLink(
                     destination:SEFeeds()
                         .navigationBarTitle("Custom XML Parser")
                 ) {

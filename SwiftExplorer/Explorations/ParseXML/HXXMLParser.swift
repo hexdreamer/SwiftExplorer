@@ -121,8 +121,8 @@ open class HXXMLParser {
     private func _fileIOCallback(done:Bool, data:DispatchData?, error:Int32) {
         if let data = data,
            data.count > 0 {
-            let _ = data.withUnsafeBytes {
-                xmlParseChunk(self.xmlContext, $0, Int32(data.count), 0)
+            let _ = data.withUnsafeBytes { (bytes:UnsafePointer<Int8>) in
+                xmlParseChunk(self.xmlContext, bytes, Int32(data.count), 0)
             }
             self.fileIO?.read(offset:0, length:4*1024, queue:self.serialize, ioHandler:self._fileIOCallback);
         } else {
@@ -280,6 +280,7 @@ private class HXXMLParserURLSessionDelegate : NSObject, URLSessionTaskDelegate, 
     }
     
     // URLSesssionTaskDelegate
+    @objc
     public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         xmlParseChunk(self.xmlContext, "", 0, 1)
     }
@@ -295,6 +296,7 @@ private class HXHTMLParserURLSessionDelegate : NSObject, URLSessionTaskDelegate,
     }
     
     // URLSessionDataDelegate
+    @objc
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
         data.withUnsafeBytes { (ptr:UnsafeRawBufferPointer) in
             let unsafeBufferPointer:UnsafeBufferPointer<Int8> = ptr.bindMemory(to:Int8.self)
@@ -304,6 +306,7 @@ private class HXHTMLParserURLSessionDelegate : NSObject, URLSessionTaskDelegate,
     }
     
     // URLSesssionTaskDelegate
+    @objc
     public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         htmlParseChunk(self.htmlContext, "", 0, 1)
     }
