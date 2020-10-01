@@ -41,6 +41,13 @@ struct ContentView: View {
                 }
 
                 NavigationLink(
+                    destination:KatakanaKeyboard()
+                        .navigationBarTitle("Katakana Keyboard")
+                ) {
+                    Text("Katakana Keyboard")
+                }
+
+                NavigationLink(
                     destination:SEFeeds()
                         .navigationBarTitle("Custom XML Parser")
                 ) {

@@ -8,9 +8,7 @@
 
 import SwiftUI
 
-struct HiraganaKeyboard: View {
-    //static let columns: [GridItem] = Array(repeating:.init(.flexible()), count: 8)
-        
+struct HiraganaKeyboard: View {        
     static let single_columns:[GridItem] = Array(
         repeating:GridItem(.fixed(25), spacing:0, alignment:.center),
         count:5)
@@ -34,7 +32,7 @@ struct HiraganaKeyboard: View {
         "や",  "",  "ゆ",  "", "よ", "",    "",    "",    "",
         "ら", "り", "る", "れ", "ろ", "","りゃ", "りゅ", "りょ",
         "わ", "ゐ",   "", "ゑ", "を", "",   "",    "",    "",
-        "",    "", "ん",   "",  "", "",  "っ",  "ゝ",   "ゞ",
+        "",    "", "ん",   "", "ー", "",  "っ",  "ゝ",   "ゞ",
         "が", "ぎ", "ぐ", "げ", "ご", "","ぎゃ", "ぎゅ", "ぎょ",
         "ざ", "じ", "ず", "ぜ", "ぞ", "","じゃ", "じゅ", "じょ",
         "だ", "ぢ", "づ", "で", "ど", "","ぢゃ", "ぢゅ", "ぢょ",

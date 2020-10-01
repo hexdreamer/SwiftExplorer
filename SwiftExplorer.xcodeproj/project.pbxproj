@@ -47,6 +47,7 @@
 		B9A00B142522D38500EF9E4D /* SEFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A00B132522D38500EF9E4D /* SEFeed.swift */; };
 		B9C4A28F2516F1F30035860A /* hexdreamsCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = B9C4A28E2516F1F30035860A /* hexdreamsCocoa */; };
 		B9E1EA5C25255DE6000067B8 /* HiraganaKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E1EA5B25255DE6000067B8 /* HiraganaKeyboard.swift */; };
+		B9E1EA672525A87A000067B8 /* KatakanaKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E1EA662525A87A000067B8 /* KatakanaKeyboard.swift */; };
 		B9E33E66251AF82A00396F39 /* HXXMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E33E65251AF82A00396F39 /* HXXMLParser.swift */; };
 		B9ED86F72524455C00B69717 /* HXNavigationLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9ED86F62524455C00B69717 /* HXNavigationLink.swift */; };
 /* End PBXBuildFile section */
@@ -116,6 +117,7 @@
 		B9A00B132522D38500EF9E4D /* SEFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEFeed.swift; sourceTree = "<group>"; };
 		B9BF2AD12519D27700799633 /* hexdreamsCocoa */ = {isa = PBXFileReference; lastKnownFileType = folder; name = hexdreamsCocoa; path = ../hexdreamsCocoa; sourceTree = "<group>"; };
 		B9E1EA5B25255DE6000067B8 /* HiraganaKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiraganaKeyboard.swift; sourceTree = "<group>"; };
+		B9E1EA662525A87A000067B8 /* KatakanaKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KatakanaKeyboard.swift; sourceTree = "<group>"; };
 		B9E33E65251AF82A00396F39 /* HXXMLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HXXMLParser.swift; sourceTree = "<group>"; };
 		B9ED86F62524455C00B69717 /* HXNavigationLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HXNavigationLink.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -235,6 +237,7 @@
 				B956586224FD16F30001DEE0 /* RegionMarkerCorners.swift */,
 				B956586124FD16F30001DEE0 /* RegionMarkerOffset.swift */,
 				B9E1EA5B25255DE6000067B8 /* HiraganaKeyboard.swift */,
+				B9E1EA662525A87A000067B8 /* KatakanaKeyboard.swift */,
 				B95F09F925199050004B609B /* ParseXML */,
 				B93A3BD924FD1F840038BFDB /* DecodeXML */,
 				B95F0A1025199E7E004B609B /* DRAsycImage.swift */,
@@ -406,6 +409,7 @@
 				B95F0A1125199E7E004B609B /* DRAsycImage.swift in Sources */,
 				B95F0A0625199050004B609B /* SECustomXMLDecoder.swift in Sources */,
 				B93A4EB8250D3B0700EE2B35 /* SEPodcastEpisodes.swift in Sources */,
+				B9E1EA672525A87A000067B8 /* KatakanaKeyboard.swift in Sources */,
 				B95F0A0925199050004B609B /* SECustomXMLEnclosure.swift in Sources */,
 				B95F0A0E25199050004B609B /* SECustomXMLiTunesCategory.swift in Sources */,
 				B93A3BE524FD1F840038BFDB /* SEDecodableOwner.swift in Sources */,
