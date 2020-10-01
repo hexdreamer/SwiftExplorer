@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import hexdreamsCocoa
 
 public class SECustomXMLDecoder : HXXMLParserDelegate {
         
