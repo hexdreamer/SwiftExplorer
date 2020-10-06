@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct SECustomXMLItem : SECustomXMLDecoderModel {
+struct SECustomParsingItem : SECustomParserMode {
     
     var contentEncoded:String?
     var description:Data?
-    var enclosure:SECustomXMLEnclosure?
+    var enclosure:SECustomParsingEnclosure?
     var guid:String?
     var guidIsPermalink:Bool?
     var link:URL?
@@ -93,19 +93,19 @@ struct SECustomXMLItem : SECustomXMLDecoderModel {
         }
     }
     
-    public func makeChildEntity(forTag tag:String) -> SECustomXMLDecoderModel? {
+    public func makeChildEntity(forTag tag:String) -> SECustomParserMode? {
         switch tag {
             case "enclosure":
-                return SECustomXMLEnclosure()
+                return SECustomParsingEnclosure()
             default:
                 return nil
         }
     }
         
-    mutating func setChildEntity(_ value:SECustomXMLDecoderModel, forTag tag:String) {
+    mutating func setChildEntity(_ value:SECustomParserMode, forTag tag:String) {
         switch tag {
             case "enclosure":
-                if let x = value as? SECustomXMLEnclosure {
+                if let x = value as? SECustomParsingEnclosure {
                     self.enclosure = x
                 }
             default:

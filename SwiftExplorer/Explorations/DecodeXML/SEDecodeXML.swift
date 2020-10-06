@@ -1,6 +1,7 @@
 
 import Foundation
 import SwiftUI
+import hexdreamsCocoa
 
 struct SEDecodeXML : View {
     static var DATE_FORMATTER:DateFormatter {
@@ -23,7 +24,7 @@ struct SEDecodeXML : View {
                     .navigationBarTitle(channel.title)
             ){
                 HStack {
-                    SEAsyncImage(url:channel.itunesImage) {
+                    HXAsyncImage(url:channel.itunesImage) {
                         Image("ChannelImageDefault")
                             .resizable()
                     }.frame(width:50, height:50, alignment:.center)

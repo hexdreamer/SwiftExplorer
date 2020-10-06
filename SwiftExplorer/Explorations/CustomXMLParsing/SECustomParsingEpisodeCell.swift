@@ -7,15 +7,16 @@
 //
 
 import SwiftUI
+import hexdreamsCocoa
 
-struct SEEpisodeCell: View {
+struct SECustomParsingEpisodeCell: View {
     static var DATE_FORMATTER:DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = "E, MMM d yyy hh:mma"
         return formatter;
     }
 
-    let item:SECustomXMLItem
+    let item:SECustomParsingItem
     
     var body: some View {
         HStack(alignment:.top) {
@@ -35,7 +36,7 @@ struct SEEpisodeCell: View {
             }
             if item.itunesImage != nil {
                 Spacer()
-                SEAsyncImage(url:item.itunesImage) {
+                HXAsyncImage(url:item.itunesImage) {
                     Image("ChannelImageDefault")
                         .resizable()
                 }.aspectRatio(contentMode: ContentMode.fill)

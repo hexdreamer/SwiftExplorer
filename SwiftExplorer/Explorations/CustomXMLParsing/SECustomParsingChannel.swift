@@ -9,14 +9,14 @@ import Foundation
 import CoreData
 import hexdreamsCocoa
 
-struct SECustomXMLChannel : SECustomXMLDecoderModel {
+struct SECustomParsingChannel : SECustomParserMode {
     
     var atomLink:URL?
     var copyright:String?
     var description:String?
     var docs:String?
     var generator:String?
-    var image:SECustomXMLImage?
+    var image:SECustomParsingImage?
     var language:String?
     var lastBuildDate:Date?
     var link:URL?
@@ -25,20 +25,20 @@ struct SECustomXMLChannel : SECustomXMLDecoderModel {
     var site:String?
     var title:String?
     var itunesAuthor:String?
-    var itunesCategory:SECustomXMLiTunesCategory?
+    var itunesCategory:SECustomParsingCategory?
     var itunesCopyright:String?
     var itunesExplicit:Bool?
     var itunesImage:URL?
     var itunesNewFeedURL:URL?
-    var itunesOwner:SECustomXMLiTunesOwner?
+    var itunesOwner:SECustomParsingOwner?
     var itunesSubtitle:String?
     var itunesSummary:String?
     var itunesType:String?
-    var items = [SECustomXMLItem]()
+    var items = [SECustomParsingItem]()
     
     public let tag = "channel"
         
-    public var orderedItems:[SECustomXMLItem] {
+    public var orderedItems:[SECustomParsingItem] {
         var sortable = self.items
         sortable.sort(by: { a,b in
             if let aDate = a.pubDate,
@@ -51,8 +51,8 @@ struct SECustomXMLChannel : SECustomXMLDecoderModel {
         return sortable
     }
     
-    var latestItem:SECustomXMLItem? {
-        guard var latest:SECustomXMLItem = self.items.first(where:{$0.pubDate != nil}),
+    var latestItem:SECustomParsingItem? {
+        guard var latest:SECustomParsingItem = self.items.first(where:{$0.pubDate != nil}),
               var latestDate:Date = latest.pubDate
         else {
             return nil
@@ -135,37 +135,37 @@ struct SECustomXMLChannel : SECustomXMLDecoderModel {
         }
     }
         
-    public func makeChildEntity(forTag tag:String) -> SECustomXMLDecoderModel? {
+    public func makeChildEntity(forTag tag:String) -> SECustomParserMode? {
         switch tag {
             case "itunes:category":
-                return SECustomXMLiTunesCategory()
+                return SECustomParsingCategory()
             case "image":
-                return SECustomXMLImage()
+                return SECustomParsingImage()
             case "itunes:owner":
-                return SECustomXMLiTunesOwner()
+                return SECustomParsingOwner()
             case "item":
-                return SECustomXMLItem()
+                return SECustomParsingItem()
             default:
                 return nil
         }
     }
     
-    mutating func setChildEntity(_ value:SECustomXMLDecoderModel, forTag tag:String) {
+    mutating func setChildEntity(_ value:SECustomParserMode, forTag tag:String) {
         switch tag {
             case "itunes:category":
-                if let x = value as? SECustomXMLiTunesCategory {
+                if let x = value as? SECustomParsingCategory {
                     self.itunesCategory = x
                 }
             case "image":
-                if let x = value as? SECustomXMLImage {
+                if let x = value as? SECustomParsingImage {
                     self.image = x
                 }
             case "itunes:owner":
-                if let x = value as? SECustomXMLiTunesOwner {
+                if let x = value as? SECustomParsingOwner {
                     self.itunesOwner = x
                 }
             case "item":
-                if let x = value as? SECustomXMLItem {
+                if let x = value as? SECustomParsingItem {
                     self.items.append(x)
                 }
             default:

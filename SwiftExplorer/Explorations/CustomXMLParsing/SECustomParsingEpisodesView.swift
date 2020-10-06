@@ -6,16 +6,17 @@
 //
 
 import SwiftUI
+import hexdreamsCocoa
 
-struct SEEpisodes: View {
-    let channel:SECustomXMLChannel
+struct SECustomParsingEpisodesView: View {
+    let channel:SECustomParsingChannel
 
     // Can make custom navigation title views in iOS 14
     // https://sarunw.com/posts/custom-navigation-bar-title-view-in-swiftui/
     var body: some View {
         List {
             VStack {
-                SEAsyncImage(url:self.channel.itunesImage) {
+                HXAsyncImage(url:self.channel.itunesImage) {
                     Image("ChannelImageDefault")
                         .resizable()
                 }.aspectRatio(contentMode: ContentMode.fill)
@@ -33,8 +34,8 @@ struct SEEpisodes: View {
             .frame(maxWidth:.infinity, alignment:.center)
             .background(Color(Color.RGBColorSpace.displayP3, white:0.9, opacity:1.0))
             
-            ForEach(self.channel.items, id:\SECustomXMLItem.guid) { item in
-                SEEpisodeCell(item:item)
+            ForEach(self.channel.items, id:\SECustomParsingItem.guid) { item in
+                SECustomParsingEpisodeCell(item:item)
             }
         }
         .navigationTitle(channel.title ?? "NO TITLE")

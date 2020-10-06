@@ -9,12 +9,12 @@
 import Foundation
 import Combine
 
-struct SEFeed {
-    static public let examples:[SEFeed] = [
+struct SECustomParsingFeed {
+    static public let examples:[SECustomParsingFeed] = [
         //SEFeed(name:"ThisWeekInTech"             ,title:"This Week In Tech"                ,urlString:"https://feeds.twit.tv/twit.xml"),
-        SEFeed(name:"AccidentalTechPodcast"      ,title:"Accidental Tech Podcast"          ,urlString:"https://atp.fm/rss"),
-        SEFeed(name:"Marketplace"                ,title:"Marketplace"                      ,urlString:"https://marketplace.org/feed/podcast/marketplace"),
-        SEFeed(name:"MakeMeSmartWithKaiAndMolly" ,title:"Make Me Smart With Kai and Molly" ,urlString:"https://marketplace.org/feed/podcast/make-me-smart-with-kai-and-molly"),
+        SECustomParsingFeed(name:"AccidentalTechPodcast"      ,title:"Accidental Tech Podcast"          ,urlString:"https://atp.fm/rss"),
+        SECustomParsingFeed(name:"Marketplace"                ,title:"Marketplace"                      ,urlString:"https://marketplace.org/feed/podcast/marketplace"),
+        SECustomParsingFeed(name:"MakeMeSmartWithKaiAndMolly" ,title:"Make Me Smart With Kai and Molly" ,urlString:"https://marketplace.org/feed/podcast/make-me-smart-with-kai-and-molly"),
       //SEFeed(name:"BlackOnTheAir"              ,title:"Black on the Air"                 ,urlString:"https://www.theringer.com/rss/larry-wilmore-black-on-air/index.xml"),  - not RSS format
       //SEFeed(name:"RealTimeWithBillMaher"      ,title"Real Time with Bill Maher"         ,urlString:"http://billmaher.hbo.libsynpro.com/rss"), - not https - won't load
     ]
@@ -25,11 +25,11 @@ struct SEFeed {
 }
 
 class SEFeedLoader : ObservableObject {
-    let feed:SEFeed
-    @Published var channel:SECustomXMLChannel?
-    var parser:SECustomXMLDecoder?
+    let feed:SECustomParsingFeed
+    @Published var channel:SECustomParsingChannel?
+    var parser:SECustomParser?
     
-    init(feed:SEFeed) {
+    init(feed:SECustomParsingFeed) {
         self.feed = feed
         self.loadFromCache()
     }
@@ -41,7 +41,7 @@ class SEFeedLoader : ObservableObject {
                 let cachedFeed = cachedir.appendingPathComponent(self.feed.name).appendingPathExtension("xml");
                 if ( FileManager.default.fileExists(atPath:cachedFeed.path) ) {
                     print("Loading cached feed: \(cachedFeed)")
-                    let parser = SECustomXMLDecoder(root:SECustomXMLChannel())
+                    let parser = SECustomParser(root:SECustomParsingChannel())
                     try parser.parse(file:cachedFeed, completion:{ [weak self] in
                         guard let _ = self else {
                             return
@@ -71,7 +71,7 @@ class SEFeedLoader : ObservableObject {
                     print("Could not create url from \(self.feed.urlString)")
                     return;
                 }
-                let parser = SECustomXMLDecoder(root:SECustomXMLChannel())
+                let parser = SECustomParser(root:SECustomParsingChannel())
                 try parser.parse(network:url, completion:{ [weak self] in
                     guard let _ = self else {
                         return

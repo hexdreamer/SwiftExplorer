@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SECustomXMLEnclosure : SECustomXMLDecoderModel {
+struct SECustomParsingEnclosure : SECustomParserMode {
     
     var length:Int32?
     var type:String?
@@ -48,11 +48,11 @@ struct SECustomXMLEnclosure : SECustomXMLDecoderModel {
         }
     }
 
-    public func makeChildEntity(forTag tag:String) -> SECustomXMLDecoderModel? {
+    public func makeChildEntity(forTag tag:String) -> SECustomParserMode? {
         return nil
     }
     
-    mutating func setChildEntity(_ value:SECustomXMLDecoderModel, forTag tag:String) {
+    mutating func setChildEntity(_ value:SECustomParserMode, forTag tag:String) {
         print("Unsupported tag: \(tag)")
     }
 

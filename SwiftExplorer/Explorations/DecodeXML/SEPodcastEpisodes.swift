@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import hexdreamsCocoa
 
 struct SEPodcastEpisodes: View {
     static var DATE_FORMATTER:DateFormatter {
@@ -22,7 +23,7 @@ struct SEPodcastEpisodes: View {
     var body: some View {
         List {
             VStack {
-                SEAsyncImage(url:channel.itunesImage) {
+                HXAsyncImage(url:channel.itunesImage) {
                     Image("ChannelImageDefault")
                         .resizable()
                 }.aspectRatio(contentMode: ContentMode.fill)
@@ -49,7 +50,7 @@ struct SEPodcastEpisodes: View {
                     }
                     if item.itunesImage != nil {
                         Spacer()
-                        SEAsyncImage(url:item.itunesImage) {
+                        HXAsyncImage(url:item.itunesImage) {
                             Image("ChannelImageDefault")
                                 .resizable()
                         }.aspectRatio(contentMode: ContentMode.fill)

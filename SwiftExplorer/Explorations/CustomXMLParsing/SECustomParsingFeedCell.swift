@@ -7,8 +7,9 @@
 //
 
 import SwiftUI
+import hexdreamsCocoa
 
-struct SEFeedCell: View {
+struct SECustomParsingFeedCell: View {
     static var DATE_FORMATTER:DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = "E, dd MMM yyy HH:mm:ss Z"
@@ -17,14 +18,14 @@ struct SEFeedCell: View {
 
     @ObservedObject private var loader:SEFeedLoader
     
-    init(feed:SEFeed) {
+    init(feed:SECustomParsingFeed) {
         self.loader = SEFeedLoader(feed:feed)
     }
     
     var body: some View {
-        HXNavigationLink(destination:self.loader.channel.map{SEEpisodes(channel:$0)}) {
+        HXNavigationLink(destination:self.loader.channel.map{SECustomParsingEpisodesView(channel:$0)}) {
             HStack(alignment:.top) {
-                SEAsyncImage(url:self.loader.channel?.itunesImage) {
+                HXAsyncImage(url:self.loader.channel?.itunesImage) {
                     Text("")
                 }.aspectRatio(contentMode: ContentMode.fill)
                 .frame(width:50, height:50, alignment:.center)

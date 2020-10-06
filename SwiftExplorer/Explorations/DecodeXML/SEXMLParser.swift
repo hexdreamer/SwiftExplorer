@@ -1,7 +1,8 @@
 
 import Foundation
+import hexdreamsCocoa
 
-public class SEXMLParser : HXXMLParserDelegate {
+public class SEXMLParser : HXSAXParserDelegate {
         
     public class Element {
         let name:String
@@ -35,11 +36,11 @@ public class SEXMLParser : HXXMLParserDelegate {
     }
             
     public func parse(_ url:URL) throws {
-        //let parser = try HXXMLParser(mode:.XML, delegate:self)
+        //let parser = try HXSAXParser(mode:.XML, delegate:self)
     }
     
-    // MARK: HXXMLParserDelegate
-    public func parser(_ parser: HXXMLParser, didStartElement elementName: String, attributes attributeDict: [String : String]) {
+    // MARK: HXSAXParserDelegate
+    public func parser(_ parser: HXSAXParser, didStartElement elementName: String, attributes attributeDict: [String : String]) {
         for _ in 0..<self.stack.count {
             print("    ", terminator:"")
         }
@@ -51,7 +52,7 @@ public class SEXMLParser : HXXMLParserDelegate {
         self.stack.append(element)
     }
     
-    public func parser(_ parser: HXXMLParser, foundCharacters string: String) {
+    public func parser(_ parser: HXSAXParser, foundCharacters string: String) {
         if self._isWhiteSpace(string) {
             return
         }
@@ -62,24 +63,24 @@ public class SEXMLParser : HXXMLParserDelegate {
         }
     }
     
-    public func parser(_ parser: HXXMLParser, foundCDATA: Data) {
+    public func parser(_ parser: HXSAXParser, foundCDATA: Data) {
         if let element = self.stack.last,
            element.name == "description" {
             self.stack.last?.cdata = foundCDATA
         }
     }
     
-    public func parser(_ parser: HXXMLParser, didEndElement: String) {
+    public func parser(_ parser: HXSAXParser, didEndElement: String) {
         if self.stack.count > 1 {
             _ = self.stack.popLast()
         }
     }
     
-    public func parserDidEndDocument(_ parser:HXXMLParser) {
+    public func parserDidEndDocument(_ parser:HXSAXParser) {
         
     }
     
-    public func parser(_ parser:HXXMLParser, error:Error) {
+    public func parser(_ parser:HXSAXParser, error:Error) {
         
     }
 

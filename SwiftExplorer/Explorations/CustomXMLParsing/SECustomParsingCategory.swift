@@ -7,10 +7,10 @@
 
 import Foundation
 
-class SECustomXMLiTunesCategory : SECustomXMLDecoderModel {
+class SECustomParsingCategory : SECustomParserMode {
     
     var text:String?
-    var itunesCategory:SECustomXMLiTunesCategory?
+    var itunesCategory:SECustomParsingCategory?
     
     public var tag:String {
         return "itunes:category"
@@ -41,19 +41,19 @@ class SECustomXMLiTunesCategory : SECustomXMLDecoderModel {
         }
     }
     
-    public func makeChildEntity(forTag tag:String) -> SECustomXMLDecoderModel? {
+    public func makeChildEntity(forTag tag:String) -> SECustomParserMode? {
         switch tag {
             case "itunes:category":
-                return SECustomXMLiTunesCategory()
+                return SECustomParsingCategory()
             default:
                 return nil
         }
     }
 
-    public func setChildEntity(_ value:SECustomXMLDecoderModel, forTag tag:String) {
+    public func setChildEntity(_ value:SECustomParserMode, forTag tag:String) {
         switch tag {
             case "itunes:category":
-                if let x = value as? SECustomXMLiTunesCategory {
+                if let x = value as? SECustomParsingCategory {
                     self.itunesCategory = x
                 }
             default:
