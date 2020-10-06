@@ -32,7 +32,6 @@ open class HXXMLParser {
         case XML, HTML
     }
     
-    private let serialize = DispatchQueue(label:"HXXMLParser", qos:.background, attributes:[], autoreleaseFrequency:.workItem, target:nil)
     private let mode:Mode
     public weak var delegate:HXXMLParserDelegate?
     private var xmlContext:xmlParserCtxtPtr?
@@ -45,7 +44,7 @@ open class HXXMLParser {
             case .XML:
                 var sax = xmlSAXHandler()
                 sax.initialized = XML_SAX2_MAGIC
-                sax.startElement = { _me($0)?._startElement(name:$1, atts:$2)      }
+                sax.startElement = { _me($0)?._startElement(name:$1, attrPtr:$2)   }
                 sax.characters   = { _me($0)?._characters  (ch:$1, len:$2)         }
                 sax.cdataBlock   = { _me($0)?._cdataBlock  (pointer:$1, length:$2) }
                 sax.endElement   = { _me($0)?._endElement  (name:$1)               }
@@ -57,7 +56,7 @@ open class HXXMLParser {
             case .HTML:
                 var sax = htmlSAXHandler()
                 sax.initialized = XML_SAX2_MAGIC
-                sax.startElement = { _me($0)?._startElement(name:$1, atts:$2)      }
+                sax.startElement = { _me($0)?._startElement(name:$1, attrPtr:$2)   }
                 sax.characters   = { _me($0)?._characters  (ch:$1, len:$2)         }
                 sax.cdataBlock   = { _me($0)?._cdataBlock  (pointer:$1, length:$2) }
                 sax.endElement   = { _me($0)?._endElement  (name:$1)               }
@@ -108,18 +107,21 @@ open class HXXMLParser {
         
     // MARK: libxml2 parser callbacks
     
-    private func _startElement(name:UnsafePointer<xmlChar>?, atts:UnsafePointer<UnsafePointer<xmlChar>?>?) {
+    private func _startElement(name:UnsafePointer<xmlChar>?, attrPtr:UnsafePointer<UnsafePointer<xmlChar>?>?) {
         // https://github.com/MaddTheSane/chmox/blob/3263ddf09276f6a47961cc4b87762f58b88772d0/CHMTableOfContents.swift#L75
-        guard let elementName = _decode(name) else {
+        guard let elementName = self._decodeCString(name) else {
             return
         }
-        let attributeDict:[String:String]
-        if let atts = atts {
-            attributeDict = _atts2dict({ _decode(atts[$0]) })
-        } else {
-            attributeDict = [String:String]()
+        var attributes = [String:String]()
+        if let attrPtr = attrPtr {
+            var i = 0
+            while let name = self._decodeCString(attrPtr[i]) {
+                let value = self._decodeCString(attrPtr[i + 1])
+                attributes[name] = value
+                i += 2
+            }
         }
-        self.delegate?.parser(self, didStartElement:elementName, attributes:attributeDict)
+        self.delegate?.parser(self, didStartElement:elementName, attributes:attributes)
     }
     
     private func _characters(ch: UnsafePointer<xmlChar>?, len:CInt) {
@@ -140,7 +142,7 @@ open class HXXMLParser {
     
     private func _endElement(name:UnsafePointer<xmlChar>?) {
         // https://github.com/MaddTheSane/chmox/blob/3263ddf09276f6a47961cc4b87762f58b88772d0/CHMTableOfContents.swift#L75
-        guard let elementName = _decode(name) else {
+        guard let elementName = self._decodeCString(name) else {
             return
         }
         self.delegate?.parser(self, didEndElement:elementName)
@@ -149,33 +151,20 @@ open class HXXMLParser {
     private func _endDocument() {
         self.delegate?.parserDidEndDocument(self)
     }
-}
-
-// MARK: These functions need to be free-floating because they get accessed from libxml2 C callbacks.
-
-// turn a nil-terminated list of unwrapped name,value pairs into a dictionary.
-// expand abbreviated (html5) attribute values.
-private func _atts2dict(_ atts: (Int) -> String?) -> [String:String] {
-    var ret = [String:String]()
-    var idx = 0
-    while let name = atts(idx) {
-        ret[name] = atts(idx+1) ?? name
-        idx += 2
-    }
-    return ret
-}
-
-// https://github.com/apple/swift-corelibs-foundation/blob/master/Foundation/XMLParser.swift#L33
-private func _decode(_ bytes:UnsafePointer<xmlChar>?) -> String? {
-    if let bytes = bytes {
-        if let (str, _) = String.decodeCString(bytes, as:UTF8.self, repairingInvalidCodeUnits:false) {
+    
+    // MARK: Utility Methods
+    private func _decodeCString(_ bytes:UnsafePointer<xmlChar>?) -> String? {
+        if let bytes = bytes,
+           let (str, _) = String.decodeCString(bytes, as:UTF8.self, repairingInvalidCodeUnits:false) {
             return str
         }
+        return nil
     }
-    return nil
+    
 }
 
-// Look into making this throw at some point
+// This function needs to be free-floating because they get accessed from libxml2 C callbacks.
+
 private func _me(_ ptr : UnsafeRawPointer?) -> HXXMLParser? {
     if let ptr = ptr {
         return Unmanaged<HXXMLParser>.fromOpaque(ptr).takeUnretainedValue()
