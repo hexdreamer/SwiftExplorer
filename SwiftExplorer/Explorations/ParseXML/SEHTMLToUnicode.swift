@@ -29,7 +29,6 @@ public class SEHTMLToUnicode : HXXMLParserDelegate {
     }
     
     private var stack = [Element(name:"ROOT", attributes:[:])]
-    private var completion:((String)->Void)?
     private var indentLevel:UInt = 0;
     
     init() {}
@@ -144,33 +143,9 @@ public class SEHTMLToUnicode : HXXMLParserDelegate {
         }
     }
     
-    public func parserDidEndDocument(_ parser:HXXMLParser) {
-        guard let root = self.stack.popLast() else {
-            print("Error - root element popped off stack")
-            self.completion?("ERROR PARSING HTML")
-            return
-            //return "ERROR PARSING HTML"
-        }
-        guard let text = root.text else {
-            print("Error - no root text")
-            self.completion?("NO TEXT")
-            return
-            //return "NO TEXT"
-        }
-        
-        var trimmed = text.trimmingCharacters(in:.whitespacesAndNewlines)
-        if trimmed.starts(with:"•") {
-            trimmed = " " + trimmed
-        }
-        
-//        print("\(trimmed)")
-        
-        self.completion?(trimmed)
-    }
+    public func parserDidEndDocument(_ parser:HXXMLParser) {}
     
-    public func parser(_ parser:HXXMLParser, error:Error) {
-        
-    }
+    public func parser(_ parser:HXXMLParser, error:Error) {}
     
     // MARK: Private Methods
     
