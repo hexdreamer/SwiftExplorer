@@ -18,6 +18,8 @@
 		B93A3BE424FD1F840038BFDB /* SEXMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93A3BDE24FD1F840038BFDB /* SEXMLParser.swift */; };
 		B93A3BE524FD1F840038BFDB /* SEDecodableOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93A3BDF24FD1F840038BFDB /* SEDecodableOwner.swift */; };
 		B93A4EB8250D3B0700EE2B35 /* SEPodcastEpisodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93A4EB7250D3B0700EE2B35 /* SEPodcastEpisodes.swift */; };
+		B95363002526E89B004FBDA1 /* HXDispatchIOFileReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95362FF2526E89B004FBDA1 /* HXDispatchIOFileReader.swift */; };
+		B95363082526F108004FBDA1 /* HXURLSessionReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95363072526F108004FBDA1 /* HXURLSessionReader.swift */; };
 		B956582E24FD16890001DEE0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956582D24FD16890001DEE0 /* AppDelegate.swift */; };
 		B956583024FD16890001DEE0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956582F24FD16890001DEE0 /* SceneDelegate.swift */; };
 		B956583324FD16890001DEE0 /* SwiftExplorer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B956583124FD16890001DEE0 /* SwiftExplorer.xcdatamodeld */; };
@@ -45,6 +47,7 @@
 		B9A00B072522CB5800EF9E4D /* SEEpisodeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A00B062522CB5800EF9E4D /* SEEpisodeCell.swift */; };
 		B9A00B0F2522D02100EF9E4D /* SEFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A00B0E2522D02100EF9E4D /* SEFeedCell.swift */; };
 		B9A00B142522D38500EF9E4D /* SEFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A00B132522D38500EF9E4D /* SEFeed.swift */; };
+		B9B51CBA252AC22100908B4A /* HXHTMLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B51CB9252AC22100908B4A /* HXHTMLView.swift */; };
 		B9C4A28F2516F1F30035860A /* hexdreamsCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = B9C4A28E2516F1F30035860A /* hexdreamsCocoa */; };
 		B9E1EA5C25255DE6000067B8 /* HiraganaKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E1EA5B25255DE6000067B8 /* HiraganaKeyboard.swift */; };
 		B9E1EA672525A87A000067B8 /* KatakanaKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E1EA662525A87A000067B8 /* KatakanaKeyboard.swift */; };
@@ -81,6 +84,8 @@
 		B93A3BDE24FD1F840038BFDB /* SEXMLParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SEXMLParser.swift; sourceTree = "<group>"; };
 		B93A3BDF24FD1F840038BFDB /* SEDecodableOwner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SEDecodableOwner.swift; sourceTree = "<group>"; };
 		B93A4EB7250D3B0700EE2B35 /* SEPodcastEpisodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEPodcastEpisodes.swift; sourceTree = "<group>"; };
+		B95362FF2526E89B004FBDA1 /* HXDispatchIOFileReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HXDispatchIOFileReader.swift; sourceTree = "<group>"; };
+		B95363072526F108004FBDA1 /* HXURLSessionReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HXURLSessionReader.swift; sourceTree = "<group>"; };
 		B956582A24FD16890001DEE0 /* SwiftExplorer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftExplorer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B956582D24FD16890001DEE0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B956582F24FD16890001DEE0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -115,6 +120,7 @@
 		B9A00B062522CB5800EF9E4D /* SEEpisodeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEEpisodeCell.swift; sourceTree = "<group>"; };
 		B9A00B0E2522D02100EF9E4D /* SEFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEFeedCell.swift; sourceTree = "<group>"; };
 		B9A00B132522D38500EF9E4D /* SEFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEFeed.swift; sourceTree = "<group>"; };
+		B9B51CB9252AC22100908B4A /* HXHTMLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HXHTMLView.swift; sourceTree = "<group>"; };
 		B9BF2AD12519D27700799633 /* hexdreamsCocoa */ = {isa = PBXFileReference; lastKnownFileType = folder; name = hexdreamsCocoa; path = ../hexdreamsCocoa; sourceTree = "<group>"; };
 		B9E1EA5B25255DE6000067B8 /* HiraganaKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiraganaKeyboard.swift; sourceTree = "<group>"; };
 		B9E1EA662525A87A000067B8 /* KatakanaKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KatakanaKeyboard.swift; sourceTree = "<group>"; };
@@ -263,6 +269,9 @@
 				B95F09FE25199050004B609B /* SECustomXMLEnclosure.swift */,
 				B95F09FA25199050004B609B /* SECustomXMLiTunesOwner.swift */,
 				B95F0A0325199050004B609B /* SECustomXMLiTunesCategory.swift */,
+				B9B51CB9252AC22100908B4A /* HXHTMLView.swift */,
+				B95362FF2526E89B004FBDA1 /* HXDispatchIOFileReader.swift */,
+				B95363072526F108004FBDA1 /* HXURLSessionReader.swift */,
 				B9E33E65251AF82A00396F39 /* HXXMLParser.swift */,
 			);
 			path = ParseXML;
@@ -410,6 +419,7 @@
 				B95F0A0625199050004B609B /* SECustomXMLDecoder.swift in Sources */,
 				B93A4EB8250D3B0700EE2B35 /* SEPodcastEpisodes.swift in Sources */,
 				B9E1EA672525A87A000067B8 /* KatakanaKeyboard.swift in Sources */,
+				B95363002526E89B004FBDA1 /* HXDispatchIOFileReader.swift in Sources */,
 				B95F0A0925199050004B609B /* SECustomXMLEnclosure.swift in Sources */,
 				B95F0A0E25199050004B609B /* SECustomXMLiTunesCategory.swift in Sources */,
 				B93A3BE524FD1F840038BFDB /* SEDecodableOwner.swift in Sources */,
@@ -420,6 +430,7 @@
 				B93A3BE224FD1F840038BFDB /* SEDecodableChannel.swift in Sources */,
 				B900CA0F2506D95B0023C86B /* SEDecodableCategory.swift in Sources */,
 				B95F0A0825199050004B609B /* SECustomXMLDecoderModel.swift in Sources */,
+				B95363082526F108004FBDA1 /* HXURLSessionReader.swift in Sources */,
 				B956586624FD16F30001DEE0 /* RegionMarkerRectangle.swift in Sources */,
 				B95F0A0725199050004B609B /* SEHTMLToUnicode.swift in Sources */,
 				B9A00B072522CB5800EF9E4D /* SEEpisodeCell.swift in Sources */,
@@ -439,6 +450,7 @@
 				B956583524FD16890001DEE0 /* ContentView.swift in Sources */,
 				B93A3BE324FD1F840038BFDB /* SEDecodableImage.swift in Sources */,
 				B9A00B0F2522D02100EF9E4D /* SEFeedCell.swift in Sources */,
+				B9B51CBA252AC22100908B4A /* HXHTMLView.swift in Sources */,
 				B93A3BE424FD1F840038BFDB /* SEXMLParser.swift in Sources */,
 				B956583024FD16890001DEE0 /* SceneDelegate.swift in Sources */,
 				B95F0A0525199050004B609B /* SECustomXMLiTunesOwner.swift in Sources */,

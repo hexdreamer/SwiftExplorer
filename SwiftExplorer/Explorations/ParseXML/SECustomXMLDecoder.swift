@@ -17,6 +17,8 @@ public class SECustomXMLDecoder : HXXMLParserDelegate {
     private var cdata:Data?
     
     private var parser:HXXMLParser?
+    private var fileReader:HXDispatchIOFileReader?
+    private var urlSessionReader:HXURLSessionReader?
     private var completionHandler:((SECustomXMLDecoder)->Void)?
     
     var channel:SECustomXMLChannel? {
@@ -33,19 +35,39 @@ public class SECustomXMLDecoder : HXXMLParserDelegate {
     }
     
     public func parse(file:URL, completion:@escaping (SECustomXMLDecoder)->Void) throws {
-        let parser = try HXXMLParser(mode:.XML, file:file)
-        parser.delegate = self
-        self.parser = parser
         self.completionHandler = completion;
-        parser.parse()
+        self.parser = try HXXMLParser(mode:.XML, delegate:self)
+        self.fileReader = HXDispatchIOFileReader(
+            file:file,
+            dataAvailable: { [weak self] (data) in
+                do {
+                    try self?.parser?.parseChunk(data:data)
+                } catch let e{
+                    print(e)
+                }
+            },
+            completion: { [weak self] in
+                self?.parser?.finishParsing()
+            }
+        )
     }
-        
+    
     public func parse(network:URL, completion:@escaping (SECustomXMLDecoder)->Void) throws {
-        let parser = try HXXMLParser(mode:.XML, network:network)
-        parser.delegate = self
-        self.parser = parser
         self.completionHandler = completion;
-        parser.parse()
+        self.parser = try HXXMLParser(mode:.XML, delegate:self)
+        self.urlSessionReader = HXURLSessionReader(
+            url:network,
+            dataAvailable: { [weak self] (data) in
+                do {
+                    try self?.parser?.parseChunk(data:data)
+                } catch let e{
+                    print(e)
+                }
+            },
+            completion: { [weak self] in
+                self?.parser?.finishParsing()
+            }
+        )
     }
 
     // MARK:HXXMLParserDelegate

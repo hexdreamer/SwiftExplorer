@@ -18,7 +18,6 @@ struct SEAsyncImage<Content:View>: View {
             self.image = nil
             self.loader = SEImageLoader(url:url)
             self.placeholder = placeholder
-            self.loader.load()
         }
     }
         
@@ -32,6 +31,11 @@ struct SEAsyncImage<Content:View>: View {
                 .resizable()
         } else {
             self.placeholder!()
+                .onAppear() {
+                    self.loader.load()
+                }.onDisappear() {
+                    self.loader.cancel()
+                }
         }
     }
 }

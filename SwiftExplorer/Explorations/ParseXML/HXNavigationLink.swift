@@ -26,3 +26,18 @@ struct HXNavigationLink<Label:View,Destination:View> : View {
         }
     }
 }
+
+struct HXNavigationLink_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationView {
+            List {
+                HXNavigationLink(destination:nil as Text?) {
+                    Text("No Destination")
+                }
+                HXNavigationLink(destination:Text("")) {
+                    Text("Has Destination")
+                }
+            }
+        }
+    }
+}

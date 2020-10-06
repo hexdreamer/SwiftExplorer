@@ -30,13 +30,22 @@ public class SEHTMLToUnicode : HXXMLParserDelegate {
     
     private var stack = [Element(name:"ROOT", attributes:[:])]
     private var completion:((String)->Void)?
+    private var indentLevel:UInt = 0;
     
     init() {}
     
-    func parse(_ data:Data, completion:@escaping (String)->Void) throws {
-        let parser = try HXXMLParser(mode:.HTML, data: data)
-        parser.delegate = self
-        parser.parse()
+    func convert(_ data:Data) throws -> String? {
+        let parser = try HXXMLParser(mode:.HTML, delegate:self)
+        try parser.parseChunk(data:data)
+        
+        if var unicode = self.stack.last?.text {
+            unicode = unicode.trimmingCharacters(in:CharacterSet.whitespacesAndNewlines)
+            if ( unicode.starts(with:"•")) {
+                unicode = " " + unicode
+            }
+            return unicode
+        }
+        return nil
     }
 
     public func parser(_ parser: HXXMLParser, didStartElement elementName: String, attributes attributeDict: [String : String]) {
@@ -46,13 +55,18 @@ public class SEHTMLToUnicode : HXXMLParserDelegate {
 //        print(elementName)
         let element = Element(name:elementName, attributes:attributeDict)
         self.stack.append(element)
+        if elementName == "ul" {
+            self.indentLevel += 1
+        }
     }
     
     public func parser(_ parser: HXXMLParser, foundCharacters s: String) {
         if ( self.isWhiteSpace(s) ) {
             return
         }
-        self.stack.last?.appendText(s)
+        
+        let stripped = s.replacingOccurrences(of:"\n", with:"")
+        self.stack.last?.appendText(stripped)
     }
     
     public func parser(_ parser: HXXMLParser, foundCDATA: Data) {
@@ -80,13 +94,21 @@ public class SEHTMLToUnicode : HXXMLParserDelegate {
                         parentElement?.appendText("\(self.underline(text)) <\(href)>")
                     }
                 case "b":
-                    parentElement?.appendText(self.bold(text))
+                    parentElement?.appendText(self.translate(text, Self.boldLUT))
+                case "code":
+                    parentElement?.appendText(self.translate(text, Self.monospaceLUT))
                 case "em":
-                    parentElement?.appendText(self.italic(text))
+                    parentElement?.appendText(self.translate(text, Self.italicLUT))
                 case "i":
-                    parentElement?.appendText(self.italic(text))
+                    parentElement?.appendText(self.translate(text, Self.italicLUT))
                 case "li":
-                    parentElement?.appendText("\n • \(text)")
+                    var indent = ""
+                    if ( indentLevel > 1 ) {
+                        for _ in 0..<self.indentLevel - 1 {
+                            indent = indent + "   "
+                        }
+                    }
+                    parentElement?.appendText("\n " + indent + "• \(text)")
                 case "p":
                     if let parentText = parentElement?.text,
                        !parentText.hasSuffix("\n") {
@@ -96,9 +118,10 @@ public class SEHTMLToUnicode : HXXMLParserDelegate {
                 case "span":
                     parentElement?.appendText(text)
                 case "strong":
-                    parentElement?.appendText(self.bold(text))
+                    parentElement?.appendText(self.translate(text, Self.boldLUT))
                 case "ul":
                     parentElement?.appendText(text)
+                    self.indentLevel -= 1
                 default:
                     parentElement?.appendText(text)
                     print("Unsuported tag: \(closedElement.name)")
@@ -107,6 +130,8 @@ public class SEHTMLToUnicode : HXXMLParserDelegate {
             switch closedElement.name {
                 case "b":
                     break
+                case "br":
+                    parentElement?.appendText("\n")
                 case "li":
                     break
                 case "p":
@@ -173,6 +198,7 @@ public class SEHTMLToUnicode : HXXMLParserDelegate {
     
     // This is the full set of characters
     static let ascii        = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"
+    static let monospace    = "!\"#$%&'()*+,-./0𝟷𝟸𝟹𝟺𝟻𝟼𝟽𝟾𝟿:;<=>?@𝙰𝙱𝙲𝙳𝙴𝙵𝙶𝙷𝙸𝙹𝙺𝙻𝙼𝙽𝙾𝙿𝚀𝚁𝚂𝚃𝚄𝚅𝚆𝚇𝚈𝚉[\\]^_`𝚊𝚋𝚌𝚍𝚎𝚏𝚐𝚑𝚒𝚓𝚔𝚕𝚖𝚗𝚘𝚙𝚚𝚛𝚜𝚝𝚞𝚟𝚠𝚡𝚢𝚣{|}~"
     static let bold         = "!\"#$%&'()*+,-./𝟬𝟭𝟮𝟯𝟰𝟱𝟲𝟳𝟴𝟵:;<=>?@𝗔𝗕𝗖𝗗𝗘𝗙𝗚𝗛𝗜𝗝𝗞𝗟𝗠𝗡𝗢𝗣𝗤𝗥𝗦𝗧𝗨𝗩𝗪𝗫𝗬𝗭[\\]^_`𝗮𝗯𝗰𝗱𝗲𝗳𝗴𝗵𝗶𝗷𝗸𝗹𝗺𝗻𝗼𝗽𝗾𝗿𝘀𝘁𝘂𝘃𝘄𝘅𝘆𝘇{|}~"
     static let italic       = "!\"#$%&'()*+,-./0123456789:;<=>?@𝘈𝘉𝘊𝘋𝘌𝘍𝘎𝘏𝘐𝘑𝘒𝘓𝘔𝘕𝘖𝘗𝘘𝘙𝘚𝘛𝘜𝘝𝘞𝘟𝘠𝘡[\\]^_`𝘢𝘣𝘤𝘥𝘦𝘧𝘨𝘩𝘪𝘫𝘬𝘭𝘮𝘯𝘰𝘱𝘲𝘳𝘴𝘵𝘶𝘷𝘸𝘹𝘺𝘻{|}~"
     static let bolditalic   = "!\"#$%&'()*+,-./𝟬𝟭𝟮𝟯𝟰𝟱𝟲𝟳𝟴𝟵:;<=>?@𝘼𝘽𝘾𝘿𝙀𝙁𝙂𝙃𝙄𝙅𝙆𝙇𝙈𝙉𝙊𝙋𝙌𝙍𝙎𝙏𝙐𝙑𝙒𝙓𝙔𝙕[\\]^_`𝙖𝙗𝙘𝙙𝙚𝙛𝙜𝙝𝙞𝙟𝙠𝙡𝙢𝙣𝙤𝙥𝙦𝙧𝙨𝙩𝙪𝙫𝙬𝙭𝙮𝙯{|}~"
@@ -185,27 +211,17 @@ public class SEHTMLToUnicode : HXXMLParserDelegate {
         original:ascii  + ascii_u  + bold       + bold_u ,
         modified:italic + italic_u + bolditalic + bolditalic_u
     )
-    private func italic(_ orig:String) -> String {
-        var buffer = [Character]()
-        for char in orig {
-            if let bold = SEHTMLToUnicode.italicLUT[char] {
-                buffer.append(bold)
-            } else {
-                buffer.append(char)
-            }
-        }
-        return String(buffer)
-    }
-
     static let boldLUT = _mapCharacters(
         original:ascii + ascii_u + italic     + italic_u ,
         modified:bold  + bold_u  + bolditalic + bolditalic_u
     )
-    private func bold(_ orig:String) -> String {
+    static let monospaceLUT = _mapCharacters(original:ascii, modified:monospace)
+    
+    private func translate(_ orig:String, _ lut:[Character:Character]) -> String {
         var buffer = [Character]()
         for char in orig {
-            if let bold = SEHTMLToUnicode.boldLUT[char] {
-                buffer.append(bold)
+            if let tran = lut[char] {
+                buffer.append(tran)
             } else {
                 buffer.append(char)
             }

@@ -25,6 +25,13 @@ struct SEEpisodeCell: View {
                     .font(.caption)
                     .foregroundColor(.gray)
                 Spacer().frame(maxHeight:2.0)
+                if item.itunesSummary != nil {
+                    HXHTMLView(data:item.itunesSummary)
+                        .font(.caption)
+                } else if item.description != nil {
+                    HXHTMLView(data:item.description)
+                        .font(.caption)
+                }
             }
             if item.itunesImage != nil {
                 Spacer()

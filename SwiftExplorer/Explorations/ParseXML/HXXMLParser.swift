@@ -33,38 +33,45 @@ open class HXXMLParser {
     }
     
     private let serialize = DispatchQueue(label:"HXXMLParser", qos:.background, attributes:[], autoreleaseFrequency:.workItem, target:nil)
-    private var operationQueue:OperationQueue?
     private let mode:Mode
-    private var fileURL:URL?
-    private var netURL:URL?
-    private var data:Data?
-    private var urlSession:URLSession?
-    private var dataTask:URLSessionDataTask?
     public weak var delegate:HXXMLParserDelegate?
-    private var fileIO:DispatchIO?
     private var xmlContext:xmlParserCtxtPtr?
     private var htmlContext:htmlParserCtxtPtr?
-    private var xmlURLSessionDelegate:HXXMLParserURLSessionDelegate?
-    private var htmlURLSessionDelegate:HXHTMLParserURLSessionDelegate?
            
     // MARK: Constructors/Destructors
-    private init(mode:Mode) throws {
+    public init(mode:Mode) throws {
         self.mode = mode
+        switch self.mode {
+            case .XML:
+                var sax = xmlSAXHandler()
+                sax.initialized = XML_SAX2_MAGIC
+                sax.startElement = { _me($0)?._startElement(name:$1, atts:$2)      }
+                sax.characters   = { _me($0)?._characters  (ch:$1, len:$2)         }
+                sax.cdataBlock   = { _me($0)?._cdataBlock  (pointer:$1, length:$2) }
+                sax.endElement   = { _me($0)?._endElement  (name:$1)               }
+                sax.endDocument  = { _me($0)?._endDocument ()                      }
+                guard let xmlParserCtxt = xmlCreatePushParserCtxt(&sax, Unmanaged.passUnretained(self).toOpaque(), "", 0, "") else {
+                    throw ParserError("Could not create XML parser context")
+                }
+                self.xmlContext = xmlParserCtxt
+            case .HTML:
+                var sax = htmlSAXHandler()
+                sax.initialized = XML_SAX2_MAGIC
+                sax.startElement = { _me($0)?._startElement(name:$1, atts:$2)      }
+                sax.characters   = { _me($0)?._characters  (ch:$1, len:$2)         }
+                sax.cdataBlock   = { _me($0)?._cdataBlock  (pointer:$1, length:$2) }
+                sax.endElement   = { _me($0)?._endElement  (name:$1)               }
+                sax.endDocument  = { _me($0)?._endDocument ()                      }
+                guard let htmlParserCtxt = xmlCreatePushParserCtxt(&sax, Unmanaged.passUnretained(self).toOpaque(), "", 0, "") else {
+                    throw ParserError("Could not create HTML parser context")
+                }
+                self.htmlContext = htmlParserCtxt
+        }
     }
-    
-    public convenience init(mode:Mode, file:URL) throws {
+        
+    public convenience init(mode:Mode, delegate:HXXMLParserDelegate) throws {
         try self.init(mode:mode)
-        self.fileURL = file
-    }
-    
-    public convenience init(mode:Mode, network:URL) throws {
-        try self.init(mode:mode)
-        self.netURL = network
-    }
-    
-    public convenience init(mode:Mode, data:Data) throws {
-        try self.init(mode:mode)
-        self.data = data
+        self.delegate = delegate
     }
     
     deinit {
@@ -75,112 +82,30 @@ open class HXXMLParser {
             htmlFreeParserCtxt(htmlContext)
         }
     }
-
-    // MARK: Parse Methods
-    func parse() {
-        self.serialize.hxAsync({
-            try self._parse();
-        }, hxCatch: { (error) in
-            print("Unexpected error: \(error)")
-        });
-    }
-    
-    private func _parse() throws {
-        switch self.mode {
-            case .XML:
-                if let fileURL = self.fileURL {
-                    try self._parseXMLFrom(file:fileURL)
-                } else if let netURL = self.netURL {
-                    try self._parseXMLFrom(network:netURL)
-                } else if let data = self.data {
-                    try self._parseXMLFrom(data:data)
-                }
-            case .HTML:
-                break
-        }
-    }
-            
-    private func _parseXMLFrom(file:URL) throws {
-        self.xmlContext = try self._createXMLContext()
-        
-        let x:DispatchIO? = try file.withUnsafeFileSystemRepresentation {
-            guard let filePath = $0 else {
-                throw ParserError("Could not convert url to fileSystemRepresentation: \(file)")
-            }
-            return DispatchIO(type:.stream, path:filePath, oflag:O_RDONLY, mode:0, queue:self.serialize, cleanupHandler:{err in});
-        }
-        // Above expression too complex to include in an if-let
-        guard let fileIO:DispatchIO = x else {
-            throw ParserError("Could not create dispatchIO for file \(file)")
-        }
-        self.fileIO = fileIO
-        
-        fileIO.read(offset:0, length:4*1024, queue:self.serialize, ioHandler:self._fileIOCallback);
-    }
-    
-    private func _fileIOCallback(done:Bool, data:DispatchData?, error:Int32) {
-        if let data = data,
-           data.count > 0 {
-            let _ = data.withUnsafeBytes { (bytes:UnsafePointer<Int8>) in
-                xmlParseChunk(self.xmlContext, bytes, Int32(data.count), 0)
-            }
-            self.fileIO?.read(offset:0, length:4*1024, queue:self.serialize, ioHandler:self._fileIOCallback);
-        } else {
-            xmlParseChunk(self.xmlContext, "", 0, 1)
-        }
-    }
-    
-    private func _parseXMLFrom(network url:URL) throws {
-        let xmlContext = try self._createXMLContext()
-        let urlSessionDelegate = HXXMLParserURLSessionDelegate(xmlContext:xmlContext)
-        self.xmlContext = xmlContext
-        self.xmlURLSessionDelegate = urlSessionDelegate
-
-        let urlSession = URLSession.init(configuration:.default, delegate:urlSessionDelegate, delegateQueue:self.operationQueue)
-        let dataTask = urlSession.dataTask(with:url)
-        self.urlSession = urlSession
-        self.dataTask = dataTask
-        dataTask.resume()
-    }
-    
-    private func _parseXMLFrom(data:Data) throws {
-        self.xmlContext = try self._createXMLContext()
+                            
+    public func parseChunk(data:Data) throws {
         data.withUnsafeBytes { (ptr:UnsafeRawBufferPointer) in
             let unsafeBufferPointer:UnsafeBufferPointer<Int8> = ptr.bindMemory(to:Int8.self)
             let unsafePointer:UnsafePointer<Int8>? = unsafeBufferPointer.baseAddress
-            xmlParseChunk(self.xmlContext, unsafePointer, Int32(data.count), 0)
+            switch self.mode {
+                case .XML:
+                    xmlParseChunk(self.xmlContext, unsafePointer, Int32(data.count), 0)
+                case .HTML:
+                    htmlParseChunk(self.htmlContext, unsafePointer, Int32(data.count), 0)
+
+            }
         }
-        xmlParseChunk(self.xmlContext, "", 0, 1)
     }
     
-    private func _createXMLContext() throws -> xmlParserCtxtPtr {
-        var sax = xmlSAXHandler()
-        sax.initialized = XML_SAX2_MAGIC
-        sax.startElement = { _me($0)?._startElement(name:$1, atts:$2)      }
-        sax.characters   = { _me($0)?._characters  (ch:$1, len:$2)         }
-        sax.cdataBlock   = { _me($0)?._cdataBlock  (pointer:$1, length:$2) }
-        sax.endElement   = { _me($0)?._endElement  (name:$1)               }
-        sax.endDocument  = { _me($0)?._endDocument ()                      }
-        guard let xmlParserCtxt = xmlCreatePushParserCtxt(&sax, Unmanaged.passUnretained(self).toOpaque(), "", 0, "") else {
-            throw ParserError("Could not create XML parser context")
+    public func finishParsing() {
+        switch self.mode {
+            case .XML:
+                xmlParseChunk(self.xmlContext, "", 0, 1)
+            case .HTML:
+                htmlParseChunk(self.htmlContext, "", 0, 1)
         }
-        return xmlParserCtxt
     }
-    
-    private func _createHTMLContext() throws -> htmlParserCtxtPtr {
-        var sax = htmlSAXHandler()
-        sax.initialized = XML_SAX2_MAGIC
-        sax.startElement = { _me($0)?._startElement(name:$1, atts:$2)      }
-        sax.characters   = { _me($0)?._characters  (ch:$1, len:$2)         }
-        sax.cdataBlock   = { _me($0)?._cdataBlock  (pointer:$1, length:$2) }
-        sax.endElement   = { _me($0)?._endElement  (name:$1)               }
-        sax.endDocument  = { _me($0)?._endDocument ()                      }
-        guard let htmlParserCtxt = xmlCreatePushParserCtxt(&sax, Unmanaged.passUnretained(self).toOpaque(), "", 0, "") else {
-            throw ParserError("Could not create HTML parser context")
-        }
-        return htmlParserCtxt
-    }
-    
+        
     // MARK: libxml2 parser callbacks
     
     private func _startElement(name:UnsafePointer<xmlChar>?, atts:UnsafePointer<UnsafePointer<xmlChar>?>?) {
@@ -257,57 +182,4 @@ private func _me(_ ptr : UnsafeRawPointer?) -> HXXMLParser? {
     }
     print("ERROR: context pointer is nil")
     return nil;
-}
-
-
-private class HXXMLParserURLSessionDelegate : NSObject, URLSessionTaskDelegate, URLSessionDataDelegate {
-    
-    let xmlContext:xmlParserCtxtPtr
-    
-    init(xmlContext:xmlParserCtxtPtr) {
-        self.xmlContext = xmlContext
-        super.init()
-    }
-    
-    // URLSessionDataDelegate
-    @objc
-    public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
-        data.withUnsafeBytes { (ptr:UnsafeRawBufferPointer) in
-            let unsafeBufferPointer:UnsafeBufferPointer<Int8> = ptr.bindMemory(to:Int8.self)
-            let unsafePointer:UnsafePointer<Int8>? = unsafeBufferPointer.baseAddress
-            xmlParseChunk(self.xmlContext, unsafePointer, Int32(data.count), 0)
-        }
-    }
-    
-    // URLSesssionTaskDelegate
-    @objc
-    public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        xmlParseChunk(self.xmlContext, "", 0, 1)
-    }
-}
-
-private class HXHTMLParserURLSessionDelegate : NSObject, URLSessionTaskDelegate, URLSessionDataDelegate {
-    
-    let htmlContext:htmlParserCtxtPtr
-    
-    init(htmlContext:htmlParserCtxtPtr) {
-        self.htmlContext = htmlContext
-        super.init()
-    }
-    
-    // URLSessionDataDelegate
-    @objc
-    public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
-        data.withUnsafeBytes { (ptr:UnsafeRawBufferPointer) in
-            let unsafeBufferPointer:UnsafeBufferPointer<Int8> = ptr.bindMemory(to:Int8.self)
-            let unsafePointer:UnsafePointer<Int8>? = unsafeBufferPointer.baseAddress
-            htmlParseChunk(self.htmlContext, unsafePointer, Int32(data.count), 0)
-        }
-    }
-    
-    // URLSesssionTaskDelegate
-    @objc
-    public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        htmlParseChunk(self.htmlContext, "", 0, 1)
-    }
 }

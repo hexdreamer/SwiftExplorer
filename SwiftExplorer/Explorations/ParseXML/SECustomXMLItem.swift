@@ -79,7 +79,7 @@ struct SECustomXMLItem : SECustomXMLDecoderModel {
                 print("Unsupported tag: \(tag)")
         }
     }
-    
+        
     public mutating func setValue(_ value:String, forTag tag:String?, attribute:String) {
         switch (tag,attribute) {
             case ("itunes:image","href"):

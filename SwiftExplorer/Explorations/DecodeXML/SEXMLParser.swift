@@ -35,9 +35,7 @@ public class SEXMLParser : HXXMLParserDelegate {
     }
             
     public func parse(_ url:URL) throws {
-        let parser = try HXXMLParser(mode:.XML, network:url)
-        parser.delegate = self
-        parser.parse()
+        //let parser = try HXXMLParser(mode:.XML, delegate:self)
     }
     
     // MARK: HXXMLParserDelegate
