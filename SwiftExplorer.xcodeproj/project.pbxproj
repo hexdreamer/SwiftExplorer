@@ -46,6 +46,7 @@
 		B9C4A28F2516F1F30035860A /* hexdreamsCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = B9C4A28E2516F1F30035860A /* hexdreamsCocoa */; };
 		B9E1EA5C25255DE6000067B8 /* HiraganaKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E1EA5B25255DE6000067B8 /* HiraganaKeyboard.swift */; };
 		B9E1EA672525A87A000067B8 /* KatakanaKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E1EA662525A87A000067B8 /* KatakanaKeyboard.swift */; };
+		B9E8F9722533E86000212D81 /* SEXMLDecoderFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E8F9712533E86000212D81 /* SEXMLDecoderFeed.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -112,6 +113,7 @@
 		B9BF2AD12519D27700799633 /* hexdreamsCocoa */ = {isa = PBXFileReference; lastKnownFileType = folder; name = hexdreamsCocoa; path = ../hexdreamsCocoa; sourceTree = "<group>"; };
 		B9E1EA5B25255DE6000067B8 /* HiraganaKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiraganaKeyboard.swift; sourceTree = "<group>"; };
 		B9E1EA662525A87A000067B8 /* KatakanaKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KatakanaKeyboard.swift; sourceTree = "<group>"; };
+		B9E8F9712533E86000212D81 /* SEXMLDecoderFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEXMLDecoderFeed.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +146,7 @@
 			isa = PBXGroup;
 			children = (
 				B93A3BDB24FD1F840038BFDB /* SEDecodeXML.swift */,
+				B9E8F9712533E86000212D81 /* SEXMLDecoderFeed.swift */,
 				B93A4EB7250D3B0700EE2B35 /* SEPodcastEpisodes.swift */,
 				B93A3BDE24FD1F840038BFDB /* SEXMLParser.swift */,
 				B9021C522506B6C900F66844 /* SEXMLDecoder.swift */,
@@ -411,6 +414,7 @@
 				B9A00B072522CB5800EF9E4D /* SECustomParsingEpisodeCell.swift in Sources */,
 				B9021C532506B6C900F66844 /* SEXMLDecoder.swift in Sources */,
 				B9E1EA5C25255DE6000067B8 /* HiraganaKeyboard.swift in Sources */,
+				B9E8F9722533E86000212D81 /* SEXMLDecoderFeed.swift in Sources */,
 				B956586524FD16F30001DEE0 /* RegionMarkerCorners.swift in Sources */,
 				B956583324FD16890001DEE0 /* SwiftExplorer.xcdatamodeld in Sources */,
 				B95F0A0D25199050004B609B /* SECustomParsingItem.swift in Sources */,

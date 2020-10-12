@@ -24,7 +24,7 @@ struct SECustomParsingEnclosure : SECustomParserModel {
             case "url":
                 self.url = self.coerceURL(value)
             default:
-                print("Unsupported tag: \(tag)")
+                print("Enclosure: Unsupported tag: \(tag)")
         }
     }
     
@@ -37,14 +37,14 @@ struct SECustomParsingEnclosure : SECustomParserModel {
             case (nil,"url"):
                 self.url = self.coerceURL(value)
             default:
-                print("Unsupported case: \(tag ?? "")@\(attribute)")
+                print("Enclosure: Unsupported case: \(tag ?? "")@\(attribute)")
         }
     }
     
     public func setData(_ data:Data, forTag tag:String) {
         switch tag {
             default:
-                print("Unsupported tag: \(tag)")
+                print("Enclosure: Unsupported tag: \(tag)")
         }
     }
 
@@ -53,7 +53,7 @@ struct SECustomParsingEnclosure : SECustomParserModel {
     }
     
     mutating func setChildEntity(_ value:SECustomParserModel, forTag tag:String) {
-        print("Unsupported tag: \(tag)")
+        print("Enclosure: Unsupported tag: \(tag)")
     }
 
 }

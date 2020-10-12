@@ -12,6 +12,8 @@ struct SECustomParsingImage : SECustomParserModel {
     var link:URL?
     var title:String?
     var url:URL?
+    var width:UInt16?;
+    var height:UInt16?;
     
     // MARK: DRXMLDecoderModel
     public let tag = "image"
@@ -24,22 +26,26 @@ struct SECustomParsingImage : SECustomParserModel {
                 self.title = value
             case "url":
                 self.url = self.coerceURL(value)
+            case "width":
+                self.width = UInt16(value)
+            case "height":
+                self.height = UInt16(value)
             default:
-                print("Unsupported tag: \(tag)")
+                print("Image: Unsupported tag: \(tag)")
         }
     }
     
     public func setData(_ data:Data, forTag tag:String) {
         switch tag {
             default:
-                print("Unsupported tag: \(tag)")
+                print("Image: Unsupported tag: \(tag)")
         }
     }
 
     public func setValue(_ value:String, forTag tag:String?, attribute:String) {
         switch (tag,attribute) {
             default:
-                print("Unsupported case: \(tag ?? "")@\(attribute)")
+                print("Image: Unsupported case: \(tag ?? "")@\(attribute)")
         }
     }
 
@@ -48,7 +54,7 @@ struct SECustomParsingImage : SECustomParserModel {
     }
 
     mutating func setChildEntity(_ value:SECustomParserModel, forTag tag:String) {
-        print("Unsupported tag: \(tag)")
+        print("Image: Unsupported tag: \(tag)")
     }
     
 }

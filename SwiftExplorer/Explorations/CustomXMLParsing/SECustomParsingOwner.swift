@@ -23,21 +23,21 @@ struct SECustomParsingOwner : SECustomParserModel {
             case "itunes:name":
                 self.itunesName = value
             default:
-                print("Unsupported tag: \(tag)")
+                print("Owner: Unsupported tag: \(tag)")
         }
     }
     
     public func setData(_ data:Data, forTag tag:String) {
         switch tag {
             default:
-                print("Unsupported tag: \(tag)")
+                print("Owner: Unsupported tag: \(tag)")
         }
     }
 
     public func setValue(_ value:String, forTag tag:String?, attribute:String) {
         switch (tag,attribute) {
             default:
-                print("Unsupported case: \(tag ?? "")@\(attribute)")
+                print("Owner: Unsupported case: \(tag ?? "")@\(attribute)")
         }
     }
     
@@ -46,7 +46,7 @@ struct SECustomParsingOwner : SECustomParserModel {
     }
     
     mutating func setChildEntity(_ value:SECustomParserModel, forTag tag:String) {
-        print("Unsupported tag: \(tag)")
+        print("Owner: Unsupported tag: \(tag)")
     }
 
 }

@@ -64,8 +64,18 @@ struct SECustomParsingItem : SECustomParserModel {
                 self.pubDate = self.coerceDate(value)
             case "title":
                 self.title = value
+            case "category",
+                 "comments",
+                 "media:title",
+                 "media:description",
+                 "media:keywords",
+                 "media:rating",
+                 "media:category",
+                 "media:credit"
+            :
+                break;
             default:
-                print("Unsupported tag: \(tag)")
+                print("Item: Unsupported tag: \(tag)")
         }
     }
     
@@ -75,8 +85,10 @@ struct SECustomParsingItem : SECustomParserModel {
                 self.description = data
             case "itunes:summary":
                 self.itunesSummary = data
+            case "content:encoded":  // in TWIT feed
+                break
             default:
-                print("Unsupported tag: \(tag)")
+                print("Item: Unsupported tag: \(tag)")
         }
     }
         
@@ -88,8 +100,24 @@ struct SECustomParsingItem : SECustomParserModel {
                 self.guidIsPermalink = self.coerceBool(value)
             case("post-id","xmlns"):
                 break
+            case
+                ("media:content", "fileSize"),
+                ("media:content", "medium"),
+                ("media:content", "type"),
+                ("media:content", "url"),
+                ("media:credit", "role"),
+                ("media:category", "label"),
+                ("media:category", "scheme"),
+                ("media:description", "type"),
+                ("media:rating", "scheme"),
+                ("media:thumbnail", "height"),
+                ("media:thumbnail", "url"),
+                ("media:thumbnail", "width"),
+                ("media:title", "type")
+            :
+                break
             default:
-                print("Unsupported case: \(tag ?? "")@\(attribute)")
+                print("Item: Unsupported case: \(tag ?? "")@\(attribute)")
         }
     }
     

@@ -113,15 +113,27 @@ struct SECustomParsingChannel : SECustomParserModel {
                 self.itunesType = value
             case "site":
                 self.site = value
+            case "creativeCommons:license",
+                 "itunes:block",
+                 "itunes:keywords",
+                 "managingEditor",
+                 "rawvoice:frequency",
+                 "rawvoice:location",
+                 "rawvoice:rating",
+                 "sy:updateFrequency",
+                 "sy:updatePeriod",
+                 "ttl",
+                 "webMaster":
+                break;
             default:
-                print("Unsupported tag: \(tag)")
+                print("Channel: Unsupported tag: \(tag)")
         }
     }
     
     public func setData(_ data:Data, forTag tag:String) {
         switch tag {
             default:
-                print("Unsupported tag: \(tag)")
+                print("Channel: Unsupported tag: \(tag)")
         }
     }
 
@@ -130,11 +142,28 @@ struct SECustomParsingChannel : SECustomParserModel {
         switch (tag,attribute) {
             case ("itunes:image","href"):
                 self.itunesImage = self.coerceURL(value)
+            case ("atom:link", "href"),
+                 ("atom:link", "rel"),
+                 ("atom:link", "type"),
+                 ("rawvoice:rating", "tv"),
+                 ("rawvoice:subscribe", "feed"),
+                 ("rawvoice:subscribe", "html"),
+                 ("rawvoice:subscribe", "itunes"),
+                 ("rss", "xmlns:atom"),
+                 ("rss", "xmlns:content"),
+                 ("rss", "xmlns:creativeCommons"),
+                 ("rss", "xmlns:itunes"),
+                 ("rss", "xmlns:media"),
+                 ("rss", "xmlns:rawvoice"),
+                 ("rss", "xmlns:sy"),
+                 ("rss", "version"),
+                 ("site", "xmlns"):
+                break;
             default:
-                print("Unsupported case: \(tag ?? "")@\(attribute)")
+                print("Channel: Unsupported case: \(tag ?? "")@\(attribute)")
         }
     }
-        
+    
     public func makeChildEntity(forTag tag:String) -> SECustomParserModel? {
         switch tag {
             case "itunes:category":

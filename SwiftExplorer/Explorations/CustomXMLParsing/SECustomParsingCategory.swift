@@ -21,14 +21,14 @@ class SECustomParsingCategory : SECustomParserModel {
             case "text":
                 self.text = value
             default:
-                print("Unsupported tag: \(tag)")
+                print("Owner: Unsupported tag: \(tag)")
         }
     }
     
     public func setData(_ data:Data, forTag tag:String) {
         switch tag {
             default:
-                print("Unsupported tag: \(tag)")
+                print("Owner: Unsupported tag: \(tag)")
         }
     }
 
@@ -37,7 +37,7 @@ class SECustomParsingCategory : SECustomParserModel {
             case (nil,"text"):
                 self.text = value
             default:
-                print("Unsupported case: \(tag ?? "")@\(attribute)")
+                print("Owner: Unsupported case: \(tag ?? "")@\(attribute)")
         }
     }
     
@@ -57,7 +57,7 @@ class SECustomParsingCategory : SECustomParserModel {
                     self.itunesCategory = x
                 }
             default:
-                print("Unsupported tag: \(tag)")
+                print("Owner: Unsupported tag: \(tag)")
         }
     }
 

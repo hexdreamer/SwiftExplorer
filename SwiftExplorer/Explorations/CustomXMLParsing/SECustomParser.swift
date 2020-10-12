@@ -31,7 +31,6 @@ public class SECustomParser : HXSAXParserDelegate {
     }
     
     deinit {
-        print("deinit SECustomXMLDecoder")
     }
     
     public func parse(file:URL, completion:@escaping (SECustomParser)->Void) throws {
@@ -52,24 +51,50 @@ public class SECustomParser : HXSAXParserDelegate {
         )
     }
     
-    public func parse(network:URL, completion:@escaping (SECustomParser)->Void) throws {
+    public func parse(network:URL, saveTo:URL, completion:@escaping (SECustomParser)->Void) throws {
         self.completionHandler = completion;
         self.parser = try HXSAXParser(mode:.XML, delegate:self)
+        
+        let dispatchIO:DispatchIO? = saveTo.withUnsafeFileSystemRepresentation {
+            guard let filePath = $0 else {
+                print("Could not convert file to fileSystemRepresentation")
+                return nil
+            }
+            return DispatchIO(type:.stream, path:filePath,
+                              oflag:O_WRONLY|O_CREAT, mode:S_IRUSR|S_IWUSR,
+                              queue:DispatchQueue.global(qos:.background),
+                              cleanupHandler:{error in
+                                if ( error != 0 ) {
+                                    print("Error opening cache file \(saveTo) for writing: \(error)")
+                                }
+                              });
+        }
+        
         self.urlSessionReader = HXURLSessionReader(
             url:network,
             dataAvailable: { [weak self] (data) in
                 do {
                     try self?.parser?.parseChunk(data:data)
-                } catch let e{
+                    data.withUnsafeBytes {
+                        dispatchIO?.write(offset:0, data:DispatchData(bytes:$0), queue:DispatchQueue.global(qos:.background),
+                                          ioHandler:{ (done,data,error) in
+                                                if ( error != 0 ) {
+                                                    print("Error writing to file \(saveTo): \(error)")
+                                                }
+                                          }
+                        )
+                    }
+                } catch let e {
                     print(e)
                 }
             },
             completion: { [weak self] in
                 self?.parser?.finishParsing()
+                dispatchIO?.close(flags:DispatchIO.CloseFlags(rawValue: 0))
             }
         )
     }
-
+    
     // MARK:HXSAXParserDelegate
     public func parser(_ parser: HXSAXParser, didStartElement elementName: String, attributes attributeDict: [String : String]) {
 //        for _ in 0..<level {

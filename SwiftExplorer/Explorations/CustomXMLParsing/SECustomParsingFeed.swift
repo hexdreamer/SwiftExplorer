@@ -50,12 +50,13 @@ class SEFeedLoader : ObservableObject {
                         DispatchQueue.main.async { [weak self] in
                             self?.channel = channel
                             self?.parser = nil
-                            self?.loadFromNetwork()
+                            self?.loadFromNetwork(saveTo:cachedFeed)
                         }
                     })
                     self.parser = parser
                 } else {
-                    self.loadFromNetwork()
+                    print("No cached feed: \(cachedFeed)")
+                    self.loadFromNetwork(saveTo:cachedFeed)
                 }
             } catch ( let e ) {
                 print("Unexpected error loading from cache: \(e)")
@@ -63,7 +64,7 @@ class SEFeedLoader : ObservableObject {
         }
     }
     
-    func loadFromNetwork() {
+    func loadFromNetwork(saveTo:URL) {
         DispatchQueue.global().async {
             do {
                 print("Loading feed from network: \(self.feed.urlString)")
@@ -72,7 +73,7 @@ class SEFeedLoader : ObservableObject {
                     return;
                 }
                 let parser = SECustomParser(root:SECustomParsingChannel())
-                try parser.parse(network:url, completion:{ [weak self] in
+                try parser.parse(network:url, saveTo:saveTo, completion:{ [weak self] in
                     guard let _ = self else {
                         return
                     }
