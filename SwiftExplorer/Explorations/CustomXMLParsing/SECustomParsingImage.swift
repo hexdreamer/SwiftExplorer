@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SECustomParsingImage : SECustomParserMode {
+struct SECustomParsingImage : SECustomParserModel {
     
     var link:URL?
     var title:String?
@@ -43,11 +43,11 @@ struct SECustomParsingImage : SECustomParserMode {
         }
     }
 
-    public func makeChildEntity(forTag tag:String) -> SECustomParserMode? {
+    public func makeChildEntity(forTag tag:String) -> SECustomParserModel? {
         return nil
     }
 
-    mutating func setChildEntity(_ value:SECustomParserMode, forTag tag:String) {
+    mutating func setChildEntity(_ value:SECustomParserModel, forTag tag:String) {
         print("Unsupported tag: \(tag)")
     }
     

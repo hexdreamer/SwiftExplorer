@@ -7,7 +7,7 @@
 
 import Foundation
 
-class SECustomParsingCategory : SECustomParserMode {
+class SECustomParsingCategory : SECustomParserModel {
     
     var text:String?
     var itunesCategory:SECustomParsingCategory?
@@ -41,7 +41,7 @@ class SECustomParsingCategory : SECustomParserMode {
         }
     }
     
-    public func makeChildEntity(forTag tag:String) -> SECustomParserMode? {
+    public func makeChildEntity(forTag tag:String) -> SECustomParserModel? {
         switch tag {
             case "itunes:category":
                 return SECustomParsingCategory()
@@ -50,7 +50,7 @@ class SECustomParsingCategory : SECustomParserMode {
         }
     }
 
-    public func setChildEntity(_ value:SECustomParserMode, forTag tag:String) {
+    public func setChildEntity(_ value:SECustomParserModel, forTag tag:String) {
         switch tag {
             case "itunes:category":
                 if let x = value as? SECustomParsingCategory {

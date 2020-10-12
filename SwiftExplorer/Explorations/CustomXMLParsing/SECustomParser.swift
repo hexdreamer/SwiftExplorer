@@ -11,8 +11,8 @@ import hexdreamsCocoa
 public class SECustomParser : HXSAXParserDelegate {
         
     private var level:Int = 0
-    private var stack = [SECustomParserMode]()
-    private let root:SECustomParserMode
+    private var stack = [SECustomParserModel]()
+    private let root:SECustomParserModel
     private var text:String?
     private var cdata:Data?
     
@@ -25,7 +25,7 @@ public class SECustomParser : HXSAXParserDelegate {
         return self.stack.first as? SECustomParsingChannel
     }
 
-    init(root:SECustomParserMode) {
+    init(root:SECustomParserModel) {
         self.stack.append(root)
         self.root = root;
     }

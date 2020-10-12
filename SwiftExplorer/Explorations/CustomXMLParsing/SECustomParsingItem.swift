@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SECustomParsingItem : SECustomParserMode {
+struct SECustomParsingItem : SECustomParserModel {
     
     var contentEncoded:String?
     var description:Data?
@@ -93,7 +93,7 @@ struct SECustomParsingItem : SECustomParserMode {
         }
     }
     
-    public func makeChildEntity(forTag tag:String) -> SECustomParserMode? {
+    public func makeChildEntity(forTag tag:String) -> SECustomParserModel? {
         switch tag {
             case "enclosure":
                 return SECustomParsingEnclosure()
@@ -102,7 +102,7 @@ struct SECustomParsingItem : SECustomParserMode {
         }
     }
         
-    mutating func setChildEntity(_ value:SECustomParserMode, forTag tag:String) {
+    mutating func setChildEntity(_ value:SECustomParserModel, forTag tag:String) {
         switch tag {
             case "enclosure":
                 if let x = value as? SECustomParsingEnclosure {

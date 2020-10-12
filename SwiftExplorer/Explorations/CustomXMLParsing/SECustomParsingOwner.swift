@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SECustomParsingOwner : SECustomParserMode {
+struct SECustomParsingOwner : SECustomParserModel {
     
     var itunesEmail:String?
     var itunesName:String?
@@ -41,11 +41,11 @@ struct SECustomParsingOwner : SECustomParserMode {
         }
     }
     
-    public func makeChildEntity(forTag tag:String) -> SECustomParserMode? {
+    public func makeChildEntity(forTag tag:String) -> SECustomParserModel? {
         return nil
     }
     
-    mutating func setChildEntity(_ value:SECustomParserMode, forTag tag:String) {
+    mutating func setChildEntity(_ value:SECustomParserModel, forTag tag:String) {
         print("Unsupported tag: \(tag)")
     }
 

@@ -32,7 +32,7 @@
 		B956586624FD16F30001DEE0 /* RegionMarkerRectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956586324FD16F30001DEE0 /* RegionMarkerRectangle.swift */; };
 		B95F0A0525199050004B609B /* SECustomParsingOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95F09FA25199050004B609B /* SECustomParsingOwner.swift */; };
 		B95F0A0625199050004B609B /* SECustomParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95F09FB25199050004B609B /* SECustomParser.swift */; };
-		B95F0A0825199050004B609B /* SECustomParserMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95F09FD25199050004B609B /* SECustomParserMode.swift */; };
+		B95F0A0825199050004B609B /* SECustomParserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95F09FD25199050004B609B /* SECustomParserModel.swift */; };
 		B95F0A0925199050004B609B /* SECustomParsingEnclosure.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95F09FE25199050004B609B /* SECustomParsingEnclosure.swift */; };
 		B95F0A0A25199050004B609B /* SECustomParsingChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95F09FF25199050004B609B /* SECustomParsingChannel.swift */; };
 		B95F0A0B25199050004B609B /* SECustomParsingImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95F0A0025199050004B609B /* SECustomParsingImage.swift */; };
@@ -97,7 +97,7 @@
 		B956586324FD16F30001DEE0 /* RegionMarkerRectangle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegionMarkerRectangle.swift; sourceTree = "<group>"; };
 		B95F09FA25199050004B609B /* SECustomParsingOwner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SECustomParsingOwner.swift; sourceTree = "<group>"; };
 		B95F09FB25199050004B609B /* SECustomParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SECustomParser.swift; sourceTree = "<group>"; };
-		B95F09FD25199050004B609B /* SECustomParserMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SECustomParserMode.swift; sourceTree = "<group>"; };
+		B95F09FD25199050004B609B /* SECustomParserModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SECustomParserModel.swift; sourceTree = "<group>"; };
 		B95F09FE25199050004B609B /* SECustomParsingEnclosure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SECustomParsingEnclosure.swift; sourceTree = "<group>"; };
 		B95F09FF25199050004B609B /* SECustomParsingChannel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SECustomParsingChannel.swift; sourceTree = "<group>"; };
 		B95F0A0025199050004B609B /* SECustomParsingImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SECustomParsingImage.swift; sourceTree = "<group>"; };
@@ -245,7 +245,7 @@
 				B95F0A0425199050004B609B /* SECustomParsingEpisodesView.swift */,
 				B9A00B062522CB5800EF9E4D /* SECustomParsingEpisodeCell.swift */,
 				B95F09FB25199050004B609B /* SECustomParser.swift */,
-				B95F09FD25199050004B609B /* SECustomParserMode.swift */,
+				B95F09FD25199050004B609B /* SECustomParserModel.swift */,
 				B95F09FF25199050004B609B /* SECustomParsingChannel.swift */,
 				B95F0A0225199050004B609B /* SECustomParsingItem.swift */,
 				B95F0A0025199050004B609B /* SECustomParsingImage.swift */,
@@ -406,7 +406,7 @@
 				B900CA132507138C0023C86B /* SEDecodableRSS.swift in Sources */,
 				B93A3BE224FD1F840038BFDB /* SEDecodableChannel.swift in Sources */,
 				B900CA0F2506D95B0023C86B /* SEDecodableCategory.swift in Sources */,
-				B95F0A0825199050004B609B /* SECustomParserMode.swift in Sources */,
+				B95F0A0825199050004B609B /* SECustomParserModel.swift in Sources */,
 				B956586624FD16F30001DEE0 /* RegionMarkerRectangle.swift in Sources */,
 				B9A00B072522CB5800EF9E4D /* SECustomParsingEpisodeCell.swift in Sources */,
 				B9021C532506B6C900F66844 /* SEXMLDecoder.swift in Sources */,

@@ -14,23 +14,32 @@ private let dateFormatter:DateFormatter = {
     f.dateFormat = "E, dd MMM yyyy HH:mm:ss Z"
     return f;
 }()
+// Wed, 07 Oct 2020 14:15:08 PDT
+private let dateFormatter2:DateFormatter = {
+    let f = DateFormatter()
+    f.dateFormat = "E, dd MMM yyyy HH:mm:ss zzz"
+    return f;
+}()
 
-public protocol SECustomParserMode {
+public protocol SECustomParserModel {
     var tag:String {get}
     mutating func setValue(_ value:String, forTag tag:String)
     mutating func setData(_ data:Data, forTag tag:String)
     mutating func setValue(_ value:String, forTag tag:String?, attribute:String)
-    func makeChildEntity(forTag tag:String) -> SECustomParserMode?
-    mutating func setChildEntity(_ value:SECustomParserMode, forTag tag:String);
+    func makeChildEntity(forTag tag:String) -> SECustomParserModel?
+    mutating func setChildEntity(_ value:SECustomParserModel, forTag tag:String);
 }
 
-public extension SECustomParserMode {
+public extension SECustomParserModel {
         
     func coerceDate(_ dateString:String?) -> Date? {
         if let dateString = dateString {
             let trimmed = dateString.trimmingCharacters(in:NSCharacterSet.whitespacesAndNewlines);
             if !trimmed.isEmpty {
-                let date = dateFormatter.date(from:trimmed)
+                var date = dateFormatter.date(from:trimmed)
+                if date == nil {
+                    date = dateFormatter2.date(from:trimmed)
+                }
                 if date == nil {
                     print("Could not coerce date: " + dateString)
                 }

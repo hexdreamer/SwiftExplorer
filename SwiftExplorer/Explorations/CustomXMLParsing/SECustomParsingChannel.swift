@@ -9,7 +9,7 @@ import Foundation
 import CoreData
 import hexdreamsCocoa
 
-struct SECustomParsingChannel : SECustomParserMode {
+struct SECustomParsingChannel : SECustomParserModel {
     
     var atomLink:URL?
     var copyright:String?
@@ -91,7 +91,7 @@ struct SECustomParsingChannel : SECustomParserMode {
                 self.link = self.coerceURL(value)
             case "managingeditor":
                 self.managingEditor = value
-            case "pubdate":
+            case "pubDate":
                 self.pubDate = self.coerceDate(value)
             case "title":
                 self.title = value
@@ -135,7 +135,7 @@ struct SECustomParsingChannel : SECustomParserMode {
         }
     }
         
-    public func makeChildEntity(forTag tag:String) -> SECustomParserMode? {
+    public func makeChildEntity(forTag tag:String) -> SECustomParserModel? {
         switch tag {
             case "itunes:category":
                 return SECustomParsingCategory()
@@ -150,7 +150,7 @@ struct SECustomParsingChannel : SECustomParserMode {
         }
     }
     
-    mutating func setChildEntity(_ value:SECustomParserMode, forTag tag:String) {
+    mutating func setChildEntity(_ value:SECustomParserModel, forTag tag:String) {
         switch tag {
             case "itunes:category":
                 if let x = value as? SECustomParsingCategory {
