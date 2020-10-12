@@ -55,7 +55,8 @@ public class SECustomParser : HXSAXParserDelegate {
         self.completionHandler = completion;
         self.parser = try HXSAXParser(mode:.XML, delegate:self)
         
-        let dispatchIO:DispatchIO? = saveTo.withUnsafeFileSystemRepresentation {
+        let tempFile = saveTo.appendingPathExtension("temp")
+        let dispatchIO:DispatchIO? = tempFile.withUnsafeFileSystemRepresentation {
             guard let filePath = $0 else {
                 print("Could not convert file to fileSystemRepresentation")
                 return nil
@@ -65,7 +66,7 @@ public class SECustomParser : HXSAXParserDelegate {
                               queue:DispatchQueue.global(qos:.background),
                               cleanupHandler:{error in
                                 if ( error != 0 ) {
-                                    print("Error opening cache file \(saveTo) for writing: \(error)")
+                                    print("Error opening cache file \(tempFile) for writing: \(error)")
                                 }
                               });
         }
@@ -79,7 +80,7 @@ public class SECustomParser : HXSAXParserDelegate {
                         dispatchIO?.write(offset:0, data:DispatchData(bytes:$0), queue:DispatchQueue.global(qos:.background),
                                           ioHandler:{ (done,data,error) in
                                                 if ( error != 0 ) {
-                                                    print("Error writing to file \(saveTo): \(error)")
+                                                    print("Error writing to file \(tempFile): \(error)")
                                                 }
                                           }
                         )
@@ -91,6 +92,12 @@ public class SECustomParser : HXSAXParserDelegate {
             completion: { [weak self] in
                 self?.parser?.finishParsing()
                 dispatchIO?.close(flags:DispatchIO.CloseFlags(rawValue: 0))
+                do {
+                    try FileManager.default.removeItem(at:saveTo)
+                    try FileManager.default.moveItem(at:tempFile, to:saveTo)
+                } catch let e {
+                    print("Error commiting file \(saveTo): \(e)");
+                }
             }
         )
     }
