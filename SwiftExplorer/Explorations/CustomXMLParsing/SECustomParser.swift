@@ -130,7 +130,7 @@ public class SECustomParser : HXSAXParserDelegate {
                 for (key,value) in attributeDict {
                     currentEntity.setValue(value, forTag:elementName, attribute:key)
                 }
-                self.stack.hxSetLast(currentEntity)
+                self.stack.hxsetLast(currentEntity)
             }
         }
     }
@@ -158,17 +158,17 @@ public class SECustomParser : HXSAXParserDelegate {
            currentEntity.tag == elementName
         {
             let closedEntity = self.stack.removeLast()
-            self.stack.hxWithLast{$0.setChildEntity(closedEntity, forTag:elementName)}
+            self.stack.hxwithLast{$0.setChildEntity(closedEntity, forTag:elementName)}
             return
         }
 
         if let text = self.text {
-            self.stack.hxWithLast{$0.setValue(text, forTag:elementName)}
+            self.stack.hxwithLast{$0.setValue(text, forTag:elementName)}
             self.text = nil
         }
         
         if let data = self.cdata {
-            self.stack.hxWithLast{$0.setData(data, forTag:elementName)}
+            self.stack.hxwithLast{$0.setData(data, forTag:elementName)}
             self.cdata = nil
         }
     }
