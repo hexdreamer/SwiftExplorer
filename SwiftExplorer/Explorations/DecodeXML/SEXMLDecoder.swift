@@ -27,12 +27,6 @@ public class SEXMLDecoder : Decoder {
         }
         self.elements = elements
     }
-
-    init(url:URL) throws {
-        let parser = SEXMLParser()
-        try parser.parse(url)
-        self.elements = [parser.element]
-    }
         
     func element() throws -> SEXMLParser.Element {
         switch self.elements.count {
@@ -167,6 +161,12 @@ public struct XMLKeyedDecodingContainer<K:CodingKey> : KeyedDecodingContainerPro
         return formatter;
     }
     
+    static var DATE_FORMATTER2:DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "E, dd MMM yyyy HH:mm:ss zzz"
+        return formatter;
+    }
+    
     let decoder:SEXMLDecoder
 
     init(decoder:Decoder) throws {
@@ -214,7 +214,15 @@ public struct XMLKeyedDecodingContainer<K:CodingKey> : KeyedDecodingContainerPro
         } else if type == URL.self {
             return try self.decoder.decode(key) {URL(string:$0) as? T}
         } else if type == Date.self {
-            return try self.decoder.decode(key) {Self.DATE_FORMATTER.date(from:$0) as? T}
+            return try self.decoder.decode(key) {
+                if let d = Self.DATE_FORMATTER.date(from:$0) {
+                    return d as? T
+                } else if let d = Self.DATE_FORMATTER2.date(from:$0) {
+                    return d as? T
+                } else {
+                    return nil
+                }
+            }
         } else {
             let elements = try self.decoder.element().children?.filter({$0.name == key.stringValue})
             return try type.init(from:SEXMLDecoder(elements:elements ?? []));
@@ -241,7 +249,15 @@ public struct XMLKeyedDecodingContainer<K:CodingKey> : KeyedDecodingContainerPro
         } else if type == URL.self {
             return try self.decoder.decodeIfPresent(key) {URL(string:$0) as? T}
         } else if type == Date.self {
-            return try self.decoder.decodeIfPresent(key) {Self.DATE_FORMATTER.date(from:$0) as? T}
+            return try self.decoder.decodeIfPresent(key) {
+                if let d = Self.DATE_FORMATTER.date(from:$0) {
+                    return d as? T
+                } else if let d = Self.DATE_FORMATTER2.date(from:$0) {
+                    return d as? T
+                } else {
+                    return nil
+                }
+            }
         } else if let elements = try self.decoder.element().children?.filter({$0.name == key.stringValue}) {
             return try type.init(from:SEXMLDecoder(elements:elements));
         }

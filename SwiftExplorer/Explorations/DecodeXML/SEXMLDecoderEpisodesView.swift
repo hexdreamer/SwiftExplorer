@@ -1,5 +1,5 @@
 //
-//  SEPodcastEpisodes.swift
+//  SEXMLDecoderEpisodesView.swift
 //  SwiftExplorer
 //
 //  Created by Kenny Leung on 9/12/20.
@@ -9,7 +9,7 @@
 import SwiftUI
 import hexdreamsCocoa
 
-struct SEPodcastEpisodes: View {
+struct SEXMLDecoderEpisodesView: View {
     static var DATE_FORMATTER:DateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = "E, dd MMM yyy HH:mm:ss Z"
@@ -40,24 +40,7 @@ struct SEPodcastEpisodes: View {
             .background(Color(Color.RGBColorSpace.displayP3, white:0.9, opacity:1.0))
             
             ForEach(self.channel.items, id:\SEDecodableItem.guid) { item in
-                HStack(alignment:.top) {
-                    VStack(alignment:.leading, spacing:3.0) {
-                        Text(verbatim:item.title)
-                        Text(Self.DATE_FORMATTER.string(from:item.pubDate))
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                        Spacer().frame(maxHeight:2.0)
-                    }
-                    if item.itunesImage != nil {
-                        Spacer()
-                        HXAsyncImage(url:item.itunesImage) {
-                            Image("ChannelImageDefault")
-                                .resizable()
-                        }.aspectRatio(contentMode: ContentMode.fill)
-                        .frame(width:80, height:80, alignment:.center)
-                        .clipped()
-                    }
-                }
+                SEXMLDecoderEpisodeCell(item:item)
             }
         }
     }

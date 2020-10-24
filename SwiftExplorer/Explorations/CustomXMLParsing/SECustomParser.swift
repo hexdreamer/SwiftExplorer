@@ -90,13 +90,20 @@ public class SECustomParser : HXSAXParserDelegate {
                 }
             },
             completion: { [weak self] in
-                self?.parser?.finishParsing()
-                dispatchIO?.close(flags:DispatchIO.CloseFlags(rawValue: 0))
-                do {
-                    try FileManager.default.removeItem(at:saveTo)
-                    try FileManager.default.moveItem(at:tempFile, to:saveTo)
-                } catch let e {
-                    print("Error commiting file \(saveTo): \(e)");
+                guard let self = self else {
+                    return
+                }
+                self.parser?.finishParsing()
+                dispatchIO?.barrier {
+                    dispatchIO?.close(flags:[])
+                    do {
+                        if ( FileManager.default.fileExists(atPath:saveTo.path) ) {
+                            try FileManager.default.removeItem(at:saveTo)
+                        }
+                        try FileManager.default.moveItem(at:tempFile, to:saveTo)
+                    } catch let e {
+                        print("Error commiting file \(saveTo): \(e)");
+                    }
                 }
             }
         )

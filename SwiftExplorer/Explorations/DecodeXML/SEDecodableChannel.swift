@@ -10,13 +10,13 @@ public struct SEDecodableChannel : Decodable {
     let docs:String?
     let generator:String?
     let language:String
-    let lastBuildDate:Date
+    let lastBuildDate:Date?
     let link:URL
     let managingEditor:String?
     let pubDate:Date?
     let title:String
     let itunesAuthor:String
-    let itunesCategory:SEDecodableCategory
+    let itunesCategory:[SEDecodableCategory]
     let itunesExplicit:Bool
     let itunesImage:URL
     let itunesNewFeedURL:URL?

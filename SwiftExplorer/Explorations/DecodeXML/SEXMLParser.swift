@@ -3,7 +3,7 @@ import Foundation
 import hexdreamsCocoa
 
 public class SEXMLParser : HXSAXParserDelegate {
-        
+    
     public class Element {
         let name:String
         let attributes:[String:String]?
@@ -25,8 +25,11 @@ public class SEXMLParser : HXSAXParserDelegate {
         }
     }
 
+    private var parser:HXSAXParser?
+    private var fileReader:HXDispatchIOFileReader?
+    private var urlSessionReader:HXURLSessionReader?
     private var stack = [Element]()
-    
+
     public var element:Element {
         if let elem = self.stack.last {
             return elem
@@ -35,16 +38,92 @@ public class SEXMLParser : HXSAXParserDelegate {
         }
     }
             
-    public func parse(_ url:URL) throws {
-        //let parser = try HXSAXParser(mode:.XML, delegate:self)
+    public func parse(file:URL, completion:@escaping (SEXMLParser)->Void) throws {
+        self.parser = try HXSAXParser(mode:.XML, delegate:self)
+        self.fileReader = HXDispatchIOFileReader(
+            file:file,
+            dataAvailable: { [weak self] (data) in
+                do {
+                    try self?.parser?.parseChunk(data:data)
+                } catch let e {
+                    print(e)
+                }
+            },
+            completion: { [weak self] in
+                print("file reader completion")
+                guard let self = self else {
+                    return;
+                }
+                self.parser?.finishParsing()
+                completion(self)
+            }
+        )
     }
     
+    public func parse(network:URL, saveTo:URL, completion:@escaping (SEXMLParser)->Void) throws {
+        self.parser = try HXSAXParser(mode:.XML, delegate:self)
+        
+        let tempFile = saveTo.appendingPathExtension("temp")
+        let dispatchIO:DispatchIO? = tempFile.withUnsafeFileSystemRepresentation {
+            guard let filePath = $0 else {
+                print("Could not convert file to fileSystemRepresentation")
+                return nil
+            }
+            return DispatchIO(type:.stream, path:filePath,
+                              oflag:O_WRONLY|O_CREAT, mode:S_IRUSR|S_IWUSR,
+                              queue:DispatchQueue.global(qos:.background),
+                              cleanupHandler:{error in
+                                if ( error != 0 ) {
+                                    print("Error opening cache file \(tempFile) for writing: \(error)")
+                                }
+                              });
+        }
+        
+        self.urlSessionReader = HXURLSessionReader(
+            url:network,
+            dataAvailable: { [weak self] (data) in
+                do {
+                    try self?.parser?.parseChunk(data:data)
+                    data.withUnsafeBytes {
+                        dispatchIO?.write(offset:0, data:DispatchData(bytes:$0), queue:DispatchQueue.global(qos:.background),
+                                          ioHandler:{ (done,data,error) in
+                                                if ( error != 0 ) {
+                                                    print("Error writing to file \(tempFile): \(error)")
+                                                }
+                                          }
+                        )
+                    }
+                } catch let e {
+                    print(e)
+                }
+            },
+            completion: { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                self.parser?.finishParsing()
+                dispatchIO?.barrier {
+                    dispatchIO?.close(flags:DispatchIO.CloseFlags(rawValue: 0))
+                    do {
+                        if ( FileManager.default.fileExists(atPath:saveTo.path) ) {
+                            try FileManager.default.removeItem(at:saveTo)
+                        }
+                        try FileManager.default.moveItem(at:tempFile, to:saveTo)
+                    } catch let e {
+                        print("Error commiting file \(saveTo): \(e)");
+                    }
+                }
+            }
+        )
+    }
+
+        
     // MARK: HXSAXParserDelegate
     public func parser(_ parser: HXSAXParser, didStartElement elementName: String, attributes attributeDict: [String : String]) {
-        for _ in 0..<self.stack.count {
-            print("    ", terminator:"")
-        }
-        print(elementName)
+//        for _ in 0..<self.stack.count {
+//            print("    ", terminator:"")
+//        }
+//        print(elementName)
         let element = Element(name:elementName, attributes:attributeDict)
         if let openElement = self.stack.last {
             openElement.append(element)

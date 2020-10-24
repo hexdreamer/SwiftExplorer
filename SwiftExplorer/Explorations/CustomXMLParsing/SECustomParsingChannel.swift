@@ -25,7 +25,7 @@ struct SECustomParsingChannel : SECustomParserModel {
     var site:String?
     var title:String?
     var itunesAuthor:String?
-    var itunesCategory:SECustomParsingCategory?
+    var itunesCategory:[SECustomParsingCategory] = []
     var itunesCopyright:String?
     var itunesExplicit:Bool?
     var itunesImage:URL?
@@ -34,7 +34,7 @@ struct SECustomParsingChannel : SECustomParserModel {
     var itunesSubtitle:String?
     var itunesSummary:String?
     var itunesType:String?
-    var items = [SECustomParsingItem]()
+    var items:[SECustomParsingItem] = []
     
     public let tag = "channel"
         
@@ -183,7 +183,7 @@ struct SECustomParsingChannel : SECustomParserModel {
         switch tag {
             case "itunes:category":
                 if let x = value as? SECustomParsingCategory {
-                    self.itunesCategory = x
+                    self.itunesCategory.append(x)
                 }
             case "image":
                 if let x = value as? SECustomParsingImage {
