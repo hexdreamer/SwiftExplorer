@@ -15,7 +15,6 @@
 		B93A3BE124FD1F840038BFDB /* SEDecodeXML.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93A3BDB24FD1F840038BFDB /* SEDecodeXML.swift */; };
 		B93A3BE224FD1F840038BFDB /* SEDecodableChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93A3BDC24FD1F840038BFDB /* SEDecodableChannel.swift */; };
 		B93A3BE324FD1F840038BFDB /* SEDecodableImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93A3BDD24FD1F840038BFDB /* SEDecodableImage.swift */; };
-		B93A3BE424FD1F840038BFDB /* SEXMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93A3BDE24FD1F840038BFDB /* SEXMLParser.swift */; };
 		B93A3BE524FD1F840038BFDB /* SEDecodableOwner.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93A3BDF24FD1F840038BFDB /* SEDecodableOwner.swift */; };
 		B93A4EB8250D3B0700EE2B35 /* SEXMLDecoderEpisodesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93A4EB7250D3B0700EE2B35 /* SEXMLDecoderEpisodesView.swift */; };
 		B956582E24FD16890001DEE0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956582D24FD16890001DEE0 /* AppDelegate.swift */; };
@@ -77,7 +76,6 @@
 		B93A3BDB24FD1F840038BFDB /* SEDecodeXML.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SEDecodeXML.swift; sourceTree = "<group>"; };
 		B93A3BDC24FD1F840038BFDB /* SEDecodableChannel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SEDecodableChannel.swift; sourceTree = "<group>"; };
 		B93A3BDD24FD1F840038BFDB /* SEDecodableImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SEDecodableImage.swift; sourceTree = "<group>"; };
-		B93A3BDE24FD1F840038BFDB /* SEXMLParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SEXMLParser.swift; sourceTree = "<group>"; };
 		B93A3BDF24FD1F840038BFDB /* SEDecodableOwner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SEDecodableOwner.swift; sourceTree = "<group>"; };
 		B93A4EB7250D3B0700EE2B35 /* SEXMLDecoderEpisodesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEXMLDecoderEpisodesView.swift; sourceTree = "<group>"; };
 		B956582A24FD16890001DEE0 /* SwiftExplorer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftExplorer.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -154,7 +152,6 @@
 				B9E8F97925342C8900212D81 /* SEXMLDecoderFeedCell.swift */,
 				B93A4EB7250D3B0700EE2B35 /* SEXMLDecoderEpisodesView.swift */,
 				B969B96525448A6A00B8B8AB /* SEXMLDecoderEpisodeCell.swift */,
-				B93A3BDE24FD1F840038BFDB /* SEXMLParser.swift */,
 				B9021C522506B6C900F66844 /* SEXMLDecoder.swift */,
 				B900CA122507138C0023C86B /* SEDecodableRSS.swift */,
 				B93A3BDC24FD1F840038BFDB /* SEDecodableChannel.swift */,
@@ -434,7 +431,6 @@
 				B956583524FD16890001DEE0 /* ContentView.swift in Sources */,
 				B93A3BE324FD1F840038BFDB /* SEDecodableImage.swift in Sources */,
 				B9A00B0F2522D02100EF9E4D /* SECustomParsingFeedCell.swift in Sources */,
-				B93A3BE424FD1F840038BFDB /* SEXMLParser.swift in Sources */,
 				B969B96625448A6A00B8B8AB /* SEXMLDecoderEpisodeCell.swift in Sources */,
 				B956583024FD16890001DEE0 /* SceneDelegate.swift in Sources */,
 				B95F0A0525199050004B609B /* SECustomParsingOwner.swift in Sources */,
