@@ -32,7 +32,7 @@ struct SECustomParsingFeedCell: View {
                 .clipped()
                 
                 VStack(alignment:.leading, spacing:3.0) {
-                    Text(self.loader.channel?.title ?? self.loader.feed.title)
+                    Text(self.loader.channel?.title ?? "")
                     Text(self.loader.channel?.latestItem?.pubDate.map{Self.DATE_FORMATTER.string(from:$0)} ?? "")
                         .font(.caption)
                         .foregroundColor(.gray)
