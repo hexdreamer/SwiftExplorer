@@ -43,6 +43,7 @@
 		B9A00B072522CB5800EF9E4D /* SECustomParsingEpisodeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A00B062522CB5800EF9E4D /* SECustomParsingEpisodeCell.swift */; };
 		B9A00B0F2522D02100EF9E4D /* SECustomParsingFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A00B0E2522D02100EF9E4D /* SECustomParsingFeedCell.swift */; };
 		B9A00B142522D38500EF9E4D /* SECustomParsingFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A00B132522D38500EF9E4D /* SECustomParsingFeed.swift */; };
+		B9A4B267254E17A9006A2141 /* SEEvenOddFillUIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A4B266254E17A9006A2141 /* SEEvenOddFillUIKit.swift */; };
 		B9C4A28F2516F1F30035860A /* hexdreamsCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = B9C4A28E2516F1F30035860A /* hexdreamsCocoa */; };
 		B9E1EA5C25255DE6000067B8 /* HiraganaKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E1EA5B25255DE6000067B8 /* HiraganaKeyboard.swift */; };
 		B9E1EA672525A87A000067B8 /* KatakanaKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E1EA662525A87A000067B8 /* KatakanaKeyboard.swift */; };
@@ -111,6 +112,7 @@
 		B9A00B062522CB5800EF9E4D /* SECustomParsingEpisodeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SECustomParsingEpisodeCell.swift; sourceTree = "<group>"; };
 		B9A00B0E2522D02100EF9E4D /* SECustomParsingFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SECustomParsingFeedCell.swift; sourceTree = "<group>"; };
 		B9A00B132522D38500EF9E4D /* SECustomParsingFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SECustomParsingFeed.swift; sourceTree = "<group>"; };
+		B9A4B266254E17A9006A2141 /* SEEvenOddFillUIKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SEEvenOddFillUIKit.swift; sourceTree = "<group>"; };
 		B9BF2AD12519D27700799633 /* hexdreamsCocoa */ = {isa = PBXFileReference; lastKnownFileType = folder; name = hexdreamsCocoa; path = ../hexdreamsCocoa; sourceTree = "<group>"; };
 		B9E1EA5B25255DE6000067B8 /* HiraganaKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiraganaKeyboard.swift; sourceTree = "<group>"; };
 		B9E1EA662525A87A000067B8 /* KatakanaKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KatakanaKeyboard.swift; sourceTree = "<group>"; };
@@ -238,6 +240,7 @@
 				B9E1EA662525A87A000067B8 /* KatakanaKeyboard.swift */,
 				B95F09F925199050004B609B /* CustomXMLParsing */,
 				B93A3BD924FD1F840038BFDB /* DecodeXML */,
+				B9A4B266254E17A9006A2141 /* SEEvenOddFillUIKit.swift */,
 			);
 			path = Explorations;
 			sourceTree = "<group>";
@@ -433,6 +436,7 @@
 				B9A00B0F2522D02100EF9E4D /* SECustomParsingFeedCell.swift in Sources */,
 				B969B96625448A6A00B8B8AB /* SEXMLDecoderEpisodeCell.swift in Sources */,
 				B956583024FD16890001DEE0 /* SceneDelegate.swift in Sources */,
+				B9A4B267254E17A9006A2141 /* SEEvenOddFillUIKit.swift in Sources */,
 				B95F0A0525199050004B609B /* SECustomParsingOwner.swift in Sources */,
 				B95F0A0C25199050004B609B /* SECustomXMLParsing.swift in Sources */,
 			);
