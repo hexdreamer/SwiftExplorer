@@ -62,6 +62,13 @@ struct ContentView: View {
                 }
                 
                 NavigationLink(
+                    destination:SEEvenOddFill()
+                        .navigationBarTitle("Even Odd Fill")
+                ) {
+                    Text("Even Odd Fill")
+                }
+
+                NavigationLink(
                     destination:SEEvenOddFillUIKit()
                         .navigationBarTitle("Even Odd Fill UIKit")
                 ) {
