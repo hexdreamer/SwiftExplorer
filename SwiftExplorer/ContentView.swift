@@ -60,6 +60,13 @@ struct ContentView: View {
                 ) {
                     Text("XML Decoder")
                 }
+                
+                NavigationLink(
+                    destination:EvenOddFillUIKit()
+                        .navigationBarTitle("Even Odd Fill UIKit")
+                ) {
+                    Text("Even Odd Fill UIKit")
+                }
             }
             .navigationBarTitle("Explorations")
         }
