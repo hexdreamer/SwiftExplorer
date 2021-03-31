@@ -12,8 +12,8 @@ import SwiftUI
 import hexdreamsCocoa
 
 struct ConcatenateTransforms: View {
-    let sourceRect = CGRect(x: 20, y: 20, width: 500, height: 500)
-    let targetRect = CGRect(x: 600, y: 400, width: 100, height: 100)
+    let sourceRect = CGRect(x: 120, y: 20, width: 500, height: 500)
+    let targetRect = CGRect(x: 20, y: 400, width: 100, height: 100)
 
     /// From [https://math.stackexchange.com/a/3249175/272082]:
     ///
@@ -36,6 +36,13 @@ struct ConcatenateTransforms: View {
         return CGAffineTransform(scaleX: scale, y: scale)
     }
 
+    // For demo purposes only: I want to be able to move backwards to a state before
+    // the transform at index 0, the "starting/rest point of the sequence of transforms":
+    //
+    //          [ tOffset, ..., tOffset.inverted() ]
+    //   start,   0      , 1.., end
+    //
+    let sequenceStart = -1
     var tSequence:[(s:String, t:CGAffineTransform)] {
         [
             ("set to origin", tOffset),
@@ -44,6 +51,7 @@ struct ConcatenateTransforms: View {
             ("unset from origin", tOffset.inverted())
         ]
     }
+    var sequenceEnd:Int { tSequence.count-1 }
 
     @State var transformStatus = "At Source"
     @State var transformState = -1
@@ -75,21 +83,25 @@ struct ConcatenateTransforms: View {
 
             HStack {
                 Spacer()
+
                 Button(action: { transformState -= 1 }) {
                     Image(systemName: "arrow.left.circle")
                         .font(.system(size: 56.0))
                 }
-                .disabled(transformState == -1)
+                .disabled(transformState == sequenceStart)
+
                 Spacer()
                 Text("\(transformStatus)")
                     .font(.system(size: 40))
                     .frame(minWidth:600)
                 Spacer()
+
                 Button(action: { transformState += 1 }) {
                     Image(systemName: "arrow.right.circle")
                         .font(.system(size: 56.0))
                 }
-                .disabled(transformState == tSequence.count-1)
+                .disabled(transformState == sequenceEnd)
+
                 Spacer()
             } // HStack
         } // VStack
@@ -108,10 +120,9 @@ struct ConcatenateTransforms: View {
             print("\(transformStatus)")
             transform.print()
 
-            // Bookends of state
-            if (newState == -1) {
+            if (newState == sequenceStart) {
                 transformStatus += " / At Source"
-            } else if (newState == tSequence.count-1) {
+            } else if (newState == sequenceEnd) {
                 transformStatus += " / At Target"
             }
         }
