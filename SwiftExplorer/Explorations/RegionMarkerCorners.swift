@@ -47,8 +47,8 @@ struct RegionMarkerCorners : View {
                             self.topLeft.y = gesture.location.y - halfH
                             self.bottomRight.x = gesture.location.x + halfW
                             self.bottomRight.y = gesture.location.y + halfH
-                    }
-            )
+                        }
+                )
             
             Circle()
                 .fill(Color.green)
@@ -60,7 +60,7 @@ struct RegionMarkerCorners : View {
                             self.bottomRight = gesture.location
                         }
                 )
-        } // Zstack
+        } // ZStack
         .background(Color.gray)
     }
     

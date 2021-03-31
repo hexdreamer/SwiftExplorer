@@ -57,19 +57,19 @@ struct ConcatenateTransforms: View {
                 Rectangle()
                     .fill(Color.green)
                     .frame(width: sourceRect.size.width, height: sourceRect.size.height)
-                    .position(x: sourceRect.center.x, y: sourceRect.center.y)
+                    .position(x: sourceRect.midX, y: sourceRect.midY)
 
                 // Target
                 Rectangle()
                     .fill(Color.blue)
                     .frame(width: targetRect.size.width, height: targetRect.size.height)
-                    .position(x: targetRect.center.x, y: targetRect.center.y)
+                    .position(x: targetRect.midX, y: targetRect.midY)
 
                 // Transforming image/rect
                 Image("Grid")
                     .resizable()
                     .frame(width: tRect.size.width-3, height: tRect.size.height-3)  // don't bleed to edge
-                    .position(x: tRect.center.x, y: tRect.center.y)
+                    .position(x: tRect.midX, y: tRect.midY)
             } // GeometryReader
             .background(Color.gray)
 
@@ -116,11 +116,6 @@ struct ConcatenateTransforms: View {
             }
         }
     }
-}
-
-// Using position() modifiers, which are relative to View's center
-extension CGRect {
-    var center:CGPoint { return ┼self }
 }
 
 /// https://stackoverflow.com/a/39215372/246801
