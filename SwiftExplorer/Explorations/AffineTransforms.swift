@@ -11,11 +11,6 @@
 import SwiftUI
 import hexdreamsCocoa
 
-// Using position() modifiers, which are relative to View's center
-extension CGRect {
-    var center:CGPoint { return ┼self }
-}
-
 struct ConcatenateTransforms: View {
     let sourceRect = CGRect(x: 20, y: 20, width: 500, height: 500)
     let targetRect = CGRect(x: 600, y: 400, width: 100, height: 100)
@@ -55,7 +50,7 @@ struct ConcatenateTransforms: View {
     @State var transform = CGAffineTransform.identity
 
     var body: some View {
-        let transformRect = sourceRect.applying(transform)
+        let tRect = sourceRect.applying(transform)
         VStack {
             GeometryReader { _ in
                 // Source
@@ -73,8 +68,8 @@ struct ConcatenateTransforms: View {
                 // Transforming image/rect
                 Image("Grid")
                     .resizable()
-                    .frame(width: transformRect.size.width-3, height: transformRect.size.height-3)  // don't bleed to edge
-                    .position(x: transformRect.center.x, y: transformRect.center.y)
+                    .frame(width: tRect.size.width-3, height: tRect.size.height-3)  // don't bleed to edge
+                    .position(x: tRect.center.x, y: tRect.center.y)
             } // GeometryReader
             .background(Color.gray)
 
@@ -84,7 +79,7 @@ struct ConcatenateTransforms: View {
                     Image(systemName: "arrow.left.circle")
                         .font(.system(size: 56.0))
                 }
-                .disabled(transformState <= -1)
+                .disabled(transformState == -1)
                 Spacer()
                 Text("\(transformStatus)")
                     .font(.system(size: 40))
@@ -94,28 +89,75 @@ struct ConcatenateTransforms: View {
                     Image(systemName: "arrow.right.circle")
                         .font(.system(size: 56.0))
                 }
-                .disabled(transformState >= tSequence.count)
+                .disabled(transformState == tSequence.count-1)
                 Spacer()
             } // HStack
         } // VStack
         .onChange(of: transformState) { [transformState] newState in
             let oldState = transformState
-
             if (newState > oldState) {
-                let sequence = tSequence[newState]
+                let sequence = tSequence[newState]  // apply new state
                 transformStatus = sequence.s
                 transform = transform.concatenating(sequence.t)
             } else {
-                let sequence = tSequence[oldState]
+                let sequence = tSequence[oldState]  // undo old state
                 transformStatus = "un-" + sequence.s
                 transform = transform.concatenating(sequence.t.inverted())
             }
 
+            print("\(transformStatus)")
+            transform.print()
+
+            // Bookends of state
             if (newState == -1) {
                 transformStatus += " / At Source"
             } else if (newState == tSequence.count-1) {
                 transformStatus += " / At Target"
             }
         }
+    }
+}
+
+// Using position() modifiers, which are relative to View's center
+extension CGRect {
+    var center:CGPoint { return ┼self }
+}
+
+/// https://stackoverflow.com/a/39215372/246801
+extension String {
+    func leftPadding(toLength: Int, withPad character: Character) -> String {
+        let stringLength = self.count
+        if stringLength < toLength {
+            let pad = String(repeatElement(character, count: toLength - stringLength))
+            return pad + self
+        } else {
+            return String(self.suffix(toLength))
+        }
+    }
+}
+
+extension CGAffineTransform {
+    func print() -> Void {
+        let t = self
+        let fmt = NumberFormatter()
+        fmt.numberStyle = .decimal
+        fmt.maximumSignificantDigits = 4
+
+        let values = [t.a, t.b, t.c, t.d, t.tx, t.ty]
+            .map { fmt.string(for: $0)! }
+        let max = values.max { (a, b) in a.count < b.count }!.count
+        let paddedValues = values
+            .map { $0.leftPadding(toLength: max, withPad: " ")}
+
+        var a,b,c,d,tx,ty: String
+        a = paddedValues[0]
+        b = paddedValues[1]
+        c = paddedValues[2]
+        d = paddedValues[3]
+        tx = paddedValues[4]
+        ty = paddedValues[5]
+
+        let s = "┌ \(a) \(b)  0 ┐\n" + "│ \(c) \(d)  0 │\n" + "└ \(tx) \(ty)  1 ┘\n"
+        Swift.print(s)
     }
 }
