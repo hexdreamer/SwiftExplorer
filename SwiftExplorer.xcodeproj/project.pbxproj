@@ -50,6 +50,7 @@
 		B9E1EA672525A87A000067B8 /* KatakanaKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E1EA662525A87A000067B8 /* KatakanaKeyboard.swift */; };
 		B9E8F9722533E86000212D81 /* SEXMLDecoderFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E8F9712533E86000212D81 /* SEXMLDecoderFeed.swift */; };
 		B9E8F97A25342C8900212D81 /* SEXMLDecoderFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E8F97925342C8900212D81 /* SEXMLDecoderFeedCell.swift */; };
+		F4785E7726140C0E008DBECD /* AffineTransforms.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4785E7626140C0E008DBECD /* AffineTransforms.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -120,6 +121,7 @@
 		B9E1EA662525A87A000067B8 /* KatakanaKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KatakanaKeyboard.swift; sourceTree = "<group>"; };
 		B9E8F9712533E86000212D81 /* SEXMLDecoderFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEXMLDecoderFeed.swift; sourceTree = "<group>"; };
 		B9E8F97925342C8900212D81 /* SEXMLDecoderFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEXMLDecoderFeedCell.swift; sourceTree = "<group>"; };
+		F4785E7626140C0E008DBECD /* AffineTransforms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffineTransforms.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -235,6 +237,7 @@
 		B956586024FD16F30001DEE0 /* Explorations */ = {
 			isa = PBXGroup;
 			children = (
+				F4785E7626140C0E008DBECD /* AffineTransforms.swift */,
 				B956586324FD16F30001DEE0 /* RegionMarkerRectangle.swift */,
 				B956586224FD16F30001DEE0 /* RegionMarkerCorners.swift */,
 				B956586124FD16F30001DEE0 /* RegionMarkerOffset.swift */,
@@ -441,6 +444,7 @@
 				B969B96625448A6A00B8B8AB /* SEXMLDecoderEpisodeCell.swift in Sources */,
 				B956583024FD16890001DEE0 /* SceneDelegate.swift in Sources */,
 				B9A4B267254E17A9006A2141 /* SEEvenOddFillUIKit.swift in Sources */,
+				F4785E7726140C0E008DBECD /* AffineTransforms.swift in Sources */,
 				B95F0A0525199050004B609B /* SECustomParsingOwner.swift in Sources */,
 				B95F0A0C25199050004B609B /* SECustomXMLParsing.swift in Sources */,
 			);

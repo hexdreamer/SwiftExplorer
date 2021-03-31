@@ -1,0 +1,121 @@
+//
+//  AffineTransforms.swift
+//
+//  Step forwards and backwards through a sequence of AffineTransforms to transform an image between
+//  a source rectangle and a target rectangle.
+//
+//  Created by Zach Young on 3/30/21.
+//  Copyright © 2021 Kenny Leung. All rights reserved.
+//
+
+import SwiftUI
+import hexdreamsCocoa
+
+// Using position() modifiers, which are relative to View's center
+extension CGRect {
+    var center:CGPoint { return ┼self }
+}
+
+struct ConcatenateTransforms: View {
+    let sourceRect = CGRect(x: 20, y: 20, width: 500, height: 500)
+    let targetRect = CGRect(x: 600, y: 400, width: 100, height: 100)
+
+    /// From [https://math.stackexchange.com/a/3249175/272082]:
+    ///
+    /// > Rotation and scaling matrices are usually defined around the origin. To perform these transformations about an arbitrary point, you would translate the point about which the transformation is to occur to the origin, perform the transformation as normal, and then undo the translation. This process is then repeated for each transformation required.
+    ///
+    var tOffset:CGAffineTransform {
+        let originOffsetX = sourceRect.minX
+        let originOffsetY = sourceRect.minY
+        return CGAffineTransform(translationX: originOffsetX, y: originOffsetY).inverted()
+    }
+
+    var tTranslate:CGAffineTransform {
+        let xOffset = targetRect.minX - sourceRect.minX
+        let yOffset = targetRect.minY - sourceRect.minY
+        return CGAffineTransform(translationX: xOffset, y: yOffset)
+    }
+
+    var tScale:CGAffineTransform {
+        let scale = targetRect.size.width / sourceRect.size.width
+        return CGAffineTransform(scaleX: scale, y: scale)
+    }
+
+    var tSequence:[(s:String, t:CGAffineTransform)] {
+        [
+            ("set to origin", tOffset),
+            ("scaled", tScale),
+            ("translated", tTranslate),
+            ("unset from origin", tOffset.inverted())
+        ]
+    }
+
+    @State var transformStatus = "At Source"
+    @State var transformState = -1
+    @State var transform = CGAffineTransform.identity
+
+    var body: some View {
+        let transformRect = sourceRect.applying(transform)
+        VStack {
+            GeometryReader { _ in
+                // Source
+                Rectangle()
+                    .fill(Color.green)
+                    .frame(width: sourceRect.size.width, height: sourceRect.size.height)
+                    .position(x: sourceRect.center.x, y: sourceRect.center.y)
+
+                // Target
+                Rectangle()
+                    .fill(Color.blue)
+                    .frame(width: targetRect.size.width, height: targetRect.size.height)
+                    .position(x: targetRect.center.x, y: targetRect.center.y)
+
+                // Transforming image/rect
+                Image("Grid")
+                    .resizable()
+                    .frame(width: transformRect.size.width-3, height: transformRect.size.height-3)  // don't bleed to edge
+                    .position(x: transformRect.center.x, y: transformRect.center.y)
+            } // GeometryReader
+            .background(Color.gray)
+
+            HStack {
+                Spacer()
+                Button(action: { transformState -= 1 }) {
+                    Image(systemName: "arrow.left.circle")
+                        .font(.system(size: 56.0))
+                }
+                .disabled(transformState <= -1)
+                Spacer()
+                Text("\(transformStatus)")
+                    .font(.system(size: 40))
+                    .frame(minWidth:600)
+                Spacer()
+                Button(action: { transformState += 1 }) {
+                    Image(systemName: "arrow.right.circle")
+                        .font(.system(size: 56.0))
+                }
+                .disabled(transformState >= tSequence.count)
+                Spacer()
+            } // HStack
+        } // VStack
+        .onChange(of: transformState) { [transformState] newState in
+            let oldState = transformState
+
+            if (newState > oldState) {
+                let sequence = tSequence[newState]
+                transformStatus = sequence.s
+                transform = transform.concatenating(sequence.t)
+            } else {
+                let sequence = tSequence[oldState]
+                transformStatus = "un-" + sequence.s
+                transform = transform.concatenating(sequence.t.inverted())
+            }
+
+            if (newState == -1) {
+                transformStatus += " / At Source"
+            } else if (newState == tSequence.count-1) {
+                transformStatus += " / At Target"
+            }
+        }
+    }
+}
