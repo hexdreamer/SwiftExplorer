@@ -13,8 +13,8 @@ struct ContentView: View {
         NavigationView {
             List {
                 NavigationLink(
-                    destination:ConcatenateTransforms()
-                        .navigationBarTitle("Concatenate Transforms")
+                    destination:AffineTransformsViewports()
+                        .navigationBarTitle("Concatenate Transforms (Viewports)")
                 ){
                     Text("Affine Transforms")
                 }

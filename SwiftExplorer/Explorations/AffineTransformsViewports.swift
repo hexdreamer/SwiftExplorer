@@ -56,7 +56,7 @@ struct World {
     var sequenceEnd:Int { tSequence.count-1 }
 }
 
-struct ViewPort: View {
+struct Viewport: View {
     let tAnimation:CGAffineTransform
     let tViewPort:CGAffineTransform
     let world:World
@@ -121,7 +121,7 @@ struct ViewPort: View {
 }
 
 
-struct ConcatenateTransforms: View {
+struct AffineTransformsViewports: View {
     @State var animationStatus = "At Source"
     @State var animationState = -1
     @State var tAnimation = CGAffineTransform.identity
@@ -139,17 +139,17 @@ struct ConcatenateTransforms: View {
             .concatenating(CGAffineTransform(scaleX: 0.2, y: 0.2))
 
         VStack {
-            ViewPort(tAnimation: tAnimation, tViewPort: tView1, world: world)
+            Viewport(tAnimation: tAnimation, tViewPort: tView1, world: world)
                 .background(Color.gray)
 
             HStack {
-                ViewPort(tAnimation: tAnimation, tViewPort: tView2, world: world)
+                Viewport(tAnimation: tAnimation, tViewPort: tView2, world: world)
                     .background(Color.gray)
 
                 VStack {
-                    ViewPort(tAnimation: tAnimation, tViewPort: tView3, world: world)
+                    Viewport(tAnimation: tAnimation, tViewPort: tView3, world: world)
                         .background(Color.gray)
-                    ViewPort(tAnimation: tAnimation, tViewPort: tView4, world: world)
+                    Viewport(tAnimation: tAnimation, tViewPort: tView4, world: world)
                         .background(Color.gray)
                 }
             }
