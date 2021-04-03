@@ -9,7 +9,6 @@
 import SwiftUI
 
 extension String.StringInterpolation {
-    
     mutating func appendInterpolation(_ r: CGRect) {
         func round(_ x:CGFloat) -> CGFloat { CGFloat(Int(x*100))/100.0 }
         let x = round(r.minX)
@@ -24,7 +23,7 @@ struct AffineTransformsFlow: View {
 
     let image = UIImage(named: "Middle Earth")!
     let imageViewSize = CGSize(width: 600, height: 600)
-    var tImageView:CGAffineTransform {
+    var tImageToView:CGAffineTransform {
         let outerRect = CGRect(size: imageViewSize)
         let innerRect = CGRect(size: image.size)
         let fittedRect = innerRect.fit(rect: outerRect)
@@ -36,20 +35,29 @@ struct AffineTransformsFlow: View {
             .concatenating(CGAffineTransform(translationX: translatedPt.x, y: translatedPt.y))
         return t
     }
+    var tViewToImage:CGAffineTransform {
+        tImageToView.inverted()
+    }
 
+    // Img -> tImageToView -> ImgView
+    // tViewToImage = tImageToView.inverted()
+    // ImgView -> tViewToImage -> Img
+
+    // UI State
     @State var tl = CGPoint(x: 0, y: 0)
     @State var br = CGPoint(x: 100, y: 100)
 
-    var imageViewRegion:CGRect {
+    var regionInView:CGRect {
         CGRect(x: tl.x, y: tl.y, width: br.x - tl.x, height: br.y - tl.y).standardized
     }
 
-    var imageRegion:CGRect {
-        imageViewRegion.applying(tImageView.inverted())
+    // Source of truth
+    var regionInImage:CGRect {
+        regionInView.applying(tViewToImage)
     }
 
-    var subSampledImage:UIImage {
-        let drawImage = image.cgImage!.cropping(to: imageRegion)
+    var subImage:UIImage {
+        let drawImage = image.cgImage!.cropping(to: regionInImage)
         return UIImage(cgImage: drawImage!)
     }
 
@@ -63,8 +71,9 @@ struct AffineTransformsFlow: View {
                 .overlay(
                     RegionMarkerCorners(topLeft: $tl, bottomRight: $br)
                         // Not doing such a good job clamping
-                        .onChange(of: imageViewRegion) { [imageViewRegion] newValue in
-                            let oldValue = imageViewRegion
+                        .onChange(of: regionInView) { [regionInView] newValue in
+                            print("onChange >> tl: \(tl) br: \(br)")
+                            let oldValue = regionInView
                             if (newValue.minX < 0) {
                                 tl.x = 0
                                 br.x = oldValue.maxX
@@ -86,7 +95,7 @@ struct AffineTransformsFlow: View {
 
 
             Spacer()
-            Image(uiImage: subSampledImage)
+            Image(uiImage: subImage)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .border(Color.blue, width: 2)
@@ -95,8 +104,8 @@ struct AffineTransformsFlow: View {
 
             Group {
                 VStack {
-                    Text("ImageView Region: \(imageViewRegion)" as String)
-                    Text("Image Region: \(imageRegion)" as String)
+                    Text("ImageView Region: \(regionInView)" as String)
+                    Text("Image Region: \(regionInImage)" as String)
                 }
             }
         }
