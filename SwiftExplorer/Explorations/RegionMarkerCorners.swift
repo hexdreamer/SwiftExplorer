@@ -100,7 +100,7 @@ struct RegionMarkerCorners : View {
             
             // Move handle
             ZStack{
-                CrossHairs()
+                CrossHairs(tickSize: 20)
                 Circle()
                     .fill(Color.blue.opacity(0.1))
             }
