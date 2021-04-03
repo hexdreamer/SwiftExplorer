@@ -11,6 +11,7 @@ struct RegionMarkerCorners : View {
     @Binding var topLeft:CGPoint      //= CGPoint(x: 100, y: 100)
     @Binding var bottomRight:CGPoint  // = CGPoint(x: 200, y: 200)
     let bounds:CGSize
+    let minSize = CGSize(width: 10, height: 10)
     
     var region:CGRect {
         return CGRect(x: topLeft.x, y: topLeft.y, width: bottomRight.x - topLeft.x, height: bottomRight.y - topLeft.y).standardized
@@ -18,10 +19,8 @@ struct RegionMarkerCorners : View {
 
     func clampX(_ x:CGFloat) -> CGFloat {
         var myX = x
-        print("clampX >> before \(myX)")
         if (x < 0)              { myX = 0 }
         if (x > bounds.width)   { myX = bounds.width }
-        print("clampX >> after \(myX)")
         return myX
     }
 
@@ -64,33 +63,36 @@ struct RegionMarkerCorners : View {
                             let height = abs(self.region.height)
                             let halfW = width/2
                             let halfH = height/2
-                            let minX = gesture.location.x-halfW
-                            let minY = gesture.location.y-halfH
-                            var maxX = gesture.location.x+halfW
-                            var maxY = gesture.location.y+halfH
 
-                            // We can drag so far to the left and up that the max values fall below the lower clamp threshold of 0
-                            // and get returned as 0
-                            maxX = (maxX < halfW) ? halfW : maxX
-                            maxY = (maxY < halfH) ? halfH : maxY
+                            let l = gesture.location
+                            var minX = l.x-halfW
+                            var minY = l.y-halfH
+                            var maxX = l.x+halfW
+                            var maxY = l.y+halfH
 
-                            var clampedMinX = clampX(minX)
-                            var clampedMinY = clampY(minY)
-                            var clampedMaxX = clampX(maxX)
-                            var clampedMaxY = clampX(maxY)
-
-
-                            // dragging ➡️ against rightmost bound
-                            clampedMinX = (clampedMaxX == maxX) ? clampedMinX : clampedMaxX - width
                             // dragging ⬅️ against lefmost bound
-                            clampedMaxX = (clampedMinX == minX) ? clampedMaxX : clampedMinX + width
-                            // dragging ⬇️ against bottom bound
-                            clampedMinY = (clampedMaxY == maxY) ? clampedMinY : clampedMaxY - height
-                            // dragging ⬆️ against upper bound
-                            clampedMaxY = (clampedMinY == minY) ? clampedMaxY : clampedMinY + height
+                            if (minX <= 0) {
+                                minX = 0
+                                maxX = width
+                            }
+                            // dragging ➡️ against rightmost bound
+                            if (maxX >= bounds.width) {
+                                maxX = bounds.width
+                                minX = maxX - width
+                            }
+                            // dragging ⬆️ against topmost bound
+                            if (minY <= 0) {
+                                minY = 0
+                                maxY = height
+                            }
+                            // dragging ⬇️ against bottommost bound
+                            if (maxY >= bounds.height) {
+                                maxY = bounds.height
+                                minY = maxY - height
+                            }
 
-                            self.topLeft =      CGPoint(x: clampedMinX, y: clampedMinY)
-                            self.bottomRight =  CGPoint(x: clampedMaxX, y: clampedMaxY)
+                            self.topLeft =      CGPoint(x: minX, y: minY)
+                            self.bottomRight =  CGPoint(x: maxX, y: maxY)
                         }
                 )
             
