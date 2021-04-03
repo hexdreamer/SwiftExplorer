@@ -22,9 +22,9 @@ extension String.StringInterpolation {
 struct AffineTransformsFlow: View {
 
     let image = UIImage(named: "Middle Earth")!
-    let imageViewSize = CGSize(width: 600, height: 600)
+    let viewSize = CGSize(width: 600, height: 600)
     var tImageToView:CGAffineTransform {
-        let outerRect = CGRect(size: imageViewSize)
+        let outerRect = CGRect(size: viewSize)
         let innerRect = CGRect(size: image.size)
         let fittedRect = innerRect.fit(rect: outerRect)
 
@@ -40,13 +40,13 @@ struct AffineTransformsFlow: View {
     }
 
     // Img -> tImageToView -> ImgView
-    // tViewToImage = tImageToView.inverted()
     // ImgView -> tViewToImage -> Img
 
     // UI State
     @State var tl = CGPoint(x: 0, y: 0)
     @State var br = CGPoint(x: 100, y: 100)
 
+    // So far, just a debug value
     var regionInView:CGRect {
         CGRect(x: tl.x, y: tl.y, width: br.x - tl.x, height: br.y - tl.y).standardized
     }
@@ -66,31 +66,10 @@ struct AffineTransformsFlow: View {
             Image(uiImage: image)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: imageViewSize.width, height: imageViewSize.height)
+                .frame(width: viewSize.width, height: viewSize.height)
                 .border(Color.red, width: 2)
                 .overlay(
-                    RegionMarkerCorners(topLeft: $tl, bottomRight: $br)
-                        // Not doing such a good job clamping
-                        .onChange(of: regionInView) { [regionInView] newValue in
-                            print("onChange >> tl: \(tl) br: \(br)")
-                            let oldValue = regionInView
-                            if (newValue.minX < 0) {
-                                tl.x = 0
-                                br.x = oldValue.maxX
-                            }
-                            if (newValue.minY < 0) {
-                                tl.y = 0
-                                br.y = oldValue.maxY
-                            }
-                            if (newValue.maxX > imageViewSize.width) {
-                                tl.x = oldValue.minX
-                                br.x = imageViewSize.width
-                            }
-                            if (newValue.maxY > imageViewSize.height) {
-                                tl.y = oldValue.minY
-                                br.y = imageViewSize.height
-                            }
-                        }
+                    RegionMarkerCorners(topLeft: $tl, bottomRight: $br, bounds: viewSize)
                 )
 
 
