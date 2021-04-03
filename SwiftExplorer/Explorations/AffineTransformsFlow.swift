@@ -7,9 +7,9 @@
 //
 
 import SwiftUI
+import hexdreamsCocoa
 
 extension String.StringInterpolation {
-    
     mutating func appendInterpolation(_ r: CGRect) {
         func round(_ x:CGFloat) -> CGFloat { CGFloat(Int(x*100))/100.0 }
         let x = round(r.minX)
@@ -23,9 +23,9 @@ extension String.StringInterpolation {
 struct AffineTransformsFlow: View {
 
     let image = UIImage(named: "Middle Earth")!
-    let imageViewSize = CGSize(width: 600, height: 600)
-    var tImageView:CGAffineTransform {
-        let outerRect = CGRect(size: imageViewSize)
+    let viewSize = CGSize(width: 750, height: 750)
+    var tImageToView:CGAffineTransform {
+        let outerRect = CGRect(size: viewSize)
         let innerRect = CGRect(size: image.size)
         let fittedRect = innerRect.fit(rect: outerRect)
 
@@ -34,22 +34,38 @@ struct AffineTransformsFlow: View {
 
         let t = CGAffineTransform(scaleX: scaleFactor, y: scaleFactor)
             .concatenating(CGAffineTransform(translationX: translatedPt.x, y: translatedPt.y))
+        //print("tImageToView >>")
+        t.print()
         return t
     }
+    var tViewToImage:CGAffineTransform {
+        //print("tViewToImage >>")
+        tImageToView.inverted().print()
+        return tImageToView.inverted()
+    }
 
+    // Img -> tImageToView -> ImgView
+    // ImgView -> tViewToImage -> Img
+
+    // center a region on Rohan; Image coordinate-space
+    let rohanRegion = CGRect(x: 2361, y: 2220, width: 556, height: 333)
+
+    // UI State; overridden with Rohan in onAppear()
     @State var tl = CGPoint(x: 0, y: 0)
     @State var br = CGPoint(x: 100, y: 100)
 
-    var imageViewRegion:CGRect {
+    // So far, just a debug value
+    var regionInView:CGRect {
         CGRect(x: tl.x, y: tl.y, width: br.x - tl.x, height: br.y - tl.y).standardized
     }
 
-    var imageRegion:CGRect {
-        imageViewRegion.applying(tImageView.inverted())
+    // Source of truth
+    var regionInImage:CGRect {
+        regionInView.applying(tViewToImage)
     }
 
-    var subSampledImage:UIImage {
-        let drawImage = image.cgImage!.cropping(to: imageRegion)
+    var subImage:UIImage {
+        let drawImage = image.cgImage!.cropping(to: regionInImage)
         return UIImage(cgImage: drawImage!)
     }
 
@@ -58,47 +74,36 @@ struct AffineTransformsFlow: View {
             Image(uiImage: image)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: imageViewSize.width, height: imageViewSize.height)
+                .frame(width: viewSize.width, height: viewSize.height)
                 .border(Color.red, width: 2)
                 .overlay(
-                    RegionMarkerCorners(topLeft: $tl, bottomRight: $br)
-                        // Not doing such a good job clamping
-                        .onChange(of: imageViewRegion) { [imageViewRegion] newValue in
-                            let oldValue = imageViewRegion
-                            if (newValue.minX < 0) {
-                                tl.x = 0
-                                br.x = oldValue.maxX
-                            }
-                            if (newValue.minY < 0) {
-                                tl.y = 0
-                                br.y = oldValue.maxY
-                            }
-                            if (newValue.maxX > imageViewSize.width) {
-                                tl.x = oldValue.minX
-                                br.x = imageViewSize.width
-                            }
-                            if (newValue.maxY > imageViewSize.height) {
-                                tl.y = oldValue.minY
-                                br.y = imageViewSize.height
-                            }
-                        }
+                    RegionMarkerCorners(topLeft: $tl, bottomRight: $br, bounds: viewSize)
                 )
 
 
             Spacer()
-            Image(uiImage: subSampledImage)
+            Image(uiImage: subImage)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
+                .frame(width: viewSize.width + 100)
                 .border(Color.blue, width: 2)
                 .overlay(CrossHairs())
             Spacer()
 
             Group {
                 VStack {
-                    Text("ImageView Region: \(imageViewRegion)" as String)
-                    Text("Image Region: \(imageRegion)" as String)
+                    Text("ImageView Region: \(regionInView)" as String)
+                    Text("Image Region: \(regionInImage)" as String)
                 }
             }
+        }
+        .background(Color.gray)
+        .border(Color.purple, width: 2)
+        .onAppear {
+            let tl = ┌rohanRegion.applying(tImageToView)
+            let br = ┘rohanRegion.applying(tImageToView)
+            self.tl = tl
+            self.br = br
         }
     }
 }
@@ -117,7 +122,7 @@ struct CrossHairs: View {
                 path.move(to: CGPoint(x: origin.x, y: minY))
                 path.addLine(to: CGPoint(x: origin.x, y: maxY))
             }
-            .stroke(Color.yellow, lineWidth: 2)
+            .stroke(Color.yellow, lineWidth: 1)
         }
     }
 }
