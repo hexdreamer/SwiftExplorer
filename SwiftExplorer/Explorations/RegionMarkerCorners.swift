@@ -8,8 +8,8 @@ import SwiftUI
 
 struct RegionMarkerCorners : View {
         
-    @State var topLeft = CGPoint(x: 100, y: 100)
-    @State var bottomRight = CGPoint(x: 200, y: 200)
+    @Binding var topLeft:CGPoint      //= CGPoint(x: 100, y: 100)
+    @Binding var bottomRight:CGPoint  // = CGPoint(x: 200, y: 200)
     
     var region:CGRect {
         return CGRect(x: topLeft.x, y: topLeft.y, width: bottomRight.x - topLeft.x, height: bottomRight.y - topLeft.y).standardized
@@ -18,7 +18,7 @@ struct RegionMarkerCorners : View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
-                .strokeBorder()
+                .strokeBorder(Color.blue, lineWidth: 2)
                 .frame(width: self.region.width, height: self.region.height, alignment:.center)
                 .position(x: self.region.midX, y: self.region.midY)
             
@@ -61,13 +61,14 @@ struct RegionMarkerCorners : View {
                         }
                 )
         } // ZStack
-        .background(Color.gray)
+//        .border(Color.green, width: 2)
+//        .background(Color.gray)
     }
     
 }
 
-struct RegionMarkerCorners_Previews: PreviewProvider {
-    static var previews: some View {
-        RegionMarkerCorners()
-    }
-}
+//struct RegionMarkerCorners_Previews: PreviewProvider {
+//    static var previews: some View {
+//        RegionMarkerCorners()
+//    }
+//}

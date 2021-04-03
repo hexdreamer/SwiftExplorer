@@ -59,9 +59,3 @@ struct RegionMarkerOffset : View {
     }
     
 }
-
-struct RegionMarkerOffset_Previews: PreviewProvider {
-    static var previews: some View {
-        RegionMarkerCorners()
-    }
-}

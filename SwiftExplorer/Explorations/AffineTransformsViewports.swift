@@ -83,7 +83,7 @@ struct Viewport: View {
         let targetRect = world.targetRect.applying(tView)
         let tRect = world.sourceRect.applying(tAnimation.concatenating(tView))
 
-        GeometryReader { geoReader in
+        GeometryReader { _ in
             // Source
             Rectangle()
                 .fill(Color.green)
