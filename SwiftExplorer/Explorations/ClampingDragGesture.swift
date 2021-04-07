@@ -10,51 +10,55 @@ import SwiftUI
 import hexdreamsCocoa
 
 class Controller: ObservableObject {
+    @Published var regionOfInterest = CGRect(x: 20, y: 20, width: 50, height: 50)
     let image = UIImage(named: "ChannelImageDefault")!
 
-    var minX:CGFloat = 20
-    var minY:CGFloat = 20
-    var maxX:CGFloat = 80
-    var maxY:CGFloat = 80
+    func moveTo(target: CGRect) {
+        let boundsX = image.size.width
+        let boundsY = image.size.height
 
-    var boundsX:CGFloat { image.size.width }
-    var boundsY:CGFloat { image.size.height }
+        var minX = target.minX
+        var minY = target.minY
+        var maxX = target.maxX
+        var maxY = target.maxY
 
-    @Published var regionOfInterest = CGRect.zero
+        if (minX < 0) {
+            minX = 0
+            maxX = target.width
+        }
 
-    init() {
-        self.regionOfInterest = self.makeRegion()
-    }
+        if (maxX > boundsX) {
+            minX = boundsX - target.width
+            maxX = boundsX
+        }
 
-    func changeRegion(target:CGRect) {
-        let minX = target.minX
-        let minY = target.minY
-        let maxX = target.width
-        let maxY = target.height
+        if (minY < 0) {
+            minY = 0
+            maxY = target.height
+        }
 
-        self.minX = (minX < 0)            ? 0            : minX
-        self.maxX = (maxX > self.boundsX) ? self.boundsX : maxX
-        self.minY = (minY < 0)            ? 0            : minY
-        self.maxY = (minY > self.boundsY) ? self.boundsY : maxY
+        if (maxY > boundsY) {
+            minY = boundsY - target.height
+            maxY = boundsY
+        }
 
-        self.regionOfInterest = makeRegion()
-        print("changeRegion >> regionOfInterest: \(self.regionOfInterest)")
-    }
-
-    func makeRegion() -> CGRect {
-        return CGRect(x: minX, y: minY, width: minX+maxX, height: minY+maxY)
+        let clampedTarget = CGRect(x: minX, y: minY, width: maxX-minX, height: maxY-minY)
+        self.regionOfInterest = clampedTarget
+        print("moveTo >> regionOfInterest: \(self.regionOfInterest)")
     }
 }
 
 struct ClampingDragGesture: View {
     @ObservedObject var c = Controller()
-
+    @State var originalRegion = CGRect.zero
+    @State var dragging = false
     var body: some View {
         VStack {
             GeometryReader { geoReader in
                 let frame = geoReader.frame(in: .local)
                 let tFitImage = tFitSizeInFrame(innerSize: self.c.image.size, outerRect: frame)
                 let imageFrame = CGRect(size: self.c.image.size).applying(tFitImage)
+
                 Image(uiImage: c.image)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -71,23 +75,24 @@ struct ClampingDragGesture: View {
                     .font(.system(size: 50))
                     .position(x: region.midX, y: region.midY)
                     .gesture(
-                        DragGesture()
+                        DragGesture(minimumDistance: 0, coordinateSpace: .local)
                             .onChanged { gesture in
+                                if (!self.dragging) {
+                                    self.dragging = true
+                                    self.originalRegion = region
+                                }
+                                let oX = originalRegion.minX
+                                let oY = originalRegion.minY
+                                let oW = originalRegion.width
+                                let oH = originalRegion.height
                                 let tx = gesture.translation.width
                                 let ty = gesture.translation.height
-                                print("onChanged >> translation: (tx: \(tx), ty: \(ty)")
-                                let x = region.minX + tx
-                                let y = region.minY + ty
-                                print("onChanged >> origin: (x: \(x), y: \(y))")
-                                let width  = region.width  + (tx * -1)
-                                let height = region.height + (ty * -1)
-
-                                // The proposed new region in View space
-                                var p = CGRect(x: x, y: y, width: width, height: height)
-                                // Now in Image space
-                                p = p.applying(tFitImage.inverted())
-                                // Hand-off region to controller and let it decide what to make of it
-                                c.changeRegion(target: p)
+                                let proposed = CGRect(x: oX+tx, y: oY+ty, width: oW, height: oH)
+                                c.moveTo(target: proposed.applying(tFitImage.inverted()))
+                            }
+                            .onEnded { _ in
+                                self.dragging = false
+                                self.originalRegion = CGRect.zero
                             }
                     )
 
