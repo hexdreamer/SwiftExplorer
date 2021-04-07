@@ -13,10 +13,10 @@ class ImageAndRegion: ObservableObject {
     @Published var regionOfInterest = CGRect(x: 20, y: 20, width: 50, height: 50)
     let image = UIImage(named: "ChannelImageDefault")!
 
-    func moveTo(target: CGRect) {
-        let boundsX = image.size.width
-        let boundsY = image.size.height
+    var boundsX:CGFloat { image.size.width }
+    var boundsY:CGFloat { image.size.height }
 
+    func moveTo(target: CGRect) {
         var minX = target.minX
         var minY = target.minY
         var maxX = target.maxX
@@ -46,6 +46,17 @@ class ImageAndRegion: ObservableObject {
         self.regionOfInterest = clampedTarget
         print("moveTo >> regionOfInterest: \(self.regionOfInterest)")
     }
+
+    func resizeTo(target: CGRect) {
+        let minX = (target.minX < 0)       ? 0       : target.minX
+        let minY = (target.minY < 0)       ? 0       : target.minY
+        let maxX = (target.maxX > boundsX) ? boundsX : target.maxX
+        let maxY = (target.maxY > boundsY) ? boundsY : target.maxY
+
+        let clampedTarget = CGRect(x: minX, y: minY, width: maxX-minX, height: maxY-minY)
+        self.regionOfInterest = clampedTarget
+        print("resizeTo >> regionOfInterest: \(self.regionOfInterest)")
+    }
 }
 
 struct ClampingDragGesture: View {
@@ -65,7 +76,7 @@ struct ClampingDragGesture: View {
                     .position(x: imageFrame.midX, y: imageFrame.midY)
                     .frame(width: imageFrame.width, height: imageFrame.height)
 
-                DraggableRegion(iAndR: iAndR, tRegion: tFitImage)
+                AdjustableRegion(iAndR: iAndR, tRegion: tFitImage)
             }
         }
     }
@@ -84,7 +95,7 @@ struct ClampingDragGesture: View {
     }
 }
 
-struct DraggableRegion: View {
+struct AdjustableRegion: View {
     @ObservedObject var iAndR:ImageAndRegion
     let tRegion:CGAffineTransform
 
@@ -96,21 +107,14 @@ struct DraggableRegion: View {
             .onEnded { _ in
                 self.originalRegion = region
             }
-        let drag = DragGesture(minimumDistance: 0, coordinateSpace: .local)
-            .onChanged { gesture in
-                let oX = originalRegion.minX
-                let oY = originalRegion.minY
-                let oW = originalRegion.width
-                let oH = originalRegion.height
-                let tx = gesture.translation.width
-                let ty = gesture.translation.height
-                let proposed = CGRect(x: oX+tx, y: oY+ty, width: oW, height: oH)
-                iAndR.moveTo(target: proposed.applying(tRegion.inverted()))
-            }
-            .onEnded { _ in
-                self.originalRegion = CGRect.zero
-            }
-        let combinded = longPress.sequenced(before: drag)
+
+        // Top left - resize
+        Group {
+            Rectangle()
+                .fill(Color.blue.opacity(0.125))
+                .shadow(color: .white, radius: 5)
+                .position(x: region.minX+5, y: region.minY+5)
+                .frame(width: 20, height: 20)
 
         Image(systemName: "chevron.left")
             .font(.system(size: 50))
@@ -118,6 +122,21 @@ struct DraggableRegion: View {
             .shadow(color: .white, radius: 5)
             .rotationEffect(.init(degrees: 45))
             .position(x: region.minX, y: region.minY)
+        }
+            .gesture(
+                longPress.sequenced(
+                    before: DragGesture(minimumDistance: 0, coordinateSpace: .local)
+                        .onChanged { gesture in
+                            let o = originalRegion
+                            let tx = gesture.translation.width
+                            let ty = gesture.translation.height
+                            let new = CGRect(x: o.minX+tx, y: o.minY+ty, width: o.width+(tx * -1), height: o.height+(ty * -1))
+                            iAndR.resizeTo(target: new.applying(tRegion.inverted()))
+                        }
+                        .onEnded { _ in
+                            self.originalRegion = CGRect.zero
+                        }
+                ))
 
         Rectangle()
             .stroke(Color.blue, lineWidth: 4)
@@ -126,6 +145,7 @@ struct DraggableRegion: View {
             .frame(width: region.width, height: region.height)
 
 
+        // Center - move
         Group {
             Rectangle()
                 .fill(Color.blue.opacity(0.125))
@@ -143,14 +163,51 @@ struct DraggableRegion: View {
                     .position(x: region.midX, y: region.midY)
             }
         }
-        .gesture(combinded)
+        .gesture(
+            longPress.sequenced(
+                before: DragGesture(minimumDistance: 0, coordinateSpace: .local)
+                    .onChanged { gesture in
+                        let o = originalRegion
+                        let tx = gesture.translation.width
+                        let ty = gesture.translation.height
+                        let new = CGRect(x: o.minX+tx, y: o.minY+ty, width: o.width, height: o.height)
+                        iAndR.moveTo(target: new.applying(tRegion.inverted()))
+                    }
+                    .onEnded { _ in
+                        self.originalRegion = CGRect.zero
+                    }
+            ))
 
-        Image(systemName: "chevron.right")
-            .font(.system(size: 50))
-            .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
-            .shadow(color: .white, radius: 5)
-            .rotationEffect(.init(degrees: 45))
-            .position(x: region.maxX, y: region.maxY)
+        // Bottom right - resize
+        Group {
+            Rectangle()
+                .fill(Color.blue.opacity(0.125))
+                .shadow(color: .white, radius: 5)
+                .position(x: region.maxX-5, y: region.maxY-5)
+                .frame(width: 20, height: 20)
+
+            Image(systemName: "chevron.right")
+                .font(.system(size: 50))
+                .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                .shadow(color: .white, radius: 5)
+                .rotationEffect(.init(degrees: 45))
+                .position(x: region.maxX, y: region.maxY)
+        }
+        .gesture(
+            longPress.sequenced(
+                before: DragGesture(minimumDistance: 0, coordinateSpace: .local)
+                    .onChanged { gesture in
+                        let o = originalRegion
+                        let tx = gesture.translation.width
+                        let ty = gesture.translation.height
+                        let new = CGRect(x: o.minX, y: o.minY, width: o.width+tx, height: o.height+ty)
+                        iAndR.resizeTo(target: new.applying(tRegion.inverted()))
+                    }
+                    .onEnded { _ in
+                        self.originalRegion = CGRect.zero
+                    }
+            ))
+
 
     }
 }
