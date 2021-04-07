@@ -51,6 +51,7 @@
 		B9E8F9722533E86000212D81 /* SEXMLDecoderFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E8F9712533E86000212D81 /* SEXMLDecoderFeed.swift */; };
 		B9E8F97A25342C8900212D81 /* SEXMLDecoderFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E8F97925342C8900212D81 /* SEXMLDecoderFeedCell.swift */; };
 		F401B8BE2617D8B500B7F4E7 /* AffineTransformsFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F401B8BD2617D8B500B7F4E7 /* AffineTransformsFlow.swift */; };
+		F467D77E261CEE3A00A8B25E /* ClampingDragGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = F467D77D261CEE3A00A8B25E /* ClampingDragGesture.swift */; };
 		F4785E7726140C0E008DBECD /* AffineTransformsViewports.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4785E7626140C0E008DBECD /* AffineTransformsViewports.swift */; };
 /* End PBXBuildFile section */
 
@@ -123,6 +124,7 @@
 		B9E8F9712533E86000212D81 /* SEXMLDecoderFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEXMLDecoderFeed.swift; sourceTree = "<group>"; };
 		B9E8F97925342C8900212D81 /* SEXMLDecoderFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEXMLDecoderFeedCell.swift; sourceTree = "<group>"; };
 		F401B8BD2617D8B500B7F4E7 /* AffineTransformsFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffineTransformsFlow.swift; sourceTree = "<group>"; };
+		F467D77D261CEE3A00A8B25E /* ClampingDragGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClampingDragGesture.swift; sourceTree = "<group>"; };
 		F4785E7626140C0E008DBECD /* AffineTransformsViewports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffineTransformsViewports.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -241,6 +243,7 @@
 			children = (
 				F4785E7626140C0E008DBECD /* AffineTransformsViewports.swift */,
 				F401B8BD2617D8B500B7F4E7 /* AffineTransformsFlow.swift */,
+				F467D77D261CEE3A00A8B25E /* ClampingDragGesture.swift */,
 				B956586324FD16F30001DEE0 /* RegionMarkerRectangle.swift */,
 				B956586224FD16F30001DEE0 /* RegionMarkerCorners.swift */,
 				B956586124FD16F30001DEE0 /* RegionMarkerOffset.swift */,
@@ -432,6 +435,7 @@
 				B9A4B26F254E186F006A2141 /* SEEvenOddFill.swift in Sources */,
 				B9E1EA5C25255DE6000067B8 /* HiraganaKeyboard.swift in Sources */,
 				B9E8F9722533E86000212D81 /* SEXMLDecoderFeed.swift in Sources */,
+				F467D77E261CEE3A00A8B25E /* ClampingDragGesture.swift in Sources */,
 				B956586524FD16F30001DEE0 /* RegionMarkerCorners.swift in Sources */,
 				B956583324FD16890001DEE0 /* SwiftExplorer.xcdatamodeld in Sources */,
 				B95F0A0D25199050004B609B /* SECustomParsingItem.swift in Sources */,

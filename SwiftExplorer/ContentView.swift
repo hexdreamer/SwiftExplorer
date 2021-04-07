@@ -36,6 +36,7 @@ struct NavLink {
 let navLinks = [
     NavLink(dest: AnyView(AffineTransformsViewports()), navBarTitle: "Transforms: Viewports", text: "Affine Transforms - Viewports"),
     NavLink(dest: AnyView(AffineTransformsFlow()), navBarTitle: "Transforms: Data Flow", text: "Affine Transforms - Data Flow"),
+    NavLink(dest: AnyView(ClampingDragGesture()), navBarTitle: "Clamp DragGesture", text: "Clamp DragGesture"),
     NavLink(dest: AnyView(RegionMarkerRectangle()), navBarTitle: "Rectangle Based", text: "Region Marker (Rectangle Based)"),
 //    NavLink(dest: AnyView(RegionMarkerCorners()), navBarTitle: "Corner Based", text: "Region Marker (Corner Based)"),
     NavLink(dest: AnyView(RegionMarkerOffset()), navBarTitle: "By Offset", text: "Region Marker (By Offset)"),

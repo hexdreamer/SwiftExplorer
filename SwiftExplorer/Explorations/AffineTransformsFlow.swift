@@ -72,7 +72,6 @@ struct AffineTransformsFlow: View {
                     RegionMarkerCorners(topLeft: $tl, bottomRight: $br, bounds: viewSize)
                 )
 
-
             Spacer()
             Image(uiImage: subImage)
                 .resizable()
