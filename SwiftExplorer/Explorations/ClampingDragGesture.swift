@@ -9,7 +9,7 @@
 import SwiftUI
 import hexdreamsCocoa
 
-class Controller: ObservableObject {
+class ImageAndRegion: ObservableObject {
     @Published var regionOfInterest = CGRect(x: 20, y: 20, width: 50, height: 50)
     let image = UIImage(named: "ChannelImageDefault")!
 
@@ -49,53 +49,23 @@ class Controller: ObservableObject {
 }
 
 struct ClampingDragGesture: View {
-    @ObservedObject var c = Controller()
-    @State var originalRegion = CGRect.zero
-    @State var dragging = false
+    let iAndR = ImageAndRegion()
+
     var body: some View {
+        let image = self.iAndR.image
         VStack {
             GeometryReader { geoReader in
                 let frame = geoReader.frame(in: .local)
-                let tFitImage = tFitSizeInFrame(innerSize: self.c.image.size, outerRect: frame)
-                let imageFrame = CGRect(size: self.c.image.size).applying(tFitImage)
+                let tFitImage = tFitSizeInFrame(innerSize: image.size, outerRect: frame)
+                let imageFrame = CGRect(size: image.size).applying(tFitImage)
 
-                Image(uiImage: c.image)
+                Image(uiImage: image)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .position(x: imageFrame.midX, y: imageFrame.midY)
                     .frame(width: imageFrame.width, height: imageFrame.height)
 
-                let region = c.regionOfInterest.applying(tFitImage)
-                Rectangle()
-                    .stroke(Color.blue, lineWidth: 2)
-                    .position(x: region.midX, y: region.midY)
-                    .frame(width: region.width, height: region.height)
-
-                Image(systemName: "arrow.up.and.down.and.arrow.left.and.right")
-                    .font(.system(size: 50))
-                    .position(x: region.midX, y: region.midY)
-                    .gesture(
-                        DragGesture(minimumDistance: 0, coordinateSpace: .local)
-                            .onChanged { gesture in
-                                if (!self.dragging) {
-                                    self.dragging = true
-                                    self.originalRegion = region
-                                }
-                                let oX = originalRegion.minX
-                                let oY = originalRegion.minY
-                                let oW = originalRegion.width
-                                let oH = originalRegion.height
-                                let tx = gesture.translation.width
-                                let ty = gesture.translation.height
-                                let proposed = CGRect(x: oX+tx, y: oY+ty, width: oW, height: oH)
-                                c.moveTo(target: proposed.applying(tFitImage.inverted()))
-                            }
-                            .onEnded { _ in
-                                self.dragging = false
-                                self.originalRegion = CGRect.zero
-                            }
-                    )
-
+                DraggableRegion(iAndR: iAndR, tRegion: tFitImage)
             }
         }
     }
@@ -111,6 +81,77 @@ struct ClampingDragGesture: View {
             .concatenating(CGAffineTransform(translationX: offset.x, y: offset.y))
 //        print("tFitSizeInFrame >> t: \(t)")
         return t
+    }
+}
+
+struct DraggableRegion: View {
+    @ObservedObject var iAndR:ImageAndRegion
+    let tRegion:CGAffineTransform
+
+    @State var originalRegion = CGRect.zero
+
+    var body: some View {
+        let region = iAndR.regionOfInterest.applying(tRegion)
+        let longPress = LongPressGesture(minimumDuration: 0.0)
+            .onEnded { _ in
+                self.originalRegion = region
+            }
+        let drag = DragGesture(minimumDistance: 0, coordinateSpace: .local)
+            .onChanged { gesture in
+                let oX = originalRegion.minX
+                let oY = originalRegion.minY
+                let oW = originalRegion.width
+                let oH = originalRegion.height
+                let tx = gesture.translation.width
+                let ty = gesture.translation.height
+                let proposed = CGRect(x: oX+tx, y: oY+ty, width: oW, height: oH)
+                iAndR.moveTo(target: proposed.applying(tRegion.inverted()))
+            }
+            .onEnded { _ in
+                self.originalRegion = CGRect.zero
+            }
+        let combinded = longPress.sequenced(before: drag)
+
+        Image(systemName: "chevron.left")
+            .font(.system(size: 50))
+            .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+            .shadow(color: .white, radius: 5)
+            .rotationEffect(.init(degrees: 45))
+            .position(x: region.minX, y: region.minY)
+
+        Rectangle()
+            .stroke(Color.blue, lineWidth: 4)
+            .shadow(color: .white, radius: 5)
+            .position(x: region.midX, y: region.midY)
+            .frame(width: region.width, height: region.height)
+
+
+        Group {
+            Rectangle()
+                .fill(Color.blue.opacity(0.125))
+                .shadow(color: .white, radius: 5)
+                .rotationEffect(.init(degrees: 45))
+                .position(x: region.midX, y: region.midY)
+                .frame(width: 30, height: 30)
+            ForEach(0..<4) { idx in
+                Image(systemName: "chevron.up")
+                    .font(.system(size: 20, weight: .heavy))
+                    .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                    .shadow(color: .white, radius: 5)
+                    .offset(y:-25)
+                    .rotationEffect(.init(degrees: 90 * Double(idx)))
+                    .position(x: region.midX, y: region.midY)
+            }
+        }
+        .gesture(combinded)
+
+        Image(systemName: "chevron.right")
+            .font(.system(size: 50))
+            .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+            .shadow(color: .white, radius: 5)
+            .rotationEffect(.init(degrees: 45))
+            .position(x: region.maxX, y: region.maxY)
+
     }
 }
 
