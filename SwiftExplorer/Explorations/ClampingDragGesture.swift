@@ -12,6 +12,7 @@ import hexdreamsCocoa
 class Region: ObservableObject {
     let id = UUID()
     @Published var rect:CGRect
+    @Published var subImage:UIImage?
 
     init(_ rect:CGRect) {
         self.rect = rect
@@ -23,8 +24,8 @@ class Page: ObservableObject {
     let image:UIImage
     @Published var regions:[Region]
 
-    var subImage:UIImage {
-        let drawImage = image.cgImage!.cropping(to: self.regions[0].rect)
+    func subImage(_ region:Region) -> UIImage {
+        let drawImage = image.cgImage!.cropping(to: region.rect)
         return UIImage(cgImage: drawImage!)
     }
 
@@ -66,8 +67,12 @@ class Page: ObservableObject {
         }
 
         let clampedTarget = CGRect(x: x, y: y, width: width, height: height)
-        self.regions[0].rect = clampedTarget
-        print("moveTo >> regionOfInterest: \(self.regions[0].rect)")
+
+        let region = self.regions[0]
+        region.rect = clampedTarget
+        region.subImage = subImage(region)
+        self.regions[0] = region
+        print("moveTo >> regionOfInterest: \(region.rect)")
     }
 
     // Adjust any point
@@ -78,8 +83,12 @@ class Page: ObservableObject {
         let maxY = (target.maxY > boundsY) ? boundsY : target.maxY
 
         let clampedTarget = CGRect(x: minX, y: minY, width: maxX-minX, height: maxY-minY)
-        self.regions[0].rect = clampedTarget
-        print("resizeTo >> regionOfInterest: \(self.regions[0].rect)")
+
+        let region = self.regions[0]
+        region.rect = clampedTarget
+        region.subImage = subImage(region)
+        self.regions[0] = region
+        print("resizeTo >> regionOfInterest: \(region.rect)")
     }
 }
 
@@ -152,7 +161,7 @@ struct DetailView: View {
                 AdjustableRegion(page: self.page, region: self.page.regions[0], tRegion: tFitImage)
             }  // GeometryReader
 
-            Image(uiImage: page.subImage)
+            Image(uiImage: page.regions[0].subImage ?? UIImage(named: "ChannelImageDefault")!)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
         }  // VStack
