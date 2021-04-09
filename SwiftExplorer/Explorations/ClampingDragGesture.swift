@@ -9,22 +9,30 @@
 import SwiftUI
 import hexdreamsCocoa
 
+class Region {
+    let id = UUID()
+    var rect:CGRect
+
+    init(_ rect:CGRect) {
+        self.rect = rect
+    }
+}
 
 class Page: ObservableObject {
     let name:String
     let image:UIImage
-    @Published var regions:[CGRect]
+    @Published var regions:[Region]
 
     var subImage:UIImage {
-        let drawImage = image.cgImage!.cropping(to: self.regions[0])
+        let drawImage = image.cgImage!.cropping(to: self.regions[0].rect)
         return UIImage(cgImage: drawImage!)
     }
 
-    init(_ name:String, _ region:CGRect?) {
+    init(_ name:String, _ region:Region?) {
         if let region = region {
             self.regions = [region]
         } else {
-            self.regions = [CGRect(x: 20, y: 20, width: 50, height: 50)]
+            self.regions = [Region(CGRect(x: 20, y: 20, width: 50, height: 50))]
         }
 
         self.name = name
@@ -58,8 +66,8 @@ class Page: ObservableObject {
         }
 
         let clampedTarget = CGRect(x: x, y: y, width: width, height: height)
-        self.regions[0] = clampedTarget
-        print("moveTo >> regionOfInterest: \(self.regions[0])")
+        self.regions[0].rect = clampedTarget
+        print("moveTo >> regionOfInterest: \(self.regions[0].rect)")
     }
 
     // Adjust any point
@@ -70,8 +78,8 @@ class Page: ObservableObject {
         let maxY = (target.maxY > boundsY) ? boundsY : target.maxY
 
         let clampedTarget = CGRect(x: minX, y: minY, width: maxX-minX, height: maxY-minY)
-        self.regions[0] = clampedTarget
-        print("resizeTo >> regionOfInterest: \(self.regions[0])")
+        self.regions[0].rect = clampedTarget
+        print("resizeTo >> regionOfInterest: \(self.regions[0].rect)")
     }
 }
 
@@ -85,11 +93,11 @@ class Controller: ObservableObject {
     let pages = [
         Page(
             "Comic3",
-            CGRect(x: 1927.32, y: 1582.24, width: 612.38, height: 485.25)
+            Region(CGRect(x: 1927.32, y: 1582.24, width: 612.38, height: 485.25))
         ),
         Page(
             "Middle Earth",
-            CGRect(x: 2327.01, y: 2189.8, width: 609.67, height: 410.5)
+            Region(CGRect(x: 2327.01, y: 2189.8, width: 609.67, height: 410.5))
         )
     ]
 
@@ -174,19 +182,19 @@ struct AdjustableRegion: View {
     let minRegion = CGSize(width: 70, height: 70)
 
     var body: some View {
-        let region = page.regions[0].applying(tRegion)
+        let regionRect = page.regions[0].rect.applying(tRegion)
 
         // Region's outline
         Rectangle()
             .stroke(Color.blue, lineWidth: 2)
             .shadow(color: .white, radius: 5)
-            .position(x: region.midX, y: region.midY)
-            .frame(width: region.width, height: region.height)
+            .position(x: regionRect.midX, y: regionRect.midY)
+            .frame(width: regionRect.width, height: regionRect.height)
 
         // All interactive/adjustment UI
 
-        drawResizeHandlesFor(region, "tl")
-            .gesture(combined(region) { gesture in
+        drawResizeHandlesFor(regionRect, "tl")
+            .gesture(combined(regionRect) { gesture in
                 let o = originalRegion
                 let tx = gesture.translation.width
                 let ty = gesture.translation.height
@@ -200,8 +208,8 @@ struct AdjustableRegion: View {
                 page.resizeTo(target: new.applying(tRegion.inverted()))
             })
 
-        drawMoveHandlesFor(region)
-            .gesture(combined(region) { gesture in
+        drawMoveHandlesFor(regionRect)
+            .gesture(combined(regionRect) { gesture in
                 let o = originalRegion
                 let tx = gesture.translation.width
                 let ty = gesture.translation.height
@@ -209,8 +217,8 @@ struct AdjustableRegion: View {
                 page.moveTo(target: new.applying(tRegion.inverted()))
             })
 
-        drawResizeHandlesFor(region, "br")
-            .gesture(combined(region) { gesture in
+        drawResizeHandlesFor(regionRect, "br")
+            .gesture(combined(regionRect) { gesture in
                 let o = originalRegion
                 let tx = gesture.translation.width
                 let ty = gesture.translation.height
