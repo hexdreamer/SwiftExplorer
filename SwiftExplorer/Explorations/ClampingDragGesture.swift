@@ -9,9 +9,9 @@
 import SwiftUI
 import hexdreamsCocoa
 
-class Region {
+class Region: ObservableObject {
     let id = UUID()
-    var rect:CGRect
+    @Published var rect:CGRect
 
     init(_ rect:CGRect) {
         self.rect = rect
@@ -149,7 +149,7 @@ struct DetailView: View {
                     .position(x: imageFrame.midX, y: imageFrame.midY)
                     .frame(width: imageFrame.width, height: imageFrame.height)
 
-                AdjustableRegion(page: self.page, tRegion: tFitImage)
+                AdjustableRegion(page: self.page, region: self.page.regions[0], tRegion: tFitImage)
             }  // GeometryReader
 
             Image(uiImage: page.subImage)
@@ -174,6 +174,7 @@ struct DetailView: View {
 
 struct AdjustableRegion: View {
     @ObservedObject var page:Page
+    @ObservedObject var region:Region
     let tRegion:CGAffineTransform
 
     // Copy last UI region before adjustment to reference during adjustment
@@ -182,7 +183,7 @@ struct AdjustableRegion: View {
     let minRegion = CGSize(width: 70, height: 70)
 
     var body: some View {
-        let regionRect = page.regions[0].rect.applying(tRegion)
+        let regionRect = region.rect.applying(tRegion)
 
         // Region's outline
         Rectangle()
