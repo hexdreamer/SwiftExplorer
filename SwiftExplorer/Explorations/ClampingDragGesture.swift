@@ -9,21 +9,22 @@
 import SwiftUI
 import hexdreamsCocoa
 
-class ImageAndRegion: ObservableObject {
+
+class Page: ObservableObject {
     let name:String
     let image:UIImage
-    @Published var regionOfInterest:CGRect
+    @Published var regions:[CGRect]
 
     var subImage:UIImage {
-        let drawImage = image.cgImage!.cropping(to: self.regionOfInterest)
+        let drawImage = image.cgImage!.cropping(to: self.regions[0])
         return UIImage(cgImage: drawImage!)
     }
 
     init(_ name:String, _ region:CGRect?) {
         if let region = region {
-            self.regionOfInterest = region
+            self.regions = [region]
         } else {
-            self.regionOfInterest = CGRect(x: 20, y: 20, width: 50, height: 50)
+            self.regions = [CGRect(x: 20, y: 20, width: 50, height: 50)]
         }
 
         self.name = name
@@ -57,8 +58,8 @@ class ImageAndRegion: ObservableObject {
         }
 
         let clampedTarget = CGRect(x: x, y: y, width: width, height: height)
-        self.regionOfInterest = clampedTarget
-        print("moveTo >> regionOfInterest: \(self.regionOfInterest)")
+        self.regions[0] = clampedTarget
+        print("moveTo >> regionOfInterest: \(self.regions[0])")
     }
 
     // Adjust any point
@@ -69,33 +70,33 @@ class ImageAndRegion: ObservableObject {
         let maxY = (target.maxY > boundsY) ? boundsY : target.maxY
 
         let clampedTarget = CGRect(x: minX, y: minY, width: maxX-minX, height: maxY-minY)
-        self.regionOfInterest = clampedTarget
-        print("resizeTo >> regionOfInterest: \(self.regionOfInterest)")
+        self.regions[0] = clampedTarget
+        print("resizeTo >> regionOfInterest: \(self.regions[0])")
     }
 }
 
-extension ImageAndRegion: Equatable {
-    static func == (lhs: ImageAndRegion, rhs: ImageAndRegion) -> Bool {
+extension Page: Equatable {
+    static func == (lhs: Page, rhs: Page) -> Bool {
         return lhs.name == rhs.name
     }
 }
 
 class Controller: ObservableObject {
-    let iAndRs = [
-        ImageAndRegion(
+    let pages = [
+        Page(
             "Comic3",
             CGRect(x: 1927.32, y: 1582.24, width: 612.38, height: 485.25)
         ),
-        ImageAndRegion(
+        Page(
             "Middle Earth",
             CGRect(x: 2327.01, y: 2189.8, width: 609.67, height: 410.5)
         )
     ]
 
-    @Published var selected:ImageAndRegion
+    @Published var selected:Page
 
     init() {
-        self.selected = iAndRs[0]
+        self.selected = self.pages[0]
     }
 }
 
@@ -104,28 +105,29 @@ struct ClampingDragGesture: View {
 
     var body: some View {
         NavigationView {
-            List(controller.iAndRs, id: \.name) { iAndR in
+            List(controller.pages, id: \.name) { page in
                 HStack {
-                    Button("\(iAndR.name)") {
-                        controller.selected = iAndR
+                    Button("\(page.name)") {
+                        controller.selected = page
                     }
-                    if (iAndR == controller.selected) {
+                    if (page == controller.selected) {
                         Image(systemName: "checkmark.circle")
                     }
                 }
             }
             .listStyle(SidebarListStyle())
+            .navigationTitle("Images")
 
-            DetailView(iAndR: controller.selected)
+            DetailView(page: controller.selected)
         }
     }
 }
 
 struct DetailView: View {
-    @ObservedObject var iAndR:ImageAndRegion
+    @ObservedObject var page:Page
 
     var body: some View {
-        let image = self.iAndR.image
+        let image = self.page.image
         VStack {
             GeometryReader { geoReader in
                 let frame = geoReader.frame(in: .local)
@@ -139,10 +141,10 @@ struct DetailView: View {
                     .position(x: imageFrame.midX, y: imageFrame.midY)
                     .frame(width: imageFrame.width, height: imageFrame.height)
 
-                AdjustableRegion(iAndR: self.iAndR, tRegion: tFitImage)
+                AdjustableRegion(page: self.page, tRegion: tFitImage)
             }  // GeometryReader
 
-            Image(uiImage: iAndR.subImage)
+            Image(uiImage: page.subImage)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
         }  // VStack
@@ -163,14 +165,16 @@ struct DetailView: View {
 }
 
 struct AdjustableRegion: View {
-    @ObservedObject var iAndR:ImageAndRegion
+    @ObservedObject var page:Page
     let tRegion:CGAffineTransform
 
     // Copy last UI region before adjustment to reference during adjustment
-    @State var originalRegion = CGRect.zero
+    @State var originalRegion = CGRect.zero 
+
+    let minRegion = CGSize(width: 70, height: 70)
 
     var body: some View {
-        let region = iAndR.regionOfInterest.applying(tRegion)
+        let region = page.regions[0].applying(tRegion)
 
         // Region's outline
         Rectangle()
@@ -186,8 +190,14 @@ struct AdjustableRegion: View {
                 let o = originalRegion
                 let tx = gesture.translation.width
                 let ty = gesture.translation.height
-                let new = CGRect(x: o.minX+tx, y: o.minY+ty, width: o.width+(tx * -1), height: o.height+(ty * -1))
-                iAndR.resizeTo(target: new.applying(tRegion.inverted()))
+                let maxX = o.maxX
+                let maxY = o.maxY
+                var minX = o.minX+tx
+                var minY = o.minY+ty
+                minX = (maxX-minX < minRegion.width) ? maxX-minRegion.width  : minX
+                minY = (maxY-minY < minRegion.width) ? maxY-minRegion.height : minY
+                let new = CGRect(x: minX, y: minY, width: maxX-minX, height: maxY-minY)
+                page.resizeTo(target: new.applying(tRegion.inverted()))
             })
 
         drawMoveHandlesFor(region)
@@ -196,7 +206,7 @@ struct AdjustableRegion: View {
                 let tx = gesture.translation.width
                 let ty = gesture.translation.height
                 let new = CGRect(x: o.minX+tx, y: o.minY+ty, width: o.width, height: o.height)
-                iAndR.moveTo(target: new.applying(tRegion.inverted()))
+                page.moveTo(target: new.applying(tRegion.inverted()))
             })
 
         drawResizeHandlesFor(region, "br")
@@ -204,16 +214,16 @@ struct AdjustableRegion: View {
                 let o = originalRegion
                 let tx = gesture.translation.width
                 let ty = gesture.translation.height
-                let new = CGRect(x: o.minX, y: o.minY, width: o.width+tx, height: o.height+ty)
-                iAndR.resizeTo(target: new.applying(tRegion.inverted()))
+                let width = (o.width+tx < minRegion.width) ? minRegion.width : o.width+tx
+                let height = (o.height+ty < minRegion.height) ? minRegion.height: o.height+ty
+                let new = CGRect(x: o.minX, y: o.minY, width: width, height: height)
+                page.resizeTo(target: new.applying(tRegion.inverted()))
             })
 
     }
 
-    typealias AdjustSourceOfTruthGesture = SequenceGesture<_EndedGesture<LongPressGesture>, _EndedGesture<_ChangedGesture<DragGesture>>>
-
     // Take the UI region to copy/save before drag, and a closure that adjusts the region's SOT
-    func combined(_ region: CGRect, f: @escaping (DragGesture.Value)->Void) -> AdjustSourceOfTruthGesture {
+    func combined(_ region: CGRect, f: @escaping (DragGesture.Value)->Void) -> some Gesture {
         let longPress = LongPressGesture(minimumDuration: 0.0)
             .onEnded { _ in
                 self.originalRegion = region
