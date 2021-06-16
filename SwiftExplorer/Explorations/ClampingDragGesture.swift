@@ -38,6 +38,9 @@ class Page: ObservableObject {
 
         self.name = name
         self.image = UIImage(named: name)!
+
+        // Initial tracking view/image
+        self.regions[0].subImage = subImage(self.regions[0])
     }
 
     var boundsX:CGFloat { image.size.width }
