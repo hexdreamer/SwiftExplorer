@@ -18,6 +18,7 @@
 /// to image space).  The Adjustable Region is then re-rendered from the modified AOI (the
 /// *source of truth*).
 
+import hexdreamsCocoa
 import SwiftUI
 
 let MIN_REGION = CGSize(width: 50, height: 50)
@@ -28,8 +29,6 @@ struct AffineTransformsFlow: View {
     @State var areaOfInterest = CGRect(x: 500, y: 500, width: 250, height: 250)
 
     @State var transform = CGAffineTransform.identity  // how the image was fit in the View, set in image's onAppear
-
-    var adjustableRegion:CGRect { areaOfInterest.applying(transform) }
 
     @State var originalRegion = CGRect.zero  // temp copy to reference during adjustments
 
@@ -48,17 +47,17 @@ struct AffineTransformsFlow: View {
             GeometryReader { geoReader in
                 let tImageFit = CGRect(size: image.size).tFitIn(outerRect: geoReader.frame(in: CoordinateSpace.local))
                 let imageFrame = CGRect(size: image.size).applying(tImageFit)
+
                 Image(uiImage: image)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: imageFrame.width, height: imageFrame .height)
                     .position(x: imageFrame.midX, y: imageFrame.midY)
-                    .background(Color.gray)
+                    .background(Color.gray.opacity(0.5))
                     .border(Color.red, width: 1)
-                    .onAppear { transform = tImageFit }
 
                 // Adjustable Region
-                drawAdjustableRegion()
+                drawAdjustableRegion(transform: tImageFit)
             }
             Spacer()
             // Sub image
@@ -74,7 +73,10 @@ struct AffineTransformsFlow: View {
     }
 
     /// There is no bounds checking/clamping; dragging the region completely off the image will crash the app!
-    func drawAdjustableRegion() -> some View {
+    func drawAdjustableRegion(transform:CGAffineTransform) -> some View {
+        var adjustableRegion:CGRect { areaOfInterest.applying(transform) }
+
+        // LongPress ends when motion (dragging) begins
         let longPress = LongPressGesture(minimumDuration: 0.0)
             .onEnded { _ in
                 originalRegion = adjustableRegion
@@ -110,22 +112,22 @@ struct AffineTransformsFlow: View {
             }
 
         return Group {
-                // Click anywhere in Rectangle to drag-move
-                Rectangle()
-                    .fill(Color.blue.opacity(0.06))
-                    .border(Color.blue, width: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
-                    .frame(width: adjustableRegion.width, height: adjustableRegion.height)
-                    .position(x: adjustableRegion.midX, y: adjustableRegion.midY)
-                    .gesture(longPress.sequenced(before:move)
-                    )
+            // Click anywhere in Rectangle to drag-move
+            Rectangle()
+                .fill(Color.blue.opacity(0.06))
+                .border(Color.blue, width: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
+                .frame(width: adjustableRegion.width, height: adjustableRegion.height)
+                .position(x: adjustableRegion.midX, y: adjustableRegion.midY)
+                .gesture(longPress.sequenced(before:move)
+                )
 
-                // Click on to drag-resize
-                Circle()
-                    .fill(Color.blue)
-                    .frame(width: 15, height: 15)
-                    .position(x: adjustableRegion.maxX, y: adjustableRegion.maxY)
-                    .gesture(longPress.sequenced(before: resize))
-            }
+            // Click on to drag-resize
+            Circle()
+                .fill(Color.blue)
+                .frame(width: 15, height: 15)
+                .position(x: adjustableRegion.maxX, y: adjustableRegion.maxY)
+                .gesture(longPress.sequenced(before: resize))
+        }
     }
 }
 
