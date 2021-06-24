@@ -51,6 +51,7 @@
 		B9E8F9722533E86000212D81 /* SEXMLDecoderFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E8F9712533E86000212D81 /* SEXMLDecoderFeed.swift */; };
 		B9E8F97A25342C8900212D81 /* SEXMLDecoderFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E8F97925342C8900212D81 /* SEXMLDecoderFeedCell.swift */; };
 		F401B8BE2617D8B500B7F4E7 /* AffineTransformsFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F401B8BD2617D8B500B7F4E7 /* AffineTransformsFlow.swift */; };
+		F424F408268423190062F3BA /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = F424F407268423190062F3BA /* Utility.swift */; };
 		F467D77E261CEE3A00A8B25E /* ClampingDragGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = F467D77D261CEE3A00A8B25E /* ClampingDragGesture.swift */; };
 		F4785E7726140C0E008DBECD /* AffineTransformsViewports.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4785E7626140C0E008DBECD /* AffineTransformsViewports.swift */; };
 /* End PBXBuildFile section */
@@ -124,6 +125,7 @@
 		B9E8F9712533E86000212D81 /* SEXMLDecoderFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEXMLDecoderFeed.swift; sourceTree = "<group>"; };
 		B9E8F97925342C8900212D81 /* SEXMLDecoderFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEXMLDecoderFeedCell.swift; sourceTree = "<group>"; };
 		F401B8BD2617D8B500B7F4E7 /* AffineTransformsFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffineTransformsFlow.swift; sourceTree = "<group>"; };
+		F424F407268423190062F3BA /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Utility.swift; path = Explorations/Utility.swift; sourceTree = "<group>"; };
 		F467D77D261CEE3A00A8B25E /* ClampingDragGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClampingDragGesture.swift; sourceTree = "<group>"; };
 		F4785E7626140C0E008DBECD /* AffineTransformsViewports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffineTransformsViewports.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -198,6 +200,7 @@
 		B956582C24FD16890001DEE0 /* SwiftExplorer */ = {
 			isa = PBXGroup;
 			children = (
+				F424F407268423190062F3BA /* Utility.swift */,
 				B95F0A1225199EFD004B609B /* SwiftExplorer-Bridging-Header.h */,
 				B956586024FD16F30001DEE0 /* Explorations */,
 				B956582D24FD16890001DEE0 /* AppDelegate.swift */,
@@ -432,6 +435,7 @@
 				B956586624FD16F30001DEE0 /* RegionMarkerRectangle.swift in Sources */,
 				B9A00B072522CB5800EF9E4D /* SECustomParsingEpisodeCell.swift in Sources */,
 				B9021C532506B6C900F66844 /* SEXMLDecoder.swift in Sources */,
+				F424F408268423190062F3BA /* Utility.swift in Sources */,
 				B9A4B26F254E186F006A2141 /* SEEvenOddFill.swift in Sources */,
 				B9E1EA5C25255DE6000067B8 /* HiraganaKeyboard.swift in Sources */,
 				B9E8F9722533E86000212D81 /* SEXMLDecoderFeed.swift in Sources */,

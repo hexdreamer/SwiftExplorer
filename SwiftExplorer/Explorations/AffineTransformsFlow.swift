@@ -6,87 +6,126 @@
 //  Copyright © 2021 Kenny Leung. All rights reserved.
 //
 
+/// Explore how to use a transform both ways to move data "up" from image space into a view, and
+/// send view data back "down" to alter something in image space.
+///
+/// An image is transformed from its native image space and rendered *on screen* in a view. The
+/// image has an Area of Interest (AOI), a sub image, represented by a simple rectangle. The
+/// rectangle for the AOI is shown on screen as an Adjustable Region.
+///
+/// If we want to adjust the AOI, we interact with the Adjustable Region and the adjustments are
+/// sent directly to the AOI's rectangle through the inverse transform (converting view space back
+/// to image space).  The Adjustable Region is then re-rendered from the modified AOI (the
+/// *source of truth*).
+
 import SwiftUI
 
-extension String.StringInterpolation {
-    mutating func appendInterpolation(_ r: CGRect) {
-        func round(_ x:CGFloat) -> CGFloat { CGFloat(Int(x*100))/100.0 }
-        let x = round(r.minX)
-        let y = round(r.minY)
-        let w = round(r.width)
-        let h = round(r.height)
-        appendInterpolation("x: \(x), y: \(y), w: \(w), h: \(h)")
-    }
-}
+let MIN_REGION = CGSize(width: 50, height: 50)
 
 struct AffineTransformsFlow: View {
+    let image = UIImage(named: "Middle Earth")!  // about 5000px square
 
-    let image = UIImage(named: "Middle Earth")!
-    let viewSize = CGSize(width: 600, height: 600)
-    var tImageToView:CGAffineTransform {
-        let outerRect = CGRect(size: viewSize)
-        let innerRect = CGRect(size: image.size)
-        let fittedRect = innerRect.fit(rect: outerRect)
+    @State var areaOfInterest = CGRect(x: 500, y: 500, width: 250, height: 250)
 
-        let scaleFactor = fittedRect.width/innerRect.width
-        let translatedPt = CGPoint(x: fittedRect.minX, y: fittedRect.minY)
+    @State var transform = CGAffineTransform.identity  // how the image was fit in the View, set in image's onAppear
 
-        let t = CGAffineTransform(scaleX: scaleFactor, y: scaleFactor)
-            .concatenating(CGAffineTransform(translationX: translatedPt.x, y: translatedPt.y))
-        return t
-    }
-    var tViewToImage:CGAffineTransform {
-        tImageToView.inverted()
-    }
+    var adjustableRegion:CGRect { areaOfInterest.applying(transform) }
 
-    // Img -> tImageToView -> ImgView
-    // ImgView -> tViewToImage -> Img
+    @State var originalRegion = CGRect.zero  // temp copy to reference during adjustments
 
-    // UI State
-    @State var tl = CGPoint(x: 0, y: 0)
-    @State var br = CGPoint(x: 100, y: 100)
-
-    // So far, just a debug value
-    var regionInView:CGRect {
-        CGRect(x: tl.x, y: tl.y, width: br.x - tl.x, height: br.y - tl.y).standardized
-    }
-
-    // Source of truth
-    var regionInImage:CGRect {
-        regionInView.applying(tViewToImage)
-    }
+    // View's size for sub image
+    let subImageSize = CGSize(width: 600, height: 400)
 
     var subImage:UIImage {
-        let drawImage = image.cgImage!.cropping(to: regionInImage)
+        let drawImage = image.cgImage!.cropping(to: areaOfInterest)
         return UIImage(cgImage: drawImage!)
     }
 
     var body: some View {
         VStack {
-            Image(uiImage: image)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: viewSize.width, height: viewSize.height)
-                .border(Color.red, width: 2)
-                .overlay(
-                    RegionMarkerCorners(topLeft: $tl, bottomRight: $br, bounds: viewSize)
-                )
-
             Spacer()
+            // Big picture
+            GeometryReader { geoReader in
+                let tImageFit = CGRect(size: image.size).tFitIn(outerRect: geoReader.frame(in: CoordinateSpace.local))
+                let imageFrame = CGRect(size: image.size).applying(tImageFit)
+                Image(uiImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: imageFrame.width, height: imageFrame .height)
+                    .position(x: imageFrame.midX, y: imageFrame.midY)
+                    .background(Color.gray)
+                    .border(Color.red, width: 1)
+                    .onAppear { transform = tImageFit }
+
+                // Adjustable Region
+                drawAdjustableRegion()
+            }
+            Spacer()
+            // Sub image
             Image(uiImage: subImage)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
+                .frame(width: subImageSize.width, height: subImageSize.height)
+                .background(Color.gray.opacity(0.5))  // gray background to see borders of sub-image
                 .border(Color.blue, width: 2)
                 .overlay(CrossHairs())
             Spacer()
-
-            Group {
-                VStack {
-                    Text("ImageView Region: \(regionInView)" as String)
-                    Text("Image Region: \(regionInImage)" as String)
-                }
-            }
         }
+    }
+
+    /// There is no bounds checking/clamping; dragging the region completely off the image will crash the app!
+    func drawAdjustableRegion() -> some View {
+        let longPress = LongPressGesture(minimumDuration: 0.0)
+            .onEnded { _ in
+                originalRegion = adjustableRegion
+            }
+
+        let move = DragGesture()
+            .onChanged { gesture in
+                let o  = originalRegion
+                let tx = gesture.translation.width
+                let ty = gesture.translation.height
+
+                let newRegion = CGRect(x: o.minX+tx, y: o.minY+ty, width: o.width, height: o.height)
+                self.areaOfInterest = newRegion.applying(transform.inverted())
+            }
+            .onEnded { _ in
+                self.originalRegion = CGRect.zero
+            }
+
+        // From bottom-right corner
+        let resize = DragGesture()
+            .onChanged { gesture in
+                let o  = originalRegion
+                let tx = gesture.translation.width
+                let ty = gesture.translation.height
+                let w  = (o.width+tx  < MIN_REGION.width)  ? MIN_REGION.width : o.width+tx
+                let h  = (o.height+ty < MIN_REGION.height) ? MIN_REGION.height: o.height+ty
+
+                let newRegion = CGRect(x: o.minX, y: o.minY, width: w, height: h)
+                self.areaOfInterest = newRegion.applying(transform.inverted())
+            }
+            .onEnded { _ in
+                self.originalRegion = CGRect.zero
+            }
+
+        return Group {
+                // Click anywhere in Rectangle to drag-move
+                Rectangle()
+                    .fill(Color.blue.opacity(0.06))
+                    .border(Color.blue, width: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/)
+                    .frame(width: adjustableRegion.width, height: adjustableRegion.height)
+                    .position(x: adjustableRegion.midX, y: adjustableRegion.midY)
+                    .gesture(longPress.sequenced(before:move)
+                    )
+
+                // Click on to drag-resize
+                Circle()
+                    .fill(Color.blue)
+                    .frame(width: 15, height: 15)
+                    .position(x: adjustableRegion.maxX, y: adjustableRegion.maxY)
+                    .gesture(longPress.sequenced(before: resize))
+            }
     }
 }
 
@@ -94,17 +133,10 @@ struct CrossHairs: View {
     var body: some View {
         GeometryReader { geoReader in
             let origin = CGPoint(x: geoReader.size.width/2, y: geoReader.size.height/2)
-            let maxX = origin.x+100
-            let minX = origin.x-100
-            let maxY = origin.y+100
-            let minY = origin.y-100
-            Path { path in
-                path.move(to: CGPoint(x: minX, y: origin.y))
-                path.addLine(to: CGPoint(x:maxX, y: origin.y))
-                path.move(to: CGPoint(x: origin.x, y: minY))
-                path.addLine(to: CGPoint(x: origin.x, y: maxY))
-            }
-            .stroke(Color.yellow, lineWidth: 2)
+            drawTickMark("br", origin, size: 100)
+                .stroke(Color.yellow, lineWidth: 2)
+            drawTickMark("tl", origin, size: 100)
+                .stroke(Color.yellow, lineWidth: 2)
         }
     }
 }
