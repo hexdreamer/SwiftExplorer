@@ -6,11 +6,12 @@
 //  Copyright © 2020 Kenny Leung. All rights reserved.
 //
 
+import CoreData.NSFetchRequest
 import UIKit
 import SwiftUI
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
+    let persistenceController = PersistenceController.shared
     var window: UIWindow?
 
 
@@ -20,7 +21,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 
         // Get the managed object context from the shared persistent container.
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let context = persistenceController.container.viewContext
+
+        // pre Populate
+        let fetchRequest:NSFetchRequest<AreaOfInterest> = NSFetchRequest(entityName: "AreaOfInterest")
+        if (try! context.count(for: fetchRequest) == 0) {
+            let newAOI = AreaOfInterest(context: context)
+            newAOI.rect = CGRect(x: 500, y: 500, width: 250, height: 250)
+            persistenceController.saveContext()
+        }
 
         // Create the SwiftUI view and set the context as the value for the managedObjectContext environment keyPath.
         // Add `@Environment(\.managedObjectContext)` in the views that will need the context.
@@ -63,7 +72,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
 
         // Save changes in the application's managed object context when the application transitions to the background.
-        (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
+        persistenceController.saveContext()
     }
 
 

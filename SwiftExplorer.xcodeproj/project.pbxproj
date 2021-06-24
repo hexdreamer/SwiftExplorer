@@ -19,7 +19,6 @@
 		B93A4EB8250D3B0700EE2B35 /* SEXMLDecoderEpisodesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93A4EB7250D3B0700EE2B35 /* SEXMLDecoderEpisodesView.swift */; };
 		B956582E24FD16890001DEE0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956582D24FD16890001DEE0 /* AppDelegate.swift */; };
 		B956583024FD16890001DEE0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956582F24FD16890001DEE0 /* SceneDelegate.swift */; };
-		B956583324FD16890001DEE0 /* SwiftExplorer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B956583124FD16890001DEE0 /* SwiftExplorer.xcdatamodeld */; };
 		B956583524FD16890001DEE0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956583424FD16890001DEE0 /* ContentView.swift */; };
 		B956583724FD168A0001DEE0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B956583624FD168A0001DEE0 /* Assets.xcassets */; };
 		B956583A24FD168A0001DEE0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B956583924FD168A0001DEE0 /* Preview Assets.xcassets */; };
@@ -52,6 +51,10 @@
 		B9E8F97A25342C8900212D81 /* SEXMLDecoderFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E8F97925342C8900212D81 /* SEXMLDecoderFeedCell.swift */; };
 		F401B8BE2617D8B500B7F4E7 /* AffineTransformsFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F401B8BD2617D8B500B7F4E7 /* AffineTransformsFlow.swift */; };
 		F424F408268423190062F3BA /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = F424F407268423190062F3BA /* Utility.swift */; };
+		F457832B26850B9000AA82B6 /* AffineTransformsFlow_CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F457832A26850B9000AA82B6 /* AffineTransformsFlow_CoreData.swift */; };
+		F457832E26850FDF00AA82B6 /* SEModel_Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F457832D26850FDF00AA82B6 /* SEModel_Extensions.swift */; };
+		F45783302685105600AA82B6 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = F457832F2685105600AA82B6 /* Persistence.swift */; };
+		F45783332685120F00AA82B6 /* SEModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F45783312685120F00AA82B6 /* SEModel.xcdatamodeld */; };
 		F467D77E261CEE3A00A8B25E /* ClampingDragGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = F467D77D261CEE3A00A8B25E /* ClampingDragGesture.swift */; };
 		F4785E7726140C0E008DBECD /* AffineTransformsViewports.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4785E7626140C0E008DBECD /* AffineTransformsViewports.swift */; };
 /* End PBXBuildFile section */
@@ -87,7 +90,6 @@
 		B956582A24FD16890001DEE0 /* SwiftExplorer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftExplorer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B956582D24FD16890001DEE0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B956582F24FD16890001DEE0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		B956583224FD16890001DEE0 /* SwiftExplorer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SwiftExplorer.xcdatamodel; sourceTree = "<group>"; };
 		B956583424FD16890001DEE0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B956583624FD168A0001DEE0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B956583924FD168A0001DEE0 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -126,6 +128,10 @@
 		B9E8F97925342C8900212D81 /* SEXMLDecoderFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEXMLDecoderFeedCell.swift; sourceTree = "<group>"; };
 		F401B8BD2617D8B500B7F4E7 /* AffineTransformsFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffineTransformsFlow.swift; sourceTree = "<group>"; };
 		F424F407268423190062F3BA /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Utility.swift; path = Explorations/Utility.swift; sourceTree = "<group>"; };
+		F457832A26850B9000AA82B6 /* AffineTransformsFlow_CoreData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AffineTransformsFlow_CoreData.swift; sourceTree = "<group>"; };
+		F457832D26850FDF00AA82B6 /* SEModel_Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SEModel_Extensions.swift; sourceTree = "<group>"; };
+		F457832F2685105600AA82B6 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		F45783322685120F00AA82B6 /* SEModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SEModel.xcdatamodel; sourceTree = "<group>"; };
 		F467D77D261CEE3A00A8B25E /* ClampingDragGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClampingDragGesture.swift; sourceTree = "<group>"; };
 		F4785E7626140C0E008DBECD /* AffineTransformsViewports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffineTransformsViewports.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -200,6 +206,7 @@
 		B956582C24FD16890001DEE0 /* SwiftExplorer */ = {
 			isa = PBXGroup;
 			children = (
+				F457832C26850FA500AA82B6 /* Models */,
 				F424F407268423190062F3BA /* Utility.swift */,
 				B95F0A1225199EFD004B609B /* SwiftExplorer-Bridging-Header.h */,
 				B956586024FD16F30001DEE0 /* Explorations */,
@@ -209,7 +216,6 @@
 				B956583624FD168A0001DEE0 /* Assets.xcassets */,
 				B956583B24FD168A0001DEE0 /* LaunchScreen.storyboard */,
 				B956583E24FD168A0001DEE0 /* Info.plist */,
-				B956583124FD16890001DEE0 /* SwiftExplorer.xcdatamodeld */,
 				B956583824FD168A0001DEE0 /* Preview Content */,
 			);
 			path = SwiftExplorer;
@@ -246,6 +252,7 @@
 			children = (
 				F4785E7626140C0E008DBECD /* AffineTransformsViewports.swift */,
 				F401B8BD2617D8B500B7F4E7 /* AffineTransformsFlow.swift */,
+				F457832A26850B9000AA82B6 /* AffineTransformsFlow_CoreData.swift */,
 				F467D77D261CEE3A00A8B25E /* ClampingDragGesture.swift */,
 				B956586324FD16F30001DEE0 /* RegionMarkerRectangle.swift */,
 				B956586224FD16F30001DEE0 /* RegionMarkerCorners.swift */,
@@ -278,6 +285,16 @@
 				B95F0A0325199050004B609B /* SECustomParsingCategory.swift */,
 			);
 			path = CustomXMLParsing;
+			sourceTree = "<group>";
+		};
+		F457832C26850FA500AA82B6 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				F457832D26850FDF00AA82B6 /* SEModel_Extensions.swift */,
+				F457832F2685105600AA82B6 /* Persistence.swift */,
+				F45783312685120F00AA82B6 /* SEModel.xcdatamodeld */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -440,8 +457,8 @@
 				B9E1EA5C25255DE6000067B8 /* HiraganaKeyboard.swift in Sources */,
 				B9E8F9722533E86000212D81 /* SEXMLDecoderFeed.swift in Sources */,
 				F467D77E261CEE3A00A8B25E /* ClampingDragGesture.swift in Sources */,
+				F457832B26850B9000AA82B6 /* AffineTransformsFlow_CoreData.swift in Sources */,
 				B956586524FD16F30001DEE0 /* RegionMarkerCorners.swift in Sources */,
-				B956583324FD16890001DEE0 /* SwiftExplorer.xcdatamodeld in Sources */,
 				B95F0A0D25199050004B609B /* SECustomParsingItem.swift in Sources */,
 				B956586424FD16F30001DEE0 /* RegionMarkerOffset.swift in Sources */,
 				B93A3BE024FD1F840038BFDB /* SEDecodableItem.swift in Sources */,
@@ -450,6 +467,7 @@
 				B95F0A0F25199050004B609B /* SECustomParsingEpisodesView.swift in Sources */,
 				B956582E24FD16890001DEE0 /* AppDelegate.swift in Sources */,
 				B956583524FD16890001DEE0 /* ContentView.swift in Sources */,
+				F45783302685105600AA82B6 /* Persistence.swift in Sources */,
 				B93A3BE324FD1F840038BFDB /* SEDecodableImage.swift in Sources */,
 				B9A00B0F2522D02100EF9E4D /* SECustomParsingFeedCell.swift in Sources */,
 				B969B96625448A6A00B8B8AB /* SEXMLDecoderEpisodeCell.swift in Sources */,
@@ -457,6 +475,8 @@
 				B956583024FD16890001DEE0 /* SceneDelegate.swift in Sources */,
 				B9A4B267254E17A9006A2141 /* SEEvenOddFillUIKit.swift in Sources */,
 				F4785E7726140C0E008DBECD /* AffineTransformsViewports.swift in Sources */,
+				F457832E26850FDF00AA82B6 /* SEModel_Extensions.swift in Sources */,
+				F45783332685120F00AA82B6 /* SEModel.xcdatamodeld in Sources */,
 				B95F0A0525199050004B609B /* SECustomParsingOwner.swift in Sources */,
 				B95F0A0C25199050004B609B /* SECustomXMLParsing.swift in Sources */,
 			);
@@ -813,13 +833,13 @@
 /* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
-		B956583124FD16890001DEE0 /* SwiftExplorer.xcdatamodeld */ = {
+		F45783312685120F00AA82B6 /* SEModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				B956583224FD16890001DEE0 /* SwiftExplorer.xcdatamodel */,
+				F45783322685120F00AA82B6 /* SEModel.xcdatamodel */,
 			);
-			currentVersion = B956583224FD16890001DEE0 /* SwiftExplorer.xcdatamodel */;
-			path = SwiftExplorer.xcdatamodeld;
+			currentVersion = F45783322685120F00AA82B6 /* SEModel.xcdatamodel */;
+			path = SEModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
