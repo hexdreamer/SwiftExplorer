@@ -6,35 +6,30 @@
 //  Copyright © 2021 Kenny Leung. All rights reserved.
 //
 
-/// Explore how to use a transform both ways to move data "up" from image space into a view, and
-/// send view data back "down" to alter something in image space.
+/// Explore how to use a transform both ways to move data "up" from image coordinate space (CS) into
+/// the view's CS, and send view-data back "down" to alter something in the image's CS.
 ///
-/// An image is transformed from its native image space and rendered *on screen* in a view. The
-/// image has an Area of Interest (AOI), a sub image, represented by a simple rectangle. The
-/// rectangle for the AOI is shown on screen as an Adjustable Region.
+/// An image is transformed—scaled and translated—and rendered *on screen* in a view. The image has
+/// an Area of Interest (AOI), a sub image, represented by a simple rectangle. The rectangle for the
+/// AOI is shown on screen as an Adjustable Region.
 ///
-/// If we want to adjust the AOI, we interact with the Adjustable Region and the adjustments are
-/// sent directly to the AOI's rectangle through the inverse transform (converting view space back
-/// to image space).  The Adjustable Region is then re-rendered from the modified AOI (the
-/// *source of truth*).
+/// If we want to modify the AOI, we interact with the Adjustable Region and its changes are sent
+/// directly to the AOI's rectangle through the inverse transform (converting view CS back to image
+/// CS).  The Adjustable Region is then re-rendered from the modified AOI—the *source of truth*.
 
 import hexdreamsCocoa
 import SwiftUI
 
-let MIN_REGION = CGSize(width: 50, height: 50)
-
 struct AffineTransformsFlow: View {
     let image = UIImage(named: "Middle Earth")!  // about 5000px square
 
+    // source of truth
     @State var areaOfInterest = CGRect(x: 500, y: 500, width: 250, height: 250)
 
-    @State var transform = CGAffineTransform.identity  // how the image was fit in the View, set in image's onAppear
+    // temp copy to reference during adjustments
+    @State var originalRegion = CGRect.zero
 
-    @State var originalRegion = CGRect.zero  // temp copy to reference during adjustments
-
-    // View's size for sub image
     let subImageSize = CGSize(width: 600, height: 400)
-
     var subImage:UIImage {
         let drawImage = image.cgImage!.cropping(to: areaOfInterest)
         return UIImage(cgImage: drawImage!)
@@ -72,13 +67,17 @@ struct AffineTransformsFlow: View {
         }
     }
 
+    let MIN_REGION = CGSize(width: 50, height: 50)
+
     /// There is no bounds checking/clamping; dragging the region completely off the image will crash the app!
     func drawAdjustableRegion(transform:CGAffineTransform) -> some View {
+        // Render on-screen from the source of truth
         var adjustableRegion:CGRect { areaOfInterest.applying(transform) }
 
         // LongPress ends when motion (dragging) begins
         let longPress = LongPressGesture(minimumDuration: 0.0)
             .onEnded { _ in
+                // Make adjustments relative to geometry *before* drag-gesture begins
                 originalRegion = adjustableRegion
             }
 
@@ -87,11 +86,12 @@ struct AffineTransformsFlow: View {
                 let o  = originalRegion
                 let tx = gesture.translation.width
                 let ty = gesture.translation.height
-
                 let newRegion = CGRect(x: o.minX+tx, y: o.minY+ty, width: o.width, height: o.height)
+                // Modify source of truth through inverse transform
                 self.areaOfInterest = newRegion.applying(transform.inverted())
             }
             .onEnded { _ in
+                // Could leave as is, but clearer to reset since it's not being used
                 self.originalRegion = CGRect.zero
             }
 
@@ -103,7 +103,6 @@ struct AffineTransformsFlow: View {
                 let ty = gesture.translation.height
                 let w  = (o.width+tx  < MIN_REGION.width)  ? MIN_REGION.width : o.width+tx
                 let h  = (o.height+ty < MIN_REGION.height) ? MIN_REGION.height: o.height+ty
-
                 let newRegion = CGRect(x: o.minX, y: o.minY, width: w, height: h)
                 self.areaOfInterest = newRegion.applying(transform.inverted())
             }
