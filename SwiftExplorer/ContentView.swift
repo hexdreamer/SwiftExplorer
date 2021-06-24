@@ -38,10 +38,7 @@ let navLinks = [
     NavLink(dest: AnyView(AffineTransformsFlow()), navBarTitle: "Transforms: Data Flow", text: "Affine Transforms - Data Flow"),
     NavLink(dest: AnyView(ClampingDragGesture()), navBarTitle: "Clamp DragGesture", text: "Clamp DragGesture"),
     NavLink(dest: AnyView(RegionMarkerRectangle()), navBarTitle: "Rectangle Based", text: "Region Marker (Rectangle Based)"),
-    /*
-     * Disabled because I changed RegionMarkerCorners so much trying to get clamping and transforms working
-     NavLink(dest: AnyView(RegionMarkerCorners()), navBarTitle: "Corner Based", text: "Region Marker (Corner Based)"),
-    */
+    NavLink(dest: AnyView(RegionMarkerCorners()), navBarTitle: "Corner Based", text: "Region Marker (Corner Based)"),
     NavLink(dest: AnyView(RegionMarkerOffset()), navBarTitle: "By Offset", text: "Region Marker (By Offset)"),
     NavLink(dest: AnyView(HiraganaKeyboard()), navBarTitle: "Hiragana Keyboard", text: "Hiragana Keyboard"),
     NavLink(dest: AnyView(KatakanaKeyboard()), navBarTitle: "Katakana Keyboard", text: "Katakana Keyboard"),
