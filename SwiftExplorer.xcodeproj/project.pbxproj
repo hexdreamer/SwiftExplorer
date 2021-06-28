@@ -206,13 +206,13 @@
 		B956582C24FD16890001DEE0 /* SwiftExplorer */ = {
 			isa = PBXGroup;
 			children = (
+				B956583424FD16890001DEE0 /* ContentView.swift */,
+				B956586024FD16F30001DEE0 /* Explorations */,
 				F457832C26850FA500AA82B6 /* Models */,
 				F424F407268423190062F3BA /* Utility.swift */,
 				B95F0A1225199EFD004B609B /* SwiftExplorer-Bridging-Header.h */,
-				B956586024FD16F30001DEE0 /* Explorations */,
 				B956582D24FD16890001DEE0 /* AppDelegate.swift */,
 				B956582F24FD16890001DEE0 /* SceneDelegate.swift */,
-				B956583424FD16890001DEE0 /* ContentView.swift */,
 				B956583624FD168A0001DEE0 /* Assets.xcassets */,
 				B956583B24FD168A0001DEE0 /* LaunchScreen.storyboard */,
 				B956583E24FD168A0001DEE0 /* Info.plist */,

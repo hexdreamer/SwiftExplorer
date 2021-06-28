@@ -8,7 +8,7 @@
 
 /// Explore how to use a CoreData to persist changes to the AreaOfInterest (AOI).  This is a follow-on on from AffineTransformsFlow exploration.
 ///
-/// In the previous exploration, AOI was an `@State var CGRect` that was declared and managed in the top-level View.  To make it persistent, "Area of Interest" became an *entity* with a *property* named `rect`.  A CGRect cannot be stored directly in Core Data because it is a struct, not a class, so the actual stored attributes of the entity are the four componets of a CGRect: x, y, width, and height.  The `rect` property is a cover method for getting and setting those attributes from and to a CGRect.
+/// In the previous exploration, AOI was an `@State var CGRect` that was declared and managed in the top-level View.  To make it persistent, "Area of Interest" becomes an *entity* with a computed *property* named `rect`.  A CGRect cannot be stored directly in Core Data because it is a struct, not a class, so the actual stored attributes of the entity are the four componets of a CGRect: `x`, `y`, `width`, and `height`.  The `rect` property is a cover method for getting and setting those attributes from and to a CGRect.
 
 import hexdreamsCocoa
 import SwiftUI
@@ -43,7 +43,8 @@ struct AffineTransformsFlow_CoreData: View {
             Spacer()
             // Big picture
             GeometryReader { geoReader in
-                let tImageFit = CGRect(size: image.size).tFitIn(outerRect: geoReader.frame(in: CoordinateSpace.local))
+                let tImageFit = CGRect(size: image.size)
+                    .tFitIn(outerRect: geoReader.frame(in: CoordinateSpace.local))
                 let imageFrame = CGRect(size: image.size).applying(tImageFit)
 
                 Image(uiImage: image)
